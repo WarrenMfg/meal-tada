@@ -10,6 +10,7 @@ app.disable('etag').disable('x-powered-by');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/', express.static(resolve(__dirname, '../distFrontend')));
+app.use('/*', express.static(resolve(__dirname, '../distFrontend')));
 
 (async () => {
   try {
