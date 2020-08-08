@@ -10,7 +10,7 @@
     "startDev": "nodemon -r dotenv/config distBackend/index.js",
     "start": "node distBackend/index.js",
     "buildFrontend": "parcel build frontend/index.html --out-dir distFrontend",
-    "watchFrontend": "parcel watch frontend/index.html --out-dir distFrontend"
+    "watchFrontend": "parcel watch frontend/index.html --no-source-maps --out-dir distFrontend"
   },
   "nodemonConfig": {
     "watch": [

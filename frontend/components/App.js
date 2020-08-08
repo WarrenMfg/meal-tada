@@ -5,12 +5,14 @@ import Home from './Home';
 import Recipes from './Recipes';
 import About from './About';
 import Search from './Search';
+import Footer from './Footer';
 
 function App() {
   return (
     <div>
       <Navbar />
       <Switcheroo />
+      <Footer />
     </div>
   );
 }
