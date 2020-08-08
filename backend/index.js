@@ -9,7 +9,9 @@ app.disable('etag').disable('x-powered-by');
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use('/', express.static(resolve(__dirname, '../distFrontend')));
+// files that exist
+app.use(express.static(resolve(__dirname, '../distFrontend')));
+// files that don't exist (i.e. react-router-dom routes)
 app.use('/*', express.static(resolve(__dirname, '../distFrontend')));
 
 (async () => {
