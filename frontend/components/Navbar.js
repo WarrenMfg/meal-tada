@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 
 function Navbar() {
   const location = useLocation();
-  console.log(location);
   const isActive = pathname => {
     if (pathname === '/' && location.pathname === '/') return ' active';
     else return location.pathname.split('/')[1] === pathname ? ' active' : '';
