@@ -64,33 +64,3 @@
   color: #aaa;
   margin-bottom: 0;
 }
-
-.list-group-flush {
-  width: 50%;
-  padding-left: 0;
-}
-
-.summary {
-  width: 45%;
-  margin: 0;
-}
-
-.col-12.col-lg-9.recipe p {
-  margin: 0;
-}
-
-.summary .list-group-flush {
-  width: 100%;
-}
-
-.summary p {
-  padding: 1rem;
-}
-
-.time {
-  font-weight: bold;
-}
-
-.img-fluid {
-  margin: 1rem 0;
-}

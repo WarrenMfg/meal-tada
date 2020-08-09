@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Ingredients from './Ingredients';
+import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
 import Aside from '../Aside';
 import hero from '../../images/steak.jpg';
@@ -17,8 +17,8 @@ function Recipe() {
       <h1 className='mt-5 mb-5 text-center'>Meal Title</h1>
       <div className='row'>
         <div className='col-12 col-lg-9'>
-          {/* <Ingredients /> */}
-          {/* <Directions /> */}
+          <IngredientsAndSummary />
+          <Directions />
           <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
             Back To All Recipes
           </Link>
