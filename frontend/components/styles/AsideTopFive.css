@@ -1,0 +1,26 @@
+.aside-top-five h2 {
+  font-size: 1.5em;
+}
+
+.aside-top-five li {
+  padding: 1rem;
+  background-color: #ebebeb;
+  border-bottom: 1px solid #b1b1b1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aside-top-five li:last-child {
+  padding: 1rem;
+  background-color: #ebebeb;
+  border-bottom: initial;
+}
+
+.aside-top-five li:hover {
+  background-color: rgb(209, 209, 209) !important;
+}
+
+.aside-top-five a {
+  color: rgb(33, 37, 41);
+  text-decoration: none;
+}

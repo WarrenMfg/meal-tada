@@ -6,6 +6,7 @@ import Recipes from './Recipes';
 import About from './About';
 import Search from './Search';
 import Footer from './Footer';
+import Recipe from './Recipe';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function Switcheroo() {
       <Route path='/recipes' component={Recipes} />
       <Route path='/about' component={About} />
       <Route path='/search' component={Search} />
+      <Route path='/recipe/:name' component={Recipe} />
     </Switch>
   );
 }

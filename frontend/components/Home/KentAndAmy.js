@@ -1,17 +1,11 @@
 import React from 'react';
 import kentAndAmy from '../../images/kent-and-amy.jpg';
+import '../styles/KentAndAmy.css';
 
 function KentAndAmy() {
   return (
-    <div
-      className='d-flex align-items-center'
-      style={{ backgroundColor: '#ebebeb', padding: '1.5rem' }}
-    >
-      <img
-        className='img-fluid border rounded-circle d-lg-flex mr-3'
-        src={kentAndAmy}
-        style={{ width: 200, height: 200 }}
-      />
+    <div className='kent-and-amy-container d-flex flex-column align-items-center flex-md-row rounded'>
+      <img className='img-fluid rounded-circle mr-3' src={kentAndAmy} />
       <p>
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
         pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt

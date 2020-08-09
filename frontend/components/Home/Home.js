@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import KentAndAmy from './KentAndAmy';
+import LatestRecipes from './LatestRecipes';
+import Aside from './Aside';
 import '../styles/Home.css';
 
 function Home() {
@@ -13,7 +16,7 @@ function Home() {
 
           <div className='row'>
             <div className='col-12 col-lg-9'>
-              <main>
+              <div>
                 {/* Intro paragraph */}
                 <p>
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -26,12 +29,14 @@ function Home() {
                   proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
                 <KentAndAmy />
-              </main>
+              </div>
+              <LatestRecipes />
 
-              <button className='btn btn-info btn-block mt-5 mb-5' type='button'>
+              <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
                 Browse All Recipes
-              </button>
+              </Link>
             </div>
+            <Aside />
           </div>
         </div>
       </div>
