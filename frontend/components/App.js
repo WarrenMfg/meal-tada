@@ -6,7 +6,7 @@ import Recipes from './Recipes';
 import About from './About';
 import Search from './Search';
 import Footer from './Footer';
-import Recipe from './Recipe';
+import Recipe from './Recipe/Recipe';
 
 function App() {
   return (

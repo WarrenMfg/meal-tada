@@ -1,0 +1,36 @@
+.card h2 {
+  font-size: 1.5rem;
+}
+
+.card h3 {
+  font-size: 1rem;
+}
+
+.card-thumbnail-summary-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.card .thumbnail {
+  width: 25%;
+  background: url(../../images/steak.jpg) center / cover no-repeat;
+}
+
+.card .card-summary {
+  width: 75%;
+}
+
+@media (max-width: 767px) {
+  .card-thumbnail-summary-container {
+    flex-direction: column;
+  }
+
+  .card .thumbnail {
+    width: 100%;
+    height: 200px;
+  }
+
+  .card .card-summary {
+    width: 100%;
+  }
+}

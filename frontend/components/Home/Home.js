@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import KentAndAmy from './KentAndAmy';
 import LatestRecipes from './LatestRecipes';
-import Aside from './Aside';
+import Aside from '../Aside';
+import hero from '../../images/seasoned-veggies.jpg';
 import '../styles/Home.css';
 
 function Home() {
@@ -10,7 +11,7 @@ function Home() {
     <div className='container home'>
       <div className='row'>
         <div className='col'>
-          <div className='seasoned-veggies rounded' />
+          <div className='hero rounded' style={{ backgroundImage: `url(${hero})` }} />
 
           <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 
@@ -30,6 +31,8 @@ function Home() {
                 </p>
                 <KentAndAmy />
               </div>
+
+              {/* Main */}
               <LatestRecipes />
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>

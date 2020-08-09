@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/AsideTopFive.css';
+import './styles/AsideTopFive.css';
 
 function AsideTopFive() {
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AsideTopFive from './AsideTopFive';
-import search from '../../images/search.png';
-import '../styles/Aside.css';
+import search from '../images/search.png';
+import './styles/Aside.css';
 
 function Aside() {
   return (
