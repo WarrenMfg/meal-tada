@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import KentAndAmy from './KentAndAmy';
+import KentAndAmy from '../KentAndAmy';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside';
 import hero from '../../images/seasoned-veggies.jpg';

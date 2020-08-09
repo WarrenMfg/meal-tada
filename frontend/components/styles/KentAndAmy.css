@@ -7,3 +7,16 @@
   width: 200px;
   height: 200px;
 }
+
+div.kent-and-amy-container p a.read-more.btn {
+  position: relative;
+  left: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  div.kent-and-amy-container p a.read-more.btn {
+    position: initial;
+    display: block;
+    margin: 1rem 0 0;
+  }
+}

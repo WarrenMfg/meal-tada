@@ -1,0 +1,10 @@
+.about .hero {
+  height: 500px;
+  background-position: 0% 20%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.about p {
+  margin: 0;
+}
