@@ -9,7 +9,7 @@ export default (app, db) => {
     }
   });
 
-  app.get('/api/home', async (req, res) => {
+  app.get('/api/init', async (req, res) => {
     try {
       // get general
       const general = await db.collection('general').findOne({ meta: true });
@@ -22,6 +22,28 @@ export default (app, db) => {
 
       // send it
       res.send({ general, latestRecipes });
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
+
+  app.get('/api/init-and-current-recipe/:slug', async (req, res) => {
+    try {
+      // get general
+      const general = await db.collection('general').findOne({ meta: true });
+
+      // get latest recipes
+      const latestRecipes = await db
+        .collection('recipes')
+        .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
+        .toArray();
+
+      // get current recipe
+      const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
+
+      // send it
+      res.send({ general, latestRecipes, currentRecipe });
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);

@@ -3,12 +3,12 @@ export const loadingReducer = (state, action) => {
     case 'IS_LOADING':
       return {
         ...state,
-        loading: true
+        isLoading: true
       };
     case 'IS_NOT_LOADING':
       return {
         ...state,
-        loading: false
+        isLoading: false
       };
     default:
       return state;
@@ -16,5 +16,5 @@ export const loadingReducer = (state, action) => {
 };
 
 export const loadingInitialState = {
-  loading: false
+  isLoading: true
 };

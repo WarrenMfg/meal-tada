@@ -3,12 +3,12 @@ export const errorReducer = (state, action) => {
     case 'ADD_ERROR':
       return {
         ...state,
-        error: action.payload
+        message: action.payload
       };
     case 'CLEAR_ERROR':
       return {
         ...state,
-        error: null
+        message: null
       };
     default:
       return state;
@@ -16,5 +16,5 @@ export const errorReducer = (state, action) => {
 };
 
 export const errorInitialState = {
-  error: null
+  message: null
 };

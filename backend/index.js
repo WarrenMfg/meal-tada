@@ -9,9 +9,18 @@ app.disable('etag').disable('x-powered-by');
 
 app.use(morgan('dev'));
 app.use(express.json());
+// for recipes
+app.use('/recipe/:recipe', (req, res) => {
+  try {
+    res.sendFile(resolve(__dirname, '../distFrontend/index.html'));
+  } catch (err) {
+    res.sendStatus(404).json({ message: 'Not found' });
+    console.log(err.message, err.stack);
+  }
+});
 // for static files and virtual paths
 app.use(
-  [ '/recipes', '/about', `/search\*`, '/search', `/recipe/\*`, '/' ],
+  [ '/recipes', '/about', `/search\*`, '/search', '/' ],
   express.static(resolve(__dirname, '../distFrontend'))
 );
 
