@@ -2,9 +2,13 @@ import React from 'react';
 import RecipeCard from './RecipeCard';
 import Aside from './Aside';
 import hero from '../images/seasoned-edamame.jpg';
+import withGlobalStore from '../store/withGlobalStore';
 import './styles/Recipes.css';
 
-function Recipes() {
+function Recipes({ state }) {
+  const { dispatch } = state;
+  const { recipes } = state.recipes;
+
   return (
     <div className='container recipes'>
       <div className='row'>
@@ -16,8 +20,9 @@ function Recipes() {
       <div className='row'>
         <div className='col-12 col-lg-9'>
           <main className='mb-2'>
-            {/* Recipes */}
-            <RecipeCard />
+            {recipes.map(recipe => (
+              <RecipeCard key={recipe._id} recipe={recipe} dispatch={dispatch} />
+            ))}
           </main>
         </div>
         {/* Aside */}
@@ -27,4 +32,4 @@ function Recipes() {
   );
 }
 
-export default Recipes;
+export default withGlobalStore(Recipes);

@@ -11,7 +11,7 @@ function Ingredients({ ingredients }) {
             key={tuple}
             className='list-group-item d-flex justify-content-between align-items-center'
           >
-            <span>{tuple[0]}</span>
+            <span className='mr-3'>{tuple[0]}</span>
             <span className='badge badge-primary badge-pill'>{tuple[1]}</span>
           </li>
         );

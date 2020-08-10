@@ -1,18 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import KentAndAmyCard from '../KentAndAmyCard';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside';
 import hero from '../../images/seasoned-veggies.jpg';
-import { fetchGeneralAndLatestRecipes } from '../../api/fetch';
 import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Home.css';
 
 function Home({ state }) {
   const { dispatch, general: { introduction, about1 }, recipes: { recipes } } = state;
-  useEffect(() => {
-    fetchGeneralAndLatestRecipes(dispatch);
-  }, []);
+
   return (
     <div className='container home'>
       <div className='row'>
