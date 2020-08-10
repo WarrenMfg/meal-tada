@@ -9,10 +9,11 @@ app.disable('etag').disable('x-powered-by');
 
 app.use(morgan('dev'));
 app.use(express.json());
-// files that exist
-app.use(express.static(resolve(__dirname, '../distFrontend')));
-// files that don't exist (i.e. react-router-dom routes)
-app.use('/*', express.static(resolve(__dirname, '../distFrontend')));
+// for static files and virtual paths
+app.use(
+  [ '/recipes', '/about', `/search\*`, '/search', `/recipe/\*`, '/' ],
+  express.static(resolve(__dirname, '../distFrontend'))
+);
 
 (async () => {
   try {

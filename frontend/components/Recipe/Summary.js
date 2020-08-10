@@ -12,6 +12,10 @@ function Summary() {
           <span className='time'>Cook Time</span>
           <span className='badge badge-primary badge-pill'>20 minutes</span>
         </li>
+        <li className='list-group-item d-flex justify-content-between align-items-center'>
+          <span className='time'>Servings</span>
+          <span className='badge badge-primary badge-pill'>4 to 6</span>
+        </li>
       </ul>
       <p className='summary-text'>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu commodo velit, vitae

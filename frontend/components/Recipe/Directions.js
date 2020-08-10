@@ -45,6 +45,7 @@ function Directions() {
         ornare accumsan. Vestibulum mollis rutrum tincidunt. Proin dui ipsum, porta in enim sit
         amet, cursus cursus erat. Vivamus vitae egestas odio, et lobortis metus.
       </p>
+      <h2 className='text-center mt-4 mb-4'>Tada!</h2>
       <img className='img-fluid rounded' src={steak4} />
     </section>
   );

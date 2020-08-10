@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AsideTopFive from './AsideTopFive';
-import search from '../images/search.png';
+import searchIcon from '../images/magnifier.png';
 import './styles/Aside.css';
 
 function Aside() {
@@ -11,7 +11,7 @@ function Aside() {
         <div className='search-container'>
           <input type='text' className='search-input' name='search-bar' placeholder='Search...' />
           <Link className='btn btn-light search-btn' to='/search'>
-            <img src={search} />
+            <img src={searchIcon} />
           </Link>
         </div>
 

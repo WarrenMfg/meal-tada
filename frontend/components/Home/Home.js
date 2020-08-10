@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import KentAndAmy from '../KentAndAmy';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside';
 import hero from '../../images/seasoned-veggies.jpg';
+import { fetchGeneralAndLatestRecipes } from '../../api/fetch';
+import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Home.css';
 
-function Home() {
+function Home({ state }) {
+  const { dispatch, general: { introduction, about1 }, recipes: { latestRecipes } } = state;
+  useEffect(() => {
+    fetchGeneralAndLatestRecipes(dispatch);
+  }, []);
   return (
     <div className='container home'>
       <div className='row'>
@@ -18,22 +24,12 @@ function Home() {
           <div className='row'>
             <div className='col-12 col-lg-9'>
               <div>
-                {/* Intro paragraph */}
-                <p>
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                  esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                  proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim
-                  ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                  proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <KentAndAmy />
+                <p>{introduction}</p>
+                <KentAndAmy about1={about1} />
               </div>
 
               {/* Main */}
-              <LatestRecipes />
+              <LatestRecipes latestRecipes={latestRecipes} />
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
                 Browse All Recipes
@@ -47,4 +43,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default withGlobalStore(Home);

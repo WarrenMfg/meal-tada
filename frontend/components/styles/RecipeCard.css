@@ -13,7 +13,9 @@
 
 .card .thumbnail {
   width: 25%;
-  background: url(../../images/steak.jpg) center / cover no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .card .card-summary {
