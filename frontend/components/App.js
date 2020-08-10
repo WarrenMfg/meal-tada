@@ -6,7 +6,8 @@ import Recipes from './Recipes';
 import About from './About';
 import Search from './Search';
 import Footer from './Footer';
-import MaskingDiv from './MaskingDiv';
+import LoadingMaskingDiv from './LoadingMaskingDiv';
+import ErrorMaskingDiv from './ErrorMaskingDiv';
 import Recipe from './Recipe/Recipe';
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
       <Navbar />
       <Switcheroo />
       <Footer />
-      <MaskingDiv />
+      <LoadingMaskingDiv />
+      <ErrorMaskingDiv />
     </div>
   );
 }

@@ -1,0 +1,19 @@
+.error-masking-div {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  z-index: 1001;
+}
+
+.error-masking-div section {
+  width: 225px;
+}
+
+.error-masking-div button {
+  margin: 2rem 0;
+}
