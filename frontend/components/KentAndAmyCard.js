@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import kentAndAmy from '../images/kent-and-amy.jpg';
-import './styles/KentAndAmy.css';
+import './styles/KentAndAmyCard.css';
 
 function KentAndAmy({ about1 }) {
   return (

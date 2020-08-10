@@ -17,7 +17,7 @@ export default (app, db) => {
       // get latest recipes
       const latestRecipes = await db
         .collection('recipes')
-        .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 5 } ])
+        .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
         .toArray();
 
       // send it

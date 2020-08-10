@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import KentAndAmy from '../KentAndAmy';
+import KentAndAmyCard from '../KentAndAmyCard';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside';
 import hero from '../../images/seasoned-veggies.jpg';
@@ -9,7 +9,7 @@ import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Home.css';
 
 function Home({ state }) {
-  const { dispatch, general: { introduction, about1 }, recipes: { latestRecipes } } = state;
+  const { dispatch, general: { introduction, about1 }, recipes: { recipes } } = state;
   useEffect(() => {
     fetchGeneralAndLatestRecipes(dispatch);
   }, []);
@@ -25,11 +25,11 @@ function Home({ state }) {
             <div className='col-12 col-lg-9'>
               <div>
                 <p>{introduction}</p>
-                <KentAndAmy about1={about1} />
+                <KentAndAmyCard about1={about1} />
               </div>
 
               {/* Main */}
-              <LatestRecipes latestRecipes={latestRecipes} />
+              <LatestRecipes latestRecipes={recipes.slice(0, 5)} dispatch={dispatch} />
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
                 Browse All Recipes

@@ -1,36 +1,21 @@
 import React from 'react';
 
-function Ingredients() {
+function Ingredients({ ingredients }) {
+  const tuples = ingredients.map(obj => Object.entries(obj)[0]);
+
   return (
     <ul className='ingredients list-group-flush mb-0'>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
-      <li className='list-group-item d-flex justify-content-between align-items-center'>
-        <span>This is some text</span>
-        <span className='badge badge-primary badge-pill'>2 Tbsp</span>
-      </li>
+      {tuples.map(tuple => {
+        return (
+          <li
+            key={tuple}
+            className='list-group-item d-flex justify-content-between align-items-center'
+          >
+            <span>{tuple[0]}</span>
+            <span className='badge badge-primary badge-pill'>{tuple[1]}</span>
+          </li>
+        );
+      })}
     </ul>
   );
 }

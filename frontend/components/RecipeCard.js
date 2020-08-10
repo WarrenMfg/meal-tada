@@ -1,9 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/RecipeCard.css';
+import { setCurrentRecipe } from '../actions/recipeActions';
 
-function RecipeCard({ recipe }) {
+function RecipeCard({ recipe, dispatch }) {
   const { title, subtitle, cardAndHeroImage, summary, slug } = recipe;
+
+  const handleRecipeLink = () => {
+    dispatch(setCurrentRecipe(recipe));
+  };
+
   return (
     <div className='card card-body mb-2'>
       <h2 className='text-center'>{title}</h2>
@@ -15,7 +21,11 @@ function RecipeCard({ recipe }) {
         />
         <div className='card-summary d-flex flex-column justify-content-between'>
           <p>{summary}</p>
-          <Link className='btn btn-info btn-block' to={`/recipe/${slug}`}>
+          <Link
+            className='btn btn-info btn-block'
+            to={`/recipe/${slug}`}
+            onClick={handleRecipeLink}
+          >
             Recipe
           </Link>
         </div>
