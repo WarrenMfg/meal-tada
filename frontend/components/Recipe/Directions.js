@@ -12,7 +12,7 @@ function Directions({ directions }) {
         } else if (str.slice(0, 4) === 'tada') {
           return (
             <div key={`${i}-${str}`}>
-              <h2 className='mt-3 mb-4 text-center'>Tada!</h2>
+              <h2 className='mt-4 mb-4 text-center'>Tada!</h2>
               <img className='img-fluid rounded' src={str.split(' ')[1]} />
             </div>
           );
