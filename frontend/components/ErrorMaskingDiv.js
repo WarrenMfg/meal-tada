@@ -5,7 +5,6 @@ import './styles/ErrorMaskingDiv.css';
 
 function ErrorMaskingDiv({ state: { error: { message } } }) {
   const history = useHistory();
-  console.log(message, history);
   const handleRefresh = () => {
     window.location.reload();
   };
