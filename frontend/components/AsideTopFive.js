@@ -1,14 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { setCurrentRecipe } from '../actions/recipeActions';
 import './styles/AsideTopFive.css';
 
 function AsideTopFive({ topFive }) {
   const { title, recipes } = topFive;
 
-  const handleTopFive = slug => {
-    dispatch(setCurrentRecipe(slug));
-  };
   return (
     <div className='aside-top-five'>
       <h2 className='text-center'>{title}</h2>
