@@ -13,6 +13,7 @@ function Recipe({ state }) {
   const { pathname } = useLocation();
   useEffect(() => {
     // if empty object (in the case of page reload or direct navigation)
+    // GlobalStore fetchInit does not run
     if (currentRecipe && !Object.keys(currentRecipe).length) {
       fetchInitAndCurrentRecipe(dispatch, pathname.split('/recipe')[1]);
     }
