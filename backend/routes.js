@@ -33,7 +33,7 @@ export default (app, db) => {
       // get general
       const general = await db.collection('general').findOne({ meta: true });
 
-      // get latest recipes
+      // get initial recipes
       const initialRecipes = await db
         .collection('recipes')
         .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])

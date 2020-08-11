@@ -20,6 +20,7 @@ function Recipe({ state }) {
     return null;
   } else {
     const { cardAndHeroImage, title, ingredients, time, summary, directions } = currentRecipe;
+    const { topFives } = state.general;
     return (
       <div className='container recipe'>
         <div className='row'>
@@ -37,8 +38,7 @@ function Recipe({ state }) {
             </Link>
           </div>
 
-          {/* Aside */}
-          <Aside />
+          <Aside topFives={topFives} />
         </div>
       </div>
     );

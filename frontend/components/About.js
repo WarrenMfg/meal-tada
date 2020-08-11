@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Aside from './Aside';
 import kentAndAmy from '../images/kent-and-amy.jpg';
+import withGlobalStore from '../store/withGlobalStore';
 import './styles/About.css';
 
-function About() {
+function About({ state }) {
+  const { about1, about2, topFives } = state.general;
+
   return (
     <div className='container about'>
       <div className='row'>
@@ -16,33 +19,16 @@ function About() {
             <div className='col-12 col-lg-9'>
               <div>
                 {/* Intro paragraph */}
-                <p>
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                  esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                  proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim
-                  ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                  proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+                <p>{about1}</p>
                 <img className='img-fluid rounded' src={kentAndAmy} alt='Kent and Amy' />
-                <p>
-                  Turpis cursus in hac habitasse platea dictumst quisque sagittis purus. At
-                  imperdiet dui accumsan sit amet. Bibendum est ultricies integer quis auctor. Massa
-                  eget egestas purus viverra accumsan in nisl nisi scelerisque. Lobortis scelerisque
-                  fermentum dui faucibus in ornare. Est pellentesque elit ullamcorper dignissim
-                  cras. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Enim ut sem
-                  viverra aliquet eget. Phasellus faucibus scelerisque eleifend donec pretium
-                  vulputate sapien nec.
-                </p>
+                <p>{about2}</p>
               </div>
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
                 Browse All Recipes
               </Link>
             </div>
-            <Aside />
+            <Aside topFives={topFives} />
           </div>
         </div>
       </div>
@@ -50,4 +36,4 @@ function About() {
   );
 }
 
-export default About;
+export default withGlobalStore(About);

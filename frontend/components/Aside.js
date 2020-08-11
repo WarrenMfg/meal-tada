@@ -4,7 +4,7 @@ import AsideTopFive from './AsideTopFive';
 import searchIcon from '../images/magnifier.png';
 import './styles/Aside.css';
 
-function Aside() {
+function Aside({ topFives }) {
   return (
     <div className='col-12 col-lg-3'>
       <aside>
@@ -15,8 +15,7 @@ function Aside() {
           </Link>
         </div>
 
-        <AsideTopFive />
-        {/* And many more... */}
+        {topFives.map(topFive => <AsideTopFive key={topFive.title} topFive={topFive} />)}
       </aside>
     </div>
   );

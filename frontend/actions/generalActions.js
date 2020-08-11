@@ -1,4 +1,4 @@
-export const addIntroAndAbout = payload => ({
-  type: 'ADD_INTRO_AND_ABOUT',
+export const addGeneral = payload => ({
+  type: 'ADD_GENERAL',
   payload
 });

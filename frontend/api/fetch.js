@@ -1,7 +1,7 @@
 import { isLoading, isNotLoading } from '../actions/loadingActions';
 import { addError, clearError } from '../actions/errorActions';
 import { addInitialRecipes, setCurrentRecipe } from '../actions/recipeActions';
-import { addIntroAndAbout } from '../actions/generalActions';
+import { addGeneral } from '../actions/generalActions';
 import { parseAndHandleErrors } from '../utils/utils';
 
 export const fetchInit = async dispatch => {
@@ -13,7 +13,7 @@ export const fetchInit = async dispatch => {
     const data = await parseAndHandleErrors(res);
 
     dispatch(addInitialRecipes(data.initialRecipes));
-    dispatch(addIntroAndAbout(data.general));
+    dispatch(addGeneral(data.general));
   } catch (err) {
     dispatch(addError(err.message));
     console.log(err.message, err.stack);
@@ -32,7 +32,7 @@ export const fetchInitAndCurrentRecipe = async (dispatch, pathname) => {
 
     dispatch(setCurrentRecipe(data.currentRecipe));
     dispatch(addInitialRecipes(data.initialRecipes));
-    dispatch(addIntroAndAbout(data.general));
+    dispatch(addGeneral(data.general));
   } catch (err) {
     dispatch(addError(err.message));
     console.log(err.message, err.stack);

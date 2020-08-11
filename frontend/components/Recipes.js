@@ -8,6 +8,7 @@ import './styles/Recipes.css';
 function Recipes({ state }) {
   const { dispatch } = state;
   const { recipes } = state.recipes;
+  const { topFives } = state.general;
 
   return (
     <div className='container recipes'>
@@ -25,8 +26,8 @@ function Recipes({ state }) {
             ))}
           </main>
         </div>
-        {/* Aside */}
-        <Aside />
+
+        <Aside topFives={topFives} />
       </div>
     </div>
   );

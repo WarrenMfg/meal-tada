@@ -1,12 +1,13 @@
 export const generalReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_INTRO_AND_ABOUT': {
-      const { introduction, about1, about2 } = action.payload;
+    case 'ADD_GENERAL': {
+      const { introduction, about1, about2, topFives } = action.payload;
       return {
         ...state,
         introduction,
         about1,
-        about2
+        about2,
+        topFives
       };
     }
     default:
@@ -17,5 +18,6 @@ export const generalReducer = (state, action) => {
 export const generalInitialState = {
   introduction: '',
   about1: '',
-  about2: ''
+  about2: '',
+  topFives: []
 };

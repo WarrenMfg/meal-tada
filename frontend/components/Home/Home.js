@@ -8,7 +8,7 @@ import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Home.css';
 
 function Home({ state }) {
-  const { dispatch, general: { introduction, about1 }, recipes: { recipes } } = state;
+  const { dispatch, general: { introduction, about1, topFives }, recipes: { recipes } } = state;
 
   return (
     <div className='container home'>
@@ -32,7 +32,7 @@ function Home({ state }) {
                 Browse All Recipes
               </Link>
             </div>
-            <Aside />
+            <Aside topFives={topFives} />
           </div>
         </div>
       </div>
