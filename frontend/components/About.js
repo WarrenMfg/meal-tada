@@ -18,7 +18,6 @@ function About({ state }) {
           <div className='row'>
             <div className='col-12 col-lg-9'>
               <div>
-                {/* Intro paragraph */}
                 <p>{about1}</p>
                 <img className='img-fluid rounded' src={kentAndAmy} alt='Kent and Amy' />
                 <p>{about2}</p>
