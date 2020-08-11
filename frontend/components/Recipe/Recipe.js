@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { fetchInitAndCurrentRecipe } from '../../api/fetch';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
 import Aside from '../Aside';
@@ -9,18 +9,39 @@ import '../styles/Recipe.css';
 
 function Recipe({ state }) {
   const { currentRecipe } = state.recipes;
+  const { dispatch } = state;
   const { pathname } = useLocation();
   useEffect(() => {
-    if (!Object.keys(currentRecipe).length) {
-      fetchInitAndCurrentRecipe(state.dispatch, pathname.split('/recipe')[1]);
+    // if empty object (in the case of page reload or direct navigation)
+    if (currentRecipe && !Object.keys(currentRecipe).length) {
+      fetchInitAndCurrentRecipe(dispatch, pathname.split('/recipe')[1]);
     }
   }, []);
 
-  if (state.loading.isLoading) {
+  useEffect(
+    () => {
+      // AsideTopFive component Links set currentRecipe to null
+      // below will trigger a fetch when navigating from
+      // Recipe component to Recipe component via AsideTopFive Links
+      if (!currentRecipe) {
+        fetchTopFiveRecipe(dispatch, pathname.split('/recipe')[1]);
+      }
+    },
+    [ currentRecipe ]
+  );
+
+  const { goBack } = useHistory();
+  const handleBackButton = () => {
+    goBack();
+  };
+
+  if (state.loading.isLoading || !currentRecipe) {
     return null;
   } else {
     const { cardAndHeroImage, title, ingredients, time, summary, directions } = currentRecipe;
     const { topFives } = state.general;
+    const { dispatch } = state;
+
     return (
       <div className='container recipe'>
         <div className='row'>
@@ -33,12 +54,12 @@ function Recipe({ state }) {
           <div className='col-12 col-lg-9'>
             <IngredientsAndSummary ingredients={ingredients} time={time} summary={summary} />
             <Directions directions={directions} />
-            <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
+            <button className='btn btn-info btn-block mt-5 mb-5' onClick={handleBackButton}>
               Back To All Recipes
-            </Link>
+            </button>
           </div>
 
-          <Aside topFives={topFives} />
+          <Aside topFives={topFives} dispatch={dispatch} />
         </div>
       </div>
     );

@@ -27,7 +27,7 @@ function Recipes({ state }) {
           </main>
         </div>
 
-        <Aside topFives={topFives} />
+        <Aside topFives={topFives} dispatch={dispatch} />
       </div>
     </div>
   );

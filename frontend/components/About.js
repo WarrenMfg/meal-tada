@@ -7,6 +7,7 @@ import './styles/About.css';
 
 function About({ state }) {
   const { about1, about2, topFives } = state.general;
+  const { dispatch } = state;
 
   return (
     <div className='container about'>
@@ -27,7 +28,7 @@ function About({ state }) {
                 Browse All Recipes
               </Link>
             </div>
-            <Aside topFives={topFives} />
+            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>

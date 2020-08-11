@@ -40,3 +40,20 @@ export const fetchInitAndCurrentRecipe = async (dispatch, pathname) => {
     dispatch(isNotLoading());
   }
 };
+
+export const fetchTopFiveRecipe = async (dispatch, pathname) => {
+  try {
+    dispatch(clearError());
+    dispatch(isLoading());
+
+    const res = await fetch(`/api/top-five-recipe${pathname}`);
+    const data = await parseAndHandleErrors(res);
+
+    dispatch(setCurrentRecipe(data.currentRecipe));
+  } catch (err) {
+    dispatch(addError(err.message));
+    console.log(err.message, err.stack);
+  } finally {
+    dispatch(isNotLoading());
+  }
+};

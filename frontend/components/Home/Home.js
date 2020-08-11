@@ -32,7 +32,7 @@ function Home({ state }) {
                 Browse All Recipes
               </Link>
             </div>
-            <Aside topFives={topFives} />
+            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>

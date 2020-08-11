@@ -49,4 +49,17 @@ export default (app, db) => {
       console.log(err.message, err.stack);
     }
   });
+
+  app.get('/api/top-five-recipe/:slug', async (req, res) => {
+    try {
+      // get top five recipe
+      const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
+
+      // send it
+      res.send({ currentRecipe });
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
 };
