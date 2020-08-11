@@ -1,5 +1,5 @@
-export const addInitialRecipes = initialRecipes => ({
-  type: 'ADD_INITIAL_RECIPES',
+export const setInitialRecipes = initialRecipes => ({
+  type: 'SET_INITIAL_RECIPES',
   payload: initialRecipes
 });
 

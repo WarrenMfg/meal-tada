@@ -1,5 +1,5 @@
-export const addError = error => ({
-  type: 'ADD_ERROR',
+export const setError = error => ({
+  type: 'SET_ERROR',
   payload: error
 });
 

@@ -1,4 +1,14 @@
 export default (app, db) => {
+  app.post('/api/seed/general', async (req, res) => {
+    try {
+      const general = await db.collection('general').insertOne(req.body);
+      res.send(general.ops[0]);
+    } catch (err) {
+      res.status(400);
+      console.log(err.message, err.stack);
+    }
+  });
+
   app.post('/api/seed/recipes', async (req, res) => {
     try {
       const newRecipe = await db.collection('recipes').insertOne(req.body);
@@ -8,6 +18,8 @@ export default (app, db) => {
       console.log(err.message, err.stack);
     }
   });
+
+  /////////////////////////// END SEED ///////////////////////////
 
   app.get('/api/init', async (req, res) => {
     try {
@@ -57,6 +69,32 @@ export default (app, db) => {
 
       // send it
       res.send({ currentRecipe });
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
+
+  app.get('/api/search?', async (req, res) => {
+    try {
+      let { phrase, exact, categories } = req.query;
+      phrase = exact ? `\"${phrase}\"` : phrase;
+
+      const agg = [
+        { $match: { $text: { $search: phrase } } },
+        { $sort: { score: { $meta: 'textScore' } } }
+      ];
+
+      if (categories) {
+        const filter = {
+          $match: { categories: { $in: categories } }
+        };
+        agg.push(filter);
+      }
+
+      const searchResults = await db.collection('recipes').aggregate(agg).toArray();
+
+      res.send(searchResults);
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);

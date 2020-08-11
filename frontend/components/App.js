@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import Home from './Home/Home';
 import Recipes from './Recipes';
 import About from './About';
-import Search from './Search';
+import Search from './Search/Search';
 import Footer from './Footer';
 import LoadingMaskingDiv from './LoadingMaskingDiv';
 import ErrorMaskingDiv from './ErrorMaskingDiv';

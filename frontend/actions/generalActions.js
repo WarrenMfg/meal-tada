@@ -1,4 +1,4 @@
-export const addGeneral = payload => ({
-  type: 'ADD_GENERAL',
+export const setGeneral = payload => ({
+  type: 'SET_GENERAL',
   payload
 });

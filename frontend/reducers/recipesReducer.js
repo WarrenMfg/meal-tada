@@ -1,6 +1,6 @@
 export const recipesReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_INITIAL_RECIPES':
+    case 'SET_INITIAL_RECIPES':
       return {
         ...state,
         recipes: action.payload

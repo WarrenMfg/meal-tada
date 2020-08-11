@@ -1,0 +1,12 @@
+.is-searching {
+  height: 250px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.is-searching img {
+  width: 100px;
+  height: 100px;
+}

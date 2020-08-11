@@ -1,6 +1,6 @@
 export const errorReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_ERROR':
+    case 'SET_ERROR':
       return {
         ...state,
         message: action.payload

@@ -9,6 +9,7 @@ app.disable('etag').disable('x-powered-by');
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 // for recipes
 app.use('/recipe/:recipe', (req, res) => {
   try {

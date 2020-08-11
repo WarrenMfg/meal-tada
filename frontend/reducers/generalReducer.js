@@ -1,6 +1,6 @@
 export const generalReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_GENERAL': {
+    case 'SET_GENERAL': {
       const { introduction, about1, about2, topFives } = action.payload;
       return {
         ...state,
