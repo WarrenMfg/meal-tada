@@ -14,14 +14,14 @@ export default (app, db) => {
       // get general
       const general = await db.collection('general').findOne({ meta: true });
 
-      // get latest recipes
-      const latestRecipes = await db
+      // get initial recipes
+      const initialRecipes = await db
         .collection('recipes')
         .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
         .toArray();
 
       // send it
-      res.send({ general, latestRecipes });
+      res.send({ general, initialRecipes });
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
@@ -34,7 +34,7 @@ export default (app, db) => {
       const general = await db.collection('general').findOne({ meta: true });
 
       // get latest recipes
-      const latestRecipes = await db
+      const initialRecipes = await db
         .collection('recipes')
         .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
         .toArray();
@@ -43,7 +43,7 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
 
       // send it
-      res.send({ general, latestRecipes, currentRecipe });
+      res.send({ general, initialRecipes, currentRecipe });
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
