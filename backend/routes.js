@@ -77,22 +77,35 @@ export default (app, db) => {
 
   app.get('/api/search?', async (req, res) => {
     try {
-      let { phrase, exact, categories } = req.query;
-      phrase = exact ? `\"${phrase}\"` : phrase;
+      let searchResults;
 
-      const agg = [
-        { $match: { $text: { $search: phrase } } },
-        { $sort: { score: { $meta: 'textScore' } } }
-      ];
+      let { phrase } = req.query;
+      const { exact, categories } = req.query;
 
-      if (categories) {
-        const filter = {
-          $match: { categories: { $in: categories } }
-        };
-        agg.push(filter);
+      if (phrase) {
+        phrase = exact ? `\"${phrase}\"` : phrase;
+        const agg = [
+          { $match: { $text: { $search: phrase } } },
+          { $sort: { score: { $meta: 'textScore' } } }
+        ];
+
+        if (categories) {
+          const filter = {
+            $match: { categories: { $in: categories } }
+          };
+          agg.push(filter);
+        }
+
+        searchResults = await db.collection('recipes').aggregate(agg).toArray();
+      } else {
+        searchResults = await db
+          .collection('recipes')
+          .aggregate([
+            { $match: { categories: { $in: categories } } },
+            { $sort: { createdAt: -1 } }
+          ])
+          .toArray();
       }
-
-      const searchResults = await db.collection('recipes').aggregate(agg).toArray();
 
       res.send(searchResults);
     } catch (err) {

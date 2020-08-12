@@ -2,7 +2,13 @@ import { isLoading, isNotLoading, isSearching, isNotSearching } from '../actions
 import { setError, clearError } from '../actions/errorActions';
 import { setInitialRecipes, setCurrentRecipe } from '../actions/recipeActions';
 import { setGeneral } from '../actions/generalActions';
-import { setCategories, setSearchResults, clearSearchResults } from '../actions/searchActions';
+import {
+  setCategories,
+  setSearchCriteria,
+  setSearchResults,
+  clearSearchResults,
+  setSearchFeedback
+} from '../actions/searchActions';
 import { parseAndHandleErrors } from '../utils/utils';
 
 export const fetchInit = async dispatch => {
@@ -65,8 +71,10 @@ export const fetchTopFiveRecipe = async (dispatch, pathname) => {
   }
 };
 
-export const fetchSearchResults = async (dispatch, query) => {
+export const fetchSearchResults = async (dispatch, query, searchCriteria) => {
   try {
+    dispatch(setSearchFeedback(0));
+    dispatch(setSearchCriteria(searchCriteria));
     dispatch(clearSearchResults());
     dispatch(clearError());
     dispatch(isSearching());
@@ -74,9 +82,13 @@ export const fetchSearchResults = async (dispatch, query) => {
     const res = await fetch(`/api/search?${query}`);
     const data = await parseAndHandleErrors(res);
 
-    await new Promise(resolve => setTimeout(() => resolve(), 3000));
+    await new Promise(resolve => setTimeout(() => resolve(), 2000));
 
-    dispatch(setSearchResults(data));
+    if (data.length) {
+      dispatch(setSearchResults(data));
+    } else {
+      dispatch(setSearchFeedback(2));
+    }
   } catch (err) {
     dispatch(setError(err.message));
     console.log(err.message, err.stack);

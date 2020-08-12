@@ -5,6 +5,20 @@ export const searchReducer = (state, action) => {
         ...state,
         categories: action.payload
       };
+    case 'SET_SEARCH_CRITERIA':
+      return {
+        ...state,
+        searchCriteria: action.payload
+      };
+    case 'CLEAR_SEARCH_CRITERIA':
+      return {
+        ...state,
+        searchCriteria: {
+          searchInput: '',
+          searchExact: false,
+          searchCategories: {}
+        }
+      };
     case 'SET_SEARCH_RESULTS':
       return {
         ...state,
@@ -15,6 +29,11 @@ export const searchReducer = (state, action) => {
         ...state,
         searchResults: []
       };
+    case 'SET_SEARCH_FEEDBACK':
+      return {
+        ...state,
+        searchFeedback: action.payload
+      };
     default:
       return state;
   }
@@ -22,5 +41,11 @@ export const searchReducer = (state, action) => {
 
 export const searchInitialState = {
   categories: [],
-  searchResults: []
+  searchCriteria: {
+    searchInput: '',
+    searchExact: false,
+    searchCategories: {}
+  },
+  searchResults: [],
+  searchFeedback: 1
 };

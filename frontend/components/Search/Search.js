@@ -7,7 +7,7 @@ import withGlobalStore from '../../store/withGlobalStore';
 function Search({ state }) {
   const {
     loading: { isSearching },
-    search: { categories, searchResults },
+    search: { categories, searchCriteria, searchResults, searchFeedback },
     general: { topFives },
     dispatch
   } = state;
@@ -20,10 +20,15 @@ function Search({ state }) {
 
           <div className='row'>
             <div className='col-12 col-lg-9'>
-              <SearchForm categories={categories} dispatch={dispatch} />
+              <SearchForm
+                categories={categories}
+                searchCriteria={searchCriteria}
+                dispatch={dispatch}
+              />
               <SearchResults
                 isSearching={isSearching}
                 searchResults={searchResults}
+                searchFeedback={searchFeedback}
                 dispatch={dispatch}
               />
             </div>

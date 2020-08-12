@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { fetchSearchResults } from '../../api/fetch';
+import {
+  clearSearchResults,
+  setSearchFeedback,
+  clearSearchCriteria
+} from '../../actions/searchActions';
 
-function SearchForm({ categories, dispatch }) {
-  const [ searchInput, setSearchInput ] = useState('');
-  const [ searchExact, setSearchExact ] = useState(false);
-  const [ searchCategories, setSearchCategories ] = useState({});
-
-  useEffect(() => {
-    return () => {
-      setSearchInput('');
-      setSearchCategories([]);
-    };
-  }, []);
+function SearchForm({ categories, searchCriteria, dispatch }) {
+  const [ searchInput, setSearchInput ] = useState(searchCriteria.searchInput);
+  const [ searchExact, setSearchExact ] = useState(searchCriteria.searchExact);
+  const [ searchCategories, setSearchCategories ] = useState(searchCriteria.searchCategories);
 
   const handleSearch = e => {
     e.preventDefault();
+    let categorySelected = false;
 
     let query = `phrase=${searchInput}&exact=${searchExact}`;
     Object.entries(searchCategories).forEach(tuple => {
       if (tuple[1]) {
+        categorySelected = true;
         query += `&categories[]=${tuple[0]}`;
       }
     });
 
-    fetchSearchResults(dispatch, query);
+    if (searchInput || categorySelected) {
+      const searchCriteria = { searchInput, searchExact, searchCategories };
+      fetchSearchResults(dispatch, query, searchCriteria);
+    }
+  };
+
+  const handleClear = e => {
+    e.preventDefault();
+    dispatch(clearSearchResults());
+    dispatch(clearSearchCriteria());
+    dispatch(setSearchFeedback(1));
+    setSearchInput('');
+    setSearchExact(false);
+    setSearchCategories({});
   };
 
   return (
-    <form className='d-flex flex-column align-items-center search-form' onSubmit={handleSearch}>
+    <form className='d-flex flex-column align-items-center search-form'>
       <div className='input-group mb-3'>
         <input
           type='text'
@@ -41,7 +54,7 @@ function SearchForm({ categories, dispatch }) {
             <div className='custom-control custom-switch'>
               <input
                 type='checkbox'
-                value={searchExact}
+                checked={searchExact}
                 onChange={() => setSearchExact(prev => !prev)}
                 className='custom-control-input'
                 id='exact'
@@ -61,7 +74,7 @@ function SearchForm({ categories, dispatch }) {
               <div className='custom-control custom-switch'>
                 <input
                   type='checkbox'
-                  value={!!searchCategories[category]}
+                  checked={!!searchCategories[category]}
                   onChange={() =>
                     setSearchCategories(prev => ({ ...prev, [category]: !prev[category] }))}
                   className='custom-control-input'
@@ -75,8 +88,13 @@ function SearchForm({ categories, dispatch }) {
           );
         })}
       </div>
-      <div className='w-100'>
-        <button className='btn btn-info btn-block mt-3 mb-4'>Search</button>
+      <div className='d-flex flex-column w-100 mt-3'>
+        <button className='col-12 btn btn-info btn-block' onClick={handleSearch}>
+          Search
+        </button>
+        <button className='col-12 btn btn-dark btn-block' onClick={handleClear}>
+          Clear
+        </button>
       </div>
     </form>
   );
