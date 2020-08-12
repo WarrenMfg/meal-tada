@@ -2,6 +2,8 @@ import React from 'react';
 
 function Summary({ time, summary }) {
   const { prep, cook, servings } = time;
+  const servingsStr = servings.length > 1 ? `${servings[0]} to ${servings[1]}` : servings;
+
   return (
     <div className='summary'>
       <ul className='list-group-flush'>
@@ -15,7 +17,7 @@ function Summary({ time, summary }) {
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <span className='time'>Servings</span>
-          <span className='badge badge-primary badge-pill'>{servings}</span>
+          <span className='badge badge-primary badge-pill'>{servingsStr}</span>
         </li>
       </ul>
       <p className='summary-text'>{summary}</p>

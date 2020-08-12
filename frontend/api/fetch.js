@@ -82,8 +82,6 @@ export const fetchSearchResults = async (dispatch, query, searchCriteria) => {
     const res = await fetch(`/api/search?${query}`);
     const data = await parseAndHandleErrors(res);
 
-    await new Promise(resolve => setTimeout(() => resolve(), 2000));
-
     if (data.length) {
       dispatch(setSearchResults(data));
     } else {

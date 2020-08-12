@@ -5,6 +5,7 @@ import './styles/ErrorMaskingDiv.css';
 
 function ErrorMaskingDiv({ state: { error: { message } } }) {
   const history = useHistory();
+
   const handleRefresh = () => {
     window.location.reload();
   };
@@ -17,7 +18,7 @@ function ErrorMaskingDiv({ state: { error: { message } } }) {
     <div className='error-masking-div' style={{ display: `${message ? 'flex' : 'none'}` }}>
       <div className='text-center'>
         <h1>Sorry...</h1>
-        <h2>An error has occurred ☹️</h2>
+        <h2>An error has occurred 🥺</h2>
         <button className='btn btn-info btn-block' onClick={handleRefresh}>
           Refresh
         </button>
