@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
-import Aside from '../Aside';
+import Aside from '../Aside/Aside';
 import withGlobalStore from '../../store/withGlobalStore';
 
 function Search({ state }) {

@@ -3,7 +3,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
-import Aside from '../Aside';
+import Aside from '../Aside/Aside';
 import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Recipe.css';
 

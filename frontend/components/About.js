@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Aside from './Aside';
+import Aside from './Aside/Aside';
 import kentAndAmy from '../images/kent-and-amy.jpg';
 import withGlobalStore from '../store/withGlobalStore';
 import './styles/About.css';

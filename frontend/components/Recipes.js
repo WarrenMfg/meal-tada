@@ -1,6 +1,6 @@
 import React from 'react';
 import RecipeCard from './RecipeCard';
-import Aside from './Aside';
+import Aside from './Aside/Aside';
 import hero from '../images/seasoned-edamame.jpg';
 import withGlobalStore from '../store/withGlobalStore';
 import './styles/Recipes.css';

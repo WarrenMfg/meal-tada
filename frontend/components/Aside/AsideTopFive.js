@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { setCurrentRecipe } from '../actions/recipeActions';
-import './styles/AsideTopFive.css';
+import { setCurrentRecipe } from '../../actions/recipeActions';
+import '../styles/AsideTopFive.css';
 
 function AsideTopFive({ topFive, dispatch }) {
   const { title, recipes } = topFive;
