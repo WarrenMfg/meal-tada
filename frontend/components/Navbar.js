@@ -9,7 +9,7 @@ function Navbar() {
   };
 
   return (
-    <nav className='navbar navbar-light navbar-expand-md navigation-clean'>
+    <nav className='navbar navbar-light navbar-expand-md navigation-clean sticky-top bg-white shadow-sm'>
       <div className='container'>
         <Link className='navbar-brand' to='/'>
           Meal Tada

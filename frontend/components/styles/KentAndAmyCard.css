@@ -3,20 +3,34 @@
   padding: 1.5rem;
 }
 
-.kent-and-amy-container img {
-  width: 200px;
+.kent-and-amy-container .kent-and-amy {
+  min-width: 25%;
   height: 200px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0 1rem 0 0;
 }
 
-div.kent-and-amy-container p a.read-more.btn {
-  position: relative;
-  left: 0.5rem;
+.kent-and-amy-container p {
+  width: 75%;
 }
 
 @media (max-width: 767px) {
-  div.kent-and-amy-container p a.read-more.btn {
-    position: initial;
-    display: block;
+  .kent-and-amy-container .kent-and-amy {
+    width: 100%;
+    margin: 0;
+    background-position: 50% 27%;
+  }
+
+  .kent-and-amy-container p {
+    width: 100%;
     margin: 1rem 0 0;
+  }
+}
+
+@media (max-width: 1199px) {
+  .kent-and-amy-container .kent-and-amy {
+    height: 250px;
   }
 }

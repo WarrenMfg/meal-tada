@@ -11,7 +11,7 @@ function Home({ state }) {
   const { dispatch, general: { introduction, about1, topFives }, recipes: { recipes } } = state;
 
   return (
-    <div className='container home'>
+    <div className='container home mt-3'>
       <div className='row'>
         <div className='col'>
           <div className='hero rounded' style={{ backgroundImage: `url(${hero})` }} />

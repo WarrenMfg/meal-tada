@@ -5,15 +5,18 @@
 .aside-top-five li {
   padding: 1rem;
   background-color: #ebebeb;
-  border-bottom: 1px solid #b1b1b1;
+  border-bottom: 1px solid rgb(209, 209, 209);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.aside-top-five li:last-child {
-  padding: 1rem;
-  background-color: #ebebeb;
-  border-bottom: initial;
+.aside-top-five .top-five-link:first-child li {
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.aside-top-five .top-five-link:last-child li {
+  border-bottom: none;
+  border-radius: 0 0 0.25rem 0.25rem;
 }
 
 .aside-top-five li:hover {

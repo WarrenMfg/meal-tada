@@ -10,7 +10,7 @@ function About({ state }) {
   const { dispatch } = state;
 
   return (
-    <div className='container about'>
+    <div className='container about mt-3'>
       <div className='row'>
         <div className='col'>
           <div className='hero rounded' style={{ backgroundImage: `url(${kentAndAmy})` }} />

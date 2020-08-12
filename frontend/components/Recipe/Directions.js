@@ -13,7 +13,7 @@ function Directions({ directions }) {
           return (
             <div key={`${i}-${str}`}>
               <h2 className='mt-4 mb-4 text-center'>Tada!</h2>
-              <img className='img-fluid rounded w-100' src={str.split(' ')[1]} />
+              <img className='img-fluid rounded w-100 mt-0' src={str.split(' ')[1]} />
             </div>
           );
         } else {

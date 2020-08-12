@@ -13,17 +13,17 @@ function SearchResults({ isSearching, searchResults, searchFeedback, dispatch })
   const searchFeedbackOptions = [
     null,
 
-    <div className='text-center'>
+    <div className='text-center mb-5'>
       <h1>👆</h1>
       <h2>(use the form)</h2>
     </div>,
 
-    <div className='text-center'>
+    <div className='text-center mb-5'>
       <h1>🧐</h1>
       <h2>(maybe try different criteria)</h2>
     </div>,
 
-    <div className='text-center'>
+    <div className='text-center mb-5'>
       <h1>🤓</h1>
       <h2>(that cleared things up)</h2>
     </div>

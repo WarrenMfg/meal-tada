@@ -5,11 +5,14 @@ import './styles/KentAndAmyCard.css';
 
 function KentAndAmy({ about1 }) {
   return (
-    <div className='kent-and-amy-container d-flex flex-column align-items-center flex-md-row rounded'>
-      <img className='img-fluid rounded-circle mr-3' src={kentAndAmy} />
-      <p>
+    <div className='kent-and-amy-container d-flex flex-column justify-content-center align-items-center flex-md-row rounded'>
+      <div
+        className='d-flex kent-and-amy rounded'
+        style={{ backgroundImage: `url(${kentAndAmy})` }}
+      />
+      <p className='d-flex flex-column mb-0'>
         {about1}
-        <Link className='read-more btn btn-info' to='/about'>
+        <Link className='btn btn-info btn-block mt-2' to='/about'>
           Read More
         </Link>
       </p>

@@ -48,7 +48,7 @@ function Recipes({ state }) {
   }, [lastRecipeCreatedAt]);
 
   return (
-    <div className='container recipes'>
+    <div className='container recipes mt-3'>
       <div className='row'>
         <div className='col'>
           <div className='rounded hero' style={{ backgroundImage: `url(${hero})` }} />

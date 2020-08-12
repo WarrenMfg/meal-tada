@@ -45,7 +45,7 @@ function Recipe({ state }) {
     const { dispatch } = state;
 
     return (
-      <div className='container recipe'>
+      <div className='container recipe mt-3'>
         <div className='row'>
           <div className='col'>
             <div className='hero rounded' style={{ backgroundImage: `url(${cardAndHeroImage})` }} />

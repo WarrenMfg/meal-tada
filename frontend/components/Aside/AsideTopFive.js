@@ -13,11 +13,16 @@ function AsideTopFive({ topFive, dispatch }) {
   return (
     <div className='aside-top-five'>
       <h2 className='text-center'>{title}</h2>
-      <ul className='list-unstyled top-recipes mt-3'>
+      <ul className='list-unstyled mt-3'>
         {recipes.map((recipe, i) => (
-          <Link key={recipe.slug} to={`/recipe/${recipe.slug}`} onClick={handleTopFive}>
-            <li className='rounded-top'>
-              <span className='pr-2'>{i + 1}</span>
+          <Link
+            key={recipe.slug}
+            to={`/recipe/${recipe.slug}`}
+            onClick={handleTopFive}
+            className='top-five-link'
+          >
+            <li className='text-center'>
+              {/* <span className='pr-2'>{i + 1}</span> */}
               <span>{recipe.title}</span>
             </li>
           </Link>
