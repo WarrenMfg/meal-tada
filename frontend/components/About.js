@@ -20,7 +20,7 @@ function About({ state }) {
             <div className='col-12 col-lg-9'>
               <div>
                 <p>{about1}</p>
-                <img className='img-fluid rounded' src={kentAndAmy} alt='Kent and Amy' />
+                <img className='img-fluid rounded w-100' src={kentAndAmy} alt='Kent and Amy' />
                 <p>{about2}</p>
               </div>
 
@@ -36,4 +36,12 @@ function About({ state }) {
   );
 }
 
-export default withGlobalStore(About);
+const memoized = React.memo(About, (prevProps, nextProps) => {
+  if (prevProps.state.general === nextProps.state.general) {
+    return true;
+  } else {
+    return false;
+  }
+});
+
+export default withGlobalStore(memoized);

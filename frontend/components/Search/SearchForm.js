@@ -33,7 +33,8 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
     e.preventDefault();
     dispatch(clearSearchResults());
     dispatch(clearSearchCriteria());
-    dispatch(setSearchFeedback(1));
+    dispatch(setSearchFeedback(3));
+
     setSearchInput('');
     setSearchExact(false);
     setSearchCategories({});
@@ -100,4 +101,13 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
   );
 }
 
-export default SearchForm;
+export default React.memo(SearchForm, (prevProps, nextProps) => {
+  if (
+    prevProps.searchCriteria === nextProps.searchCriteria &&
+    prevProps.categories === nextProps.categories
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+});

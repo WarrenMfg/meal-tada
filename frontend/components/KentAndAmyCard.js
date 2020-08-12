@@ -17,4 +17,10 @@ function KentAndAmy({ about1 }) {
   );
 }
 
-export default KentAndAmy;
+export default React.memo(KentAndAmy, (prevProps, nextProps) => {
+  if (prevProps.about1 === nextProps.about1) {
+    return true;
+  } else {
+    return false;
+  }
+});

@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { setSearchFeedback } from '../../actions/searchActions';
 import Loading from '../Loading';
 import RecipeCard from '../RecipeCard';
 
 function SearchResults({ isSearching, searchResults, searchFeedback, dispatch }) {
+  useEffect(() => {
+    if (!searchResults.length) {
+      dispatch(setSearchFeedback(1));
+    }
+  }, []);
+
   const searchFeedbackOptions = [
     null,
 
@@ -14,11 +21,16 @@ function SearchResults({ isSearching, searchResults, searchFeedback, dispatch })
     <div className='text-center'>
       <h1>🧐</h1>
       <h2>(maybe try different criteria)</h2>
+    </div>,
+
+    <div className='text-center'>
+      <h1>🤓</h1>
+      <h2>(that cleared things up)</h2>
     </div>
   ];
 
   return (
-    <main className='mt-3 mb-2'>
+    <main className='mt-5 mb-2'>
       {isSearching && <Loading />}
 
       {!!searchResults.length &&

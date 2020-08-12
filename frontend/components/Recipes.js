@@ -15,35 +15,36 @@ function Recipes({ state }) {
 
   const main = useRef(null);
   const lastRecipeCreatedAt = recipes[recipes.length - 1]?.createdAt;
-
   useEffect(() => {
-    const infiniteScroll = () => {
-      let isFetching = false;
+    if (lastRecipeCreatedAt) {
+      const infiniteScroll = () => {
+        let isFetching = false;
 
-      return async () => {
-        const timeToFetch =
-          // main bottom
-          main.current.getBoundingClientRect().bottom -
-          // window height
-          window.innerHeight -
-          // offset
-          window.innerHeight <=
-          // did the offset pass the threshold of zero?
-          0;
+        return async () => {
+          const timeToFetch =
+            // main bottom
+            main.current.getBoundingClientRect().bottom -
+            // window height
+            window.innerHeight -
+            // offset
+            window.innerHeight <=
+            // did the offset pass the threshold of zero?
+            0;
 
-        if (timeToFetch && !isFetching) {
-          // use synchronous toggle instead of dispatch
-          isFetching = true;
-          // fetch and toggle appropiately with return value
-          isFetching = await fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
+          if (timeToFetch && !isFetching) {
+            // use synchronous toggle instead of dispatch
+            isFetching = true;
+            // fetch and toggle appropiately with return value
+            isFetching = await fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
+          }
         }
-      }
-    };
+      };
 
-    document.onscroll = infiniteScroll();
+      document.onscroll = infiniteScroll();
+      // remove event listener
+      return () => document.onscroll = null;
+    }
 
-    // remove event listener
-    return () => document.onscroll = null;
   }, [lastRecipeCreatedAt]);
 
   return (

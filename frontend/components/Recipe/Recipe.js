@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
@@ -37,6 +37,7 @@ function Recipe({ state }) {
   };
 
   if (state.loading.isLoading || !currentRecipe) {
+    // LoadingMaskingDiv component renders from App component
     return null;
   } else {
     const { cardAndHeroImage, title, ingredients, time, summary, directions } = currentRecipe;

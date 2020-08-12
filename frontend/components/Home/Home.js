@@ -26,7 +26,7 @@ function Home({ state }) {
               </div>
 
               {/* Main */}
-              <LatestRecipes latestRecipes={recipes.slice(0, 5)} dispatch={dispatch} />
+              <LatestRecipes recipes={recipes} dispatch={dispatch} />
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
                 Browse All Recipes
