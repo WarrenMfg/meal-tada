@@ -56,7 +56,7 @@ function Recipe({ state }) {
             <IngredientsAndSummary ingredients={ingredients} time={time} summary={summary} />
             <Directions directions={directions} />
             <button className='btn btn-info btn-block mt-5 mb-5' onClick={handleBackButton}>
-              Back To All Recipes
+              Back
             </button>
           </div>
 
