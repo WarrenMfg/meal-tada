@@ -20,6 +20,16 @@ export const loadingReducer = (state, action) => {
         ...state,
         isSearching: false
       };
+    case 'IS_FETCHING_MORE_RECIPES':
+      return {
+        ...state,
+        isFetchingMoreRecipes: true
+      };
+    case 'IS_NOT_FETCHING_MORE_RECIPES':
+      return {
+        ...state,
+        isFetchingMoreRecipes: false
+      };
     default:
       return state;
   }
@@ -27,5 +37,6 @@ export const loadingReducer = (state, action) => {
 
 export const loadingInitialState = {
   isLoading: true,
-  isSearching: false
+  isSearching: false,
+  isFetchingMoreRecipes: false
 };

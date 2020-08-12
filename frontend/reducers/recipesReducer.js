@@ -10,6 +10,11 @@ export const recipesReducer = (state, action) => {
         ...state,
         currentRecipe: action.payload
       };
+    case 'ADD_MORE_RECIPES':
+      return {
+        ...state,
+        recipes: [ ...state.recipes, ...action.payload ]
+      };
     default:
       return state;
   }

@@ -34,4 +34,10 @@ function RecipeCard({ recipe, dispatch }) {
   );
 }
 
-export default RecipeCard;
+export default React.memo(RecipeCard, (prevProps, nextProps) => {
+  if (prevProps.recipe === nextProps.recipe) {
+    return true;
+  } else {
+    return false;
+  }
+});

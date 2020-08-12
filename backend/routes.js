@@ -40,6 +40,28 @@ export default (app, db) => {
     }
   });
 
+  app.get('/api/more-recipes/:lastRecipeCreatedAt', async (req, res) => {
+    try {
+      const lastRecipeCreatedAt = Number(req.params.lastRecipeCreatedAt);
+
+      // get more recipes
+      const moreRecipes = await db
+        .collection('recipes')
+        .aggregate([
+          { $match: { createdAt: { $lt: lastRecipeCreatedAt } } },
+          { $sort: { createdAt: -1 } },
+          { $limit: 20 }
+        ])
+        .toArray();
+
+      // send it
+      res.send(moreRecipes);
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
+
   app.get('/api/init-and-current-recipe/:slug', async (req, res) => {
     try {
       // get general
@@ -68,7 +90,7 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
 
       // send it
-      res.send({ currentRecipe });
+      res.send(currentRecipe);
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);

@@ -1,4 +1,4 @@
-.is-searching {
+.loading {
   height: 250px;
   width: 100%;
   display: flex;
@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.is-searching img {
+.loading img {
   width: 100px;
   height: 100px;
 }

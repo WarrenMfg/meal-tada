@@ -1,5 +1,5 @@
 import React from 'react';
-import IsSearching from './IsSearching';
+import Loading from '../Loading';
 import RecipeCard from '../RecipeCard';
 
 function SearchResults({ isSearching, searchResults, searchFeedback, dispatch }) {
@@ -19,7 +19,7 @@ function SearchResults({ isSearching, searchResults, searchFeedback, dispatch })
 
   return (
     <main className='mt-3 mb-2'>
-      {isSearching && <IsSearching />}
+      {isSearching && <Loading />}
 
       {!!searchResults.length &&
         searchResults.map(recipe => (

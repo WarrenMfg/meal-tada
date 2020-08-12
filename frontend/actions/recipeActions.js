@@ -3,7 +3,12 @@ export const setInitialRecipes = initialRecipes => ({
   payload: initialRecipes
 });
 
-export const setCurrentRecipe = payload => ({
+export const setCurrentRecipe = recipe => ({
   type: 'SET_CURRENT_RECIPE',
-  payload
+  payload: recipe
+});
+
+export const addMoreRecipes = recipes => ({
+  type: 'ADD_MORE_RECIPES',
+  payload: recipes
 });

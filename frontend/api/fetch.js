@@ -1,6 +1,13 @@
-import { isLoading, isNotLoading, isSearching, isNotSearching } from '../actions/loadingActions';
+import {
+  isLoading,
+  isNotLoading,
+  isSearching,
+  isNotSearching,
+  isFetchingMoreRecipes,
+  isNotFetchingMoreRecipes
+} from '../actions/loadingActions';
 import { setError, clearError } from '../actions/errorActions';
-import { setInitialRecipes, setCurrentRecipe } from '../actions/recipeActions';
+import { setInitialRecipes, setCurrentRecipe, addMoreRecipes } from '../actions/recipeActions';
 import { setGeneral } from '../actions/generalActions';
 import {
   setCategories,
@@ -29,6 +36,30 @@ export const fetchInit = async dispatch => {
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
+  }
+};
+
+export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
+  try {
+    dispatch(clearError());
+    dispatch(isFetchingMoreRecipes());
+
+    const res = await fetch(`/api/more-recipes/${lastRecipeCreatedAt}`);
+    const data = await parseAndHandleErrors(res);
+
+    if (data.length) {
+      dispatch(addMoreRecipes(data));
+      // untoggle
+      return false;
+    } else {
+      // keep toggled to indicate no more data
+      return true;
+    }
+  } catch (err) {
+    dispatch(setError(err.message));
+    console.log(err.message, err.stack);
+  } finally {
+    dispatch(isNotFetchingMoreRecipes());
   }
 };
 
@@ -62,7 +93,7 @@ export const fetchTopFiveRecipe = async (dispatch, pathname) => {
     const res = await fetch(`/api/top-five-recipe${pathname}`);
     const data = await parseAndHandleErrors(res);
 
-    dispatch(setCurrentRecipe(data.currentRecipe));
+    dispatch(setCurrentRecipe(data));
   } catch (err) {
     dispatch(setError(err.message));
     console.log(err.message, err.stack);

@@ -16,4 +16,10 @@ function Aside({ topFives, dispatch }) {
   );
 }
 
-export default Aside;
+export default React.memo(Aside, (prevProps, nextProps) => {
+  if (prevProps.topFives === nextProps.topFives) {
+    return true;
+  } else {
+    return false;
+  }
+});
