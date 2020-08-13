@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import kentAndAmy from '../images/kent-and-amy.jpg';
+import kentAndAmy from '../../images/kent-and-amy.jpg';
 import PropTypes from 'prop-types';
-import './styles/KentAndAmyCard.css';
+import '../styles/KentAndAmyCard.css';
 
 function KentAndAmy({ about1 }) {
   return (
