@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 export default (app, db) => {
   app.post('/api/seed/general', async (req, res) => {
     try {
@@ -46,6 +48,10 @@ export default (app, db) => {
 
   app.get('/api/init-and-current-recipe/:slug', async (req, res) => {
     try {
+      // sanitize
+      let { slug } = req.params;
+      slug = /^\$/.test(slug) ? '' : slug;
+
       // get general
       const general = await db.collection('general').findOne({ meta: true });
 
@@ -60,9 +66,7 @@ export default (app, db) => {
         .toArray();
 
       // get current recipe
-      const currentRecipe = await db
-        .collection('recipes')
-        .findOne({ slug: req.params.slug });
+      const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
       res.send({ general, initialRecipes, currentRecipe });
@@ -74,7 +78,11 @@ export default (app, db) => {
 
   app.get('/api/more-recipes/:lastRecipeCreatedAt', async (req, res) => {
     try {
-      const lastRecipeCreatedAt = Number(req.params.lastRecipeCreatedAt);
+      // sanitize
+      let { lastRecipeCreatedAt } = req.params;
+      lastRecipeCreatedAt = /^\$/.test(lastRecipeCreatedAt)
+        ? ''
+        : Number(lastRecipeCreatedAt);
 
       // get more recipes
       const moreRecipes = await db
@@ -96,10 +104,12 @@ export default (app, db) => {
 
   app.get('/api/top-five-recipe/:slug', async (req, res) => {
     try {
+      // sanitize
+      let { slug } = req.params;
+      slug = /^\$/.test(slug) ? '' : slug;
+
       // get top five recipe
-      const currentRecipe = await db
-        .collection('recipes')
-        .findOne({ slug: req.params.slug });
+      const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
       res.send(currentRecipe);
@@ -114,10 +124,19 @@ export default (app, db) => {
       let searchResults;
 
       let { phrase } = req.query;
-      const { exact, categories } = req.query;
+      let { exact, categories } = req.query;
+
+      // sanitize
+      phrase = /^\$/.test(phrase) ? '' : phrase;
+      exact = /^\$/.test(exact) ? '' : exact;
+      if (Array.isArray(categories)) {
+        categories = categories.filter(cat => /^\$/.test(cat) === false);
+      }
 
       if (phrase) {
-        phrase = exact ? `\"${phrase}\"` : phrase;
+        phrase =
+          exact === 'true' ? `\"${phrase}\"` : phrase; /* eslint-disable-line */
+
         const agg = [
           { $match: { $text: { $search: phrase } } },
           { $sort: { score: { $meta: 'textScore' } } }

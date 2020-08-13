@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import express from 'express';
 import morgan from 'morgan';
 import { resolve } from 'path';
@@ -9,7 +11,7 @@ app.disable('etag').disable('x-powered-by');
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 // for recipes
 app.use('/recipe/:recipe', (req, res) => {
   try {
@@ -21,7 +23,7 @@ app.use('/recipe/:recipe', (req, res) => {
 });
 // for static files and virtual paths
 app.use(
-  ['/recipes', '/about', `/search\*`, '/search', '/'],
+  ['/recipes', '/about', `/search\*`, '/search', '/'] /* eslint-disable-line */,
   express.static(resolve(__dirname, '../distFrontend'))
 );
 

@@ -12,15 +12,18 @@ function AsideSearch({ dispatch }) {
 
   const handleSetSearchCriteria = e => {
     e.preventDefault();
+    let trimmedSearchInput = searchInput.trim();
 
-    const query = `phrase=${searchInput}&exact=true`;
-    dispatch(fetchSearchResults, query, {
-      searchInput,
-      searchExact: true,
-      searchCategories: {}
-    });
+    if (trimmedSearchInput) {
+      const query = `phrase=${searchInput}&exact=true`;
+      dispatch(fetchSearchResults, query, {
+        searchInput: trimmedSearchInput,
+        searchExact: true,
+        searchCategories: {}
+      });
 
-    push('/search');
+      push('/search');
+    }
   };
 
   return (

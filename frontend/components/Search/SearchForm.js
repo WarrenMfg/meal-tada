@@ -26,8 +26,10 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
   const handleSearch = e => {
     e.preventDefault();
     let categorySelected = false;
+    let trimmedSearchInput = searchInput.trim();
+    setSearchInput(trimmedSearchInput);
 
-    let query = `phrase=${searchInput}&exact=${searchExact}`;
+    let query = `phrase=${trimmedSearchInput}&exact=${searchExact}`;
     Object.entries(searchCategories).forEach(tuple => {
       if (tuple[1]) {
         categorySelected = true;
@@ -35,8 +37,12 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
       }
     });
 
-    if (searchInput || categorySelected) {
-      const searchCriteria = { searchInput, searchExact, searchCategories };
+    if (trimmedSearchInput || categorySelected) {
+      const searchCriteria = {
+        searchInput: trimmedSearchInput,
+        searchExact,
+        searchCategories
+      };
       dispatch(fetchSearchResults, query, searchCriteria);
     }
   };
@@ -147,5 +153,3 @@ export default React.memo(SearchForm, (prevProps, nextProps) => {
     return false;
   }
 });
-
-// export default SearchForm;
