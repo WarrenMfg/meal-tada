@@ -53,11 +53,6 @@ export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
 
     if (data.length) {
       dispatch(addMoreRecipes(data));
-      // untoggle
-      return false;
-    } else {
-      // keep toggled to indicate no more data
-      return true;
     }
   } catch (err) {
     dispatch(setError(err.message));

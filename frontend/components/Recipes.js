@@ -14,38 +14,33 @@ function Recipes({ state }) {
   const { topFives } = state.general;
   const { isFetchingMoreRecipes } = state.loading;
 
-  const main = useRef(null);
-  const lastRecipeCreatedAt = recipes[recipes.length - 1]?.createdAt;
+  const observable = useRef(null);
   useEffect(() => {
-    if (lastRecipeCreatedAt) {
-      const infiniteScroll = () => {
-        let isFetching = false;
+    if (recipes.length) {
+      // get createdAt for last recipe
+      const lastRecipeCreatedAt = recipes[recipes.length - 1].createdAt;
 
-        return async () => {
-          const timeToFetch =
-            // main bottom
-            main.current.getBoundingClientRect().bottom -
-              // window height
-              window.innerHeight -
-              // offset
-              window.innerHeight <=
-            // did the offset pass the threshold of zero?
-            0;
-
-          if (timeToFetch && !isFetching) {
-            // use synchronous toggle instead of dispatch
-            isFetching = true;
-            // fetch and toggle appropiately with return value
-            isFetching = await fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
+      // what to do when observable crosses into threshold
+      const handleIntersect = (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
+            observer.unobserve(observable.current);
           }
-        };
+        });
       };
 
-      document.onscroll = infiniteScroll();
-      // remove event listener
-      return () => (document.onscroll = null);
+      // create observer
+      const observer = new IntersectionObserver(handleIntersect, {
+        root: null,
+        rootMargin: '100%',
+        threshold: 0
+      });
+
+      // observe ref
+      observer.observe(observable.current);
     }
-  }, [lastRecipeCreatedAt]);
+  }, [recipes]);
 
   return (
     <div className='container recipes mt-3'>
@@ -60,7 +55,7 @@ function Recipes({ state }) {
       <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
       <div className='row'>
         <div className='col-12 col-lg-9'>
-          <main className='mb-2' ref={main}>
+          <main className='mb-2'>
             {recipes.map(recipe => (
               <RecipeCard
                 key={recipe._id}
@@ -71,6 +66,7 @@ function Recipes({ state }) {
 
             {isFetchingMoreRecipes && <Loading />}
           </main>
+          <div ref={observable}></div>
         </div>
 
         <Aside topFives={topFives} dispatch={dispatch} />
