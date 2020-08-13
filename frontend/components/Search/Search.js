@@ -24,6 +24,7 @@ function Search({ state }) {
               <SearchForm
                 categories={categories}
                 searchCriteria={searchCriteria}
+                searchFeedback={searchFeedback}
                 dispatch={dispatch}
               />
               <SearchResults

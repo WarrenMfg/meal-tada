@@ -32,9 +32,18 @@ const rootReducer = () => {
     searchDispatch
   ];
 
-  const dispatch = action => {
+  const dispatchForLoop = action => {
     for (let i = 0; i < combinedDispatches.length; i++) {
       combinedDispatches[i](action);
+    }
+  };
+
+  // makes fetch use dispatch API
+  const dispatch = (action, ...args) => {
+    if (typeof action === 'function') {
+      action(dispatchForLoop, ...args);
+    } else {
+      dispatchForLoop(action);
     }
   };
 

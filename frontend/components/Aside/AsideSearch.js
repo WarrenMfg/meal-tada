@@ -14,7 +14,7 @@ function AsideSearch({ dispatch }) {
     e.preventDefault();
 
     const query = `phrase=${searchInput}&exact=true`;
-    fetchSearchResults(dispatch, query, {
+    dispatch(fetchSearchResults, query, {
       searchInput,
       searchExact: true,
       searchCategories: {}

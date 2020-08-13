@@ -17,7 +17,7 @@ function Recipe({ state }) {
     // if empty object (in the case of page reload or direct navigation)
     // GlobalStore fetchInit does not run
     if (currentRecipe && !Object.keys(currentRecipe).length) {
-      fetchInitAndCurrentRecipe(dispatch, pathname.split('/recipe')[1]);
+      dispatch(fetchInitAndCurrentRecipe, pathname.split('/recipe')[1]);
     }
   }, []);
 
@@ -26,7 +26,7 @@ function Recipe({ state }) {
     // below will trigger a fetch when navigating from
     // Recipe component to Recipe component via AsideTopFive Links
     if (!currentRecipe) {
-      fetchTopFiveRecipe(dispatch, pathname.split('/recipe')[1]);
+      dispatch(fetchTopFiveRecipe, pathname.split('/recipe')[1]);
     }
   }, [currentRecipe]);
 

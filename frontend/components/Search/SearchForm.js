@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchSearchResults } from '../../api/fetch';
 import {
   clearSearchResults,
@@ -7,12 +7,21 @@ import {
 } from '../../actions/searchActions';
 import PropTypes from 'prop-types';
 
-function SearchForm({ categories, searchCriteria, dispatch }) {
+function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
   const [searchInput, setSearchInput] = useState(searchCriteria.searchInput);
   const [searchExact, setSearchExact] = useState(searchCriteria.searchExact);
   const [searchCategories, setSearchCategories] = useState(
     searchCriteria.searchCategories
   );
+
+  useEffect(() => {
+    if (searchFeedback === 2) {
+      dispatch(setSearchFeedback(1));
+      setSearchInput('');
+      setSearchExact(false);
+      setSearchCategories({});
+    }
+  }, []);
 
   const handleSearch = e => {
     e.preventDefault();
@@ -28,19 +37,25 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
 
     if (searchInput || categorySelected) {
       const searchCriteria = { searchInput, searchExact, searchCategories };
-      fetchSearchResults(dispatch, query, searchCriteria);
+      dispatch(fetchSearchResults, query, searchCriteria);
     }
   };
 
   const handleClear = e => {
     e.preventDefault();
-    dispatch(clearSearchResults());
-    dispatch(clearSearchCriteria());
-    dispatch(setSearchFeedback(3));
+    if (
+      searchInput ||
+      searchExact ||
+      Object.values(searchCategories).some(bool => bool)
+    ) {
+      dispatch(clearSearchResults());
+      dispatch(clearSearchCriteria());
+      dispatch(setSearchFeedback(3));
 
-    setSearchInput('');
-    setSearchExact(false);
-    setSearchCategories({});
+      setSearchInput('');
+      setSearchExact(false);
+      setSearchCategories({});
+    }
   };
 
   return (
@@ -118,6 +133,7 @@ SearchForm.propTypes = {
     searchExact: PropTypes.bool.isRequired,
     searchCategories: PropTypes.object.isRequired
   }).isRequired,
+  searchFeedback: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
@@ -131,3 +147,5 @@ export default React.memo(SearchForm, (prevProps, nextProps) => {
     return false;
   }
 });
+
+// export default SearchForm;

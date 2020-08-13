@@ -24,7 +24,7 @@ function Recipes({ state }) {
       const handleIntersect = (entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
+            dispatch(fetchMoreRecipes, lastRecipeCreatedAt);
             observer.unobserve(observable.current);
           }
         });

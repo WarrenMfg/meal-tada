@@ -11,7 +11,7 @@ function SearchResults({
   dispatch
 }) {
   useEffect(() => {
-    if (!searchResults.length) {
+    if (searchFeedback === 3) {
       dispatch(setSearchFeedback(1));
     }
   }, []);
