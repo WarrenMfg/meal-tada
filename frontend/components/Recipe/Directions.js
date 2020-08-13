@@ -8,12 +8,21 @@ function Directions({ directions }) {
 
       {directions.map((str, i) => {
         if (str.slice(0, 4) === 'http') {
-          return <img key={`${i}-${str}`} className='img-fluid rounded w-100' src={str} />;
+          return (
+            <img
+              key={`${i}-${str}`}
+              className='img-fluid rounded w-100'
+              src={str}
+            />
+          );
         } else if (str.slice(0, 4) === 'tada') {
           return (
             <div key={`${i}-${str}`}>
               <h2 className='mt-4 mb-4 text-center'>Tada!</h2>
-              <img className='img-fluid rounded w-100 mt-0' src={str.split(' ')[1]} />
+              <img
+                className='img-fluid rounded w-100 mt-0'
+                src={str.split(' ')[1]}
+              />
             </div>
           );
         } else {

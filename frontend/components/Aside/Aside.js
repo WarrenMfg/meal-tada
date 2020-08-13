@@ -9,7 +9,11 @@ function Aside({ topFives, dispatch }) {
         <AsideSearch dispatch={dispatch} />
 
         {topFives.map(topFive => (
-          <AsideTopFive key={topFive.title} topFive={topFive} dispatch={dispatch} />
+          <AsideTopFive
+            key={topFive.title}
+            topFive={topFive}
+            dispatch={dispatch}
+          />
         ))}
       </aside>
     </div>

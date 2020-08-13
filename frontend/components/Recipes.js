@@ -24,10 +24,10 @@ function Recipes({ state }) {
           const timeToFetch =
             // main bottom
             main.current.getBoundingClientRect().bottom -
-            // window height
-            window.innerHeight -
-            // offset
-            window.innerHeight <=
+              // window height
+              window.innerHeight -
+              // offset
+              window.innerHeight <=
             // did the offset pass the threshold of zero?
             0;
 
@@ -37,30 +37,35 @@ function Recipes({ state }) {
             // fetch and toggle appropiately with return value
             isFetching = await fetchMoreRecipes(dispatch, lastRecipeCreatedAt);
           }
-        }
+        };
       };
 
       document.onscroll = infiniteScroll();
       // remove event listener
-      return () => document.onscroll = null;
+      return () => (document.onscroll = null);
     }
-
   }, [lastRecipeCreatedAt]);
 
   return (
     <div className='container recipes mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='rounded hero' style={{ backgroundImage: `url(${hero})` }} />
+          <div
+            className='rounded hero'
+            style={{ backgroundImage: `url(${hero})` }}
+          />
         </div>
       </div>
       <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
       <div className='row'>
         <div className='col-12 col-lg-9'>
           <main className='mb-2' ref={main}>
-
             {recipes.map(recipe => (
-              <RecipeCard key={recipe._id} recipe={recipe} dispatch={dispatch} />
+              <RecipeCard
+                key={recipe._id}
+                recipe={recipe}
+                dispatch={dispatch}
+              />
             ))}
 
             {isFetchingMoreRecipes && <Loading />}
@@ -73,4 +78,4 @@ function Recipes({ state }) {
   );
 }
 
-export default withGlobalStore(Recipes)
+export default withGlobalStore(Recipes);

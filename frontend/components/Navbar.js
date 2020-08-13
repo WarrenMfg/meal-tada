@@ -14,7 +14,11 @@ function Navbar() {
         <Link className='navbar-brand' to='/'>
           Meal Tada
         </Link>
-        <button data-toggle='collapse' className='navbar-toggler' data-target='#navcol-1'>
+        <button
+          data-toggle='collapse'
+          className='navbar-toggler'
+          data-target='#navcol-1'
+        >
           <span className='sr-only'>Toggle navigation</span>
           <span className='navbar-toggler-icon' />
         </button>

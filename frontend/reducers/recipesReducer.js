@@ -13,7 +13,7 @@ export const recipesReducer = (state, action) => {
     case 'ADD_MORE_RECIPES':
       return {
         ...state,
-        recipes: [ ...state.recipes, ...action.payload ]
+        recipes: [...state.recipes, ...action.payload]
       };
     default:
       return state;

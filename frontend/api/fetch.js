@@ -7,7 +7,11 @@ import {
   isNotFetchingMoreRecipes
 } from '../actions/loadingActions';
 import { setError, clearError } from '../actions/errorActions';
-import { setInitialRecipes, setCurrentRecipe, addMoreRecipes } from '../actions/recipeActions';
+import {
+  setInitialRecipes,
+  setCurrentRecipe,
+  addMoreRecipes
+} from '../actions/recipeActions';
 import { setGeneral } from '../actions/generalActions';
 import {
   setCategories,

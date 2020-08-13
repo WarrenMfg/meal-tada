@@ -6,11 +6,23 @@ import { generalReducer, generalInitialState } from './generalReducer';
 import { searchReducer, searchInitialState } from './searchReducer';
 
 const rootReducer = () => {
-  const [ loading, loadingDispatch ] = useReducer(loadingReducer, loadingInitialState);
-  const [ error, errorDispatch ] = useReducer(errorReducer, errorInitialState);
-  const [ recipes, recipesDispatch ] = useReducer(recipesReducer, recipesInitialState);
-  const [ general, generalDispatch ] = useReducer(generalReducer, generalInitialState);
-  const [ search, searchDispatch ] = useReducer(searchReducer, searchInitialState);
+  const [loading, loadingDispatch] = useReducer(
+    loadingReducer,
+    loadingInitialState
+  );
+  const [error, errorDispatch] = useReducer(errorReducer, errorInitialState);
+  const [recipes, recipesDispatch] = useReducer(
+    recipesReducer,
+    recipesInitialState
+  );
+  const [general, generalDispatch] = useReducer(
+    generalReducer,
+    generalInitialState
+  );
+  const [search, searchDispatch] = useReducer(
+    searchReducer,
+    searchInitialState
+  );
 
   const combinedDispatches = [
     loadingDispatch,

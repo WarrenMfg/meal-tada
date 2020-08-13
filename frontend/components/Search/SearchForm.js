@@ -7,9 +7,11 @@ import {
 } from '../../actions/searchActions';
 
 function SearchForm({ categories, searchCriteria, dispatch }) {
-  const [ searchInput, setSearchInput ] = useState(searchCriteria.searchInput);
-  const [ searchExact, setSearchExact ] = useState(searchCriteria.searchExact);
-  const [ searchCategories, setSearchCategories ] = useState(searchCriteria.searchCategories);
+  const [searchInput, setSearchInput] = useState(searchCriteria.searchInput);
+  const [searchExact, setSearchExact] = useState(searchCriteria.searchExact);
+  const [searchCategories, setSearchCategories] = useState(
+    searchCriteria.searchCategories
+  );
 
   const handleSearch = e => {
     e.preventDefault();
@@ -77,7 +79,11 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
                   type='checkbox'
                   checked={!!searchCategories[category]}
                   onChange={() =>
-                    setSearchCategories(prev => ({ ...prev, [category]: !prev[category] }))}
+                    setSearchCategories(prev => ({
+                      ...prev,
+                      [category]: !prev[category]
+                    }))
+                  }
                   className='custom-control-input'
                   id={category}
                 />
@@ -90,7 +96,10 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
         })}
       </div>
       <div className='d-flex flex-column w-100 mt-3'>
-        <button className='col-12 btn btn-info btn-block' onClick={handleSearch}>
+        <button
+          className='col-12 btn btn-info btn-block'
+          onClick={handleSearch}
+        >
           Search
         </button>
         <button className='col-12 btn btn-dark btn-block' onClick={handleClear}>

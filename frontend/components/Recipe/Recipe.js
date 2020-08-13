@@ -11,6 +11,7 @@ function Recipe({ state }) {
   const { currentRecipe } = state.recipes;
   const { dispatch } = state;
   const { pathname } = useLocation();
+
   useEffect(() => {
     // if empty object (in the case of page reload or direct navigation)
     // GlobalStore fetchInit does not run
@@ -19,17 +20,14 @@ function Recipe({ state }) {
     }
   }, []);
 
-  useEffect(
-    () => {
-      // AsideTopFive component Links set currentRecipe to null
-      // below will trigger a fetch when navigating from
-      // Recipe component to Recipe component via AsideTopFive Links
-      if (!currentRecipe) {
-        fetchTopFiveRecipe(dispatch, pathname.split('/recipe')[1]);
-      }
-    },
-    [ currentRecipe ]
-  );
+  useEffect(() => {
+    // AsideTopFive component Links set currentRecipe to null
+    // below will trigger a fetch when navigating from
+    // Recipe component to Recipe component via AsideTopFive Links
+    if (!currentRecipe) {
+      fetchTopFiveRecipe(dispatch, pathname.split('/recipe')[1]);
+    }
+  }, [currentRecipe]);
 
   const { goBack } = useHistory();
   const handleBackButton = () => {
@@ -40,7 +38,14 @@ function Recipe({ state }) {
     // LoadingMaskingDiv component renders from App component
     return null;
   } else {
-    const { cardAndHeroImage, title, ingredients, time, summary, directions } = currentRecipe;
+    const {
+      cardAndHeroImage,
+      title,
+      ingredients,
+      time,
+      summary,
+      directions
+    } = currentRecipe;
     const { topFives } = state.general;
     const { dispatch } = state;
 
@@ -48,15 +53,25 @@ function Recipe({ state }) {
       <div className='container recipe mt-3'>
         <div className='row'>
           <div className='col'>
-            <div className='hero rounded' style={{ backgroundImage: `url(${cardAndHeroImage})` }} />
+            <div
+              className='hero rounded'
+              style={{ backgroundImage: `url(${cardAndHeroImage})` }}
+            />
           </div>
         </div>
         <h1 className='mt-5 mb-5 text-center'>{title}</h1>
         <div className='row'>
           <div className='col-12 col-lg-9'>
-            <IngredientsAndSummary ingredients={ingredients} time={time} summary={summary} />
+            <IngredientsAndSummary
+              ingredients={ingredients}
+              time={time}
+              summary={summary}
+            />
             <Directions directions={directions} />
-            <button className='btn btn-info btn-block mt-5 mb-5' onClick={handleBackButton}>
+            <button
+              className='btn btn-info btn-block mt-5 mb-5'
+              onClick={handleBackButton}
+            >
               Back
             </button>
           </div>

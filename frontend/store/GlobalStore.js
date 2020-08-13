@@ -8,6 +8,7 @@ const { Provider, Consumer } = React.createContext();
 function GlobalStore({ children }) {
   const combinedState = rootReducer();
   const location = useLocation();
+
   useEffect(() => {
     // on load, Recipe component makes own fetch request
     if (!location.pathname.includes('recipe/')) {

@@ -22,7 +22,6 @@ function AsideTopFive({ topFive, dispatch }) {
             className='top-five-link'
           >
             <li className='text-center'>
-              {/* <span className='pr-2'>{i + 1}</span> */}
               <span>{recipe.title}</span>
             </li>
           </Link>

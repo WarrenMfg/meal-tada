@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { fetchSearchResults } from '../../api/fetch'
+import { fetchSearchResults } from '../../api/fetch';
 import searchIcon from '../../images/magnifier.png';
 import '../styles/AsideSearch.css';
 
 function AsideSearch({ dispatch }) {
   const { pathname } = useLocation();
   const { push } = useHistory();
-  const [ searchInput, setSearchInput ] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSetSearchCriteria = e => {
     e.preventDefault();
@@ -41,6 +41,6 @@ function AsideSearch({ dispatch }) {
       )}
     </>
   );
-};
+}
 
 export default AsideSearch;

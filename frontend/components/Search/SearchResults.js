@@ -3,7 +3,12 @@ import { setSearchFeedback } from '../../actions/searchActions';
 import Loading from '../Loading';
 import RecipeCard from '../RecipeCard';
 
-function SearchResults({ isSearching, searchResults, searchFeedback, dispatch }) {
+function SearchResults({
+  isSearching,
+  searchResults,
+  searchFeedback,
+  dispatch
+}) {
   useEffect(() => {
     if (!searchResults.length) {
       dispatch(setSearchFeedback(1));

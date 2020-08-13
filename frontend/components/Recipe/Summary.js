@@ -2,7 +2,8 @@ import React from 'react';
 
 function Summary({ time, summary }) {
   const { prep, cook, servings } = time;
-  const servingsStr = servings.length > 1 ? `${servings[0]} to ${servings[1]}` : servings;
+  const servingsStr =
+    servings.length > 1 ? `${servings[0]} to ${servings[1]}` : servings;
 
   return (
     <div className='summary'>

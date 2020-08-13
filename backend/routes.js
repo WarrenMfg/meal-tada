@@ -29,7 +29,11 @@ export default (app, db) => {
       // get initial recipes
       const initialRecipes = await db
         .collection('recipes')
-        .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
+        .aggregate([
+          { $match: {} },
+          { $sort: { createdAt: -1 } },
+          { $limit: 20 }
+        ])
         .toArray();
 
       // send it
@@ -48,11 +52,17 @@ export default (app, db) => {
       // get initial recipes
       const initialRecipes = await db
         .collection('recipes')
-        .aggregate([ { $match: {} }, { $sort: { createdAt: -1 } }, { $limit: 20 } ])
+        .aggregate([
+          { $match: {} },
+          { $sort: { createdAt: -1 } },
+          { $limit: 20 }
+        ])
         .toArray();
 
       // get current recipe
-      const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
+      const currentRecipe = await db
+        .collection('recipes')
+        .findOne({ slug: req.params.slug });
 
       // send it
       res.send({ general, initialRecipes, currentRecipe });
@@ -87,7 +97,9 @@ export default (app, db) => {
   app.get('/api/top-five-recipe/:slug', async (req, res) => {
     try {
       // get top five recipe
-      const currentRecipe = await db.collection('recipes').findOne({ slug: req.params.slug });
+      const currentRecipe = await db
+        .collection('recipes')
+        .findOne({ slug: req.params.slug });
 
       // send it
       res.send(currentRecipe);

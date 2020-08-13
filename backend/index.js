@@ -21,7 +21,7 @@ app.use('/recipe/:recipe', (req, res) => {
 });
 // for static files and virtual paths
 app.use(
-  [ '/recipes', '/about', `/search\*`, '/search', '/' ],
+  ['/recipes', '/about', `/search\*`, '/search', '/'],
   express.static(resolve(__dirname, '../distFrontend'))
 );
 
@@ -34,7 +34,9 @@ app.use(
     routes(app, db);
 
     // connect express
-    app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));
+    app.listen(process.env.PORT, () =>
+      console.log(`Listening on port ${process.env.PORT}`)
+    );
   } catch (err) {
     console.log(err.message, err.stack);
   }

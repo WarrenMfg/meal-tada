@@ -13,14 +13,21 @@ function About({ state }) {
     <div className='container about mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' style={{ backgroundImage: `url(${kentAndAmy})` }} />
+          <div
+            className='hero rounded'
+            style={{ backgroundImage: `url(${kentAndAmy})` }}
+          />
           <h1 className='text-center mt-5 mb-5'>About</h1>
 
           <div className='row'>
             <div className='col-12 col-lg-9'>
               <div>
                 <p>{about1}</p>
-                <img className='img-fluid rounded w-100' src={kentAndAmy} alt='Kent and Amy' />
+                <img
+                  className='img-fluid rounded w-100'
+                  src={kentAndAmy}
+                  alt='Kent and Amy'
+                />
                 <p>{about2}</p>
               </div>
 

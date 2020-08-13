@@ -3,7 +3,11 @@ import { useHistory } from 'react-router-dom';
 import withGlobalStore from '../store/withGlobalStore';
 import './styles/ErrorMaskingDiv.css';
 
-function ErrorMaskingDiv({ state: { error: { message } } }) {
+function ErrorMaskingDiv({
+  state: {
+    error: { message }
+  }
+}) {
   const history = useHistory();
 
   const handleRefresh = () => {
@@ -15,10 +19,13 @@ function ErrorMaskingDiv({ state: { error: { message } } }) {
   };
 
   return (
-    <div className='error-masking-div' style={{ display: `${message ? 'flex' : 'none'}` }}>
+    <div
+      className='error-masking-div'
+      style={{ display: `${message ? 'flex' : 'none'}` }}
+    >
       <div className='text-center'>
         <h1>Sorry...</h1>
-        <h2>An error has occurred 🥺</h2>
+        <h2>An error has occurred 😭</h2>
         <button className='btn btn-info btn-block' onClick={handleRefresh}>
           Refresh
         </button>

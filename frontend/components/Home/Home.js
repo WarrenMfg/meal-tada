@@ -8,13 +8,20 @@ import withGlobalStore from '../../store/withGlobalStore';
 import '../styles/Home.css';
 
 function Home({ state }) {
-  const { dispatch, general: { introduction, about1, topFives }, recipes: { recipes } } = state;
+  const {
+    dispatch,
+    general: { introduction, about1, topFives },
+    recipes: { recipes }
+  } = state;
 
   return (
     <div className='container home mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' style={{ backgroundImage: `url(${hero})` }} />
+          <div
+            className='hero rounded'
+            style={{ backgroundImage: `url(${hero})` }}
+          />
 
           <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 
