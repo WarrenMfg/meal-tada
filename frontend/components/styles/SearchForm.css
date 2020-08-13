@@ -1,0 +1,6 @@
+.search-form .input-group-append,
+.search-form .input-group-append > *,
+.search-form .custom-control.custom-switch,
+.search-form .custom-control.custom-switch > * {
+  cursor: pointer;
+}

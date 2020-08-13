@@ -6,6 +6,7 @@ import {
   clearSearchCriteria
 } from '../../actions/searchActions';
 import PropTypes from 'prop-types';
+import '../styles/SearchForm.css';
 
 function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
   const [searchInput, setSearchInput] = useState(searchCriteria.searchInput);
