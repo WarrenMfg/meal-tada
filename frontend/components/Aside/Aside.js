@@ -1,6 +1,7 @@
 import React from 'react';
 import AsideSearch from './AsideSearch';
 import AsideTopFive from './AsideTopFive';
+import PropTypes from 'prop-types';
 
 function Aside({ topFives, dispatch }) {
   return (
@@ -19,6 +20,11 @@ function Aside({ topFives, dispatch }) {
     </div>
   );
 }
+
+Aside.propTypes = {
+  topFives: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default React.memo(Aside, (prevProps, nextProps) => {
   if (prevProps.topFives === nextProps.topFives) {

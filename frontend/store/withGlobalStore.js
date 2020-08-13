@@ -3,7 +3,7 @@ import { Consumer } from './GlobalStore';
 
 function withGlobalStore(component) {
   const Component = component;
-  return function (props) {
+  return function HOC(props) {
     return (
       <Consumer>{state => <Component state={state} {...props} />}</Consumer>
     );

@@ -31,6 +31,7 @@ const rootReducer = () => {
     generalDispatch,
     searchDispatch
   ];
+
   const dispatch = action => {
     for (let i = 0; i < combinedDispatches.length; i++) {
       combinedDispatches[i](action);

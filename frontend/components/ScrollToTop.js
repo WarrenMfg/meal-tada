@@ -30,7 +30,7 @@ function ScrollToTop() {
       }
 
       // if present, scroll to position
-      if (scrollPositions.hasOwnProperty(name)) {
+      if (Object.prototype.hasOwnProperty.call(scrollPositions, name)) {
         window.scrollTo(0, scrollPositions[name]);
         // otherwise start at top of page
       } else {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../styles/Directions.css';
 
 function Directions({ directions }) {
@@ -32,5 +33,9 @@ function Directions({ directions }) {
     </section>
   );
 }
+
+Directions.propTypes = {
+  directions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+};
 
 export default Directions;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { fetchSearchResults } from '../../api/fetch';
 import searchIcon from '../../images/magnifier.png';
+import PropTypes from 'prop-types';
 import '../styles/AsideSearch.css';
 
 function AsideSearch({ dispatch }) {
@@ -42,5 +43,9 @@ function AsideSearch({ dispatch }) {
     </>
   );
 }
+
+AsideSearch.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
 
 export default AsideSearch;

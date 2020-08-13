@@ -3,6 +3,7 @@ import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
 import Aside from '../Aside/Aside';
 import withGlobalStore from '../../store/withGlobalStore';
+import PropTypes from 'prop-types';
 
 function Search({ state }) {
   const {
@@ -39,5 +40,14 @@ function Search({ state }) {
     </div>
   );
 }
+
+Search.propTypes = {
+  state: PropTypes.shape({
+    loading: PropTypes.object.isRequired,
+    search: PropTypes.object.isRequired,
+    general: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
+  }).isRequired
+};
 
 export default withGlobalStore(Search);

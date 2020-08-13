@@ -1,5 +1,6 @@
 import React from 'react';
 import RecipeCard from '../RecipeCard';
+import PropTypes from 'prop-types';
 
 function LatestRecipes({ recipes, dispatch }) {
   const latestRecipes = recipes.slice(0, 5);
@@ -16,6 +17,11 @@ function LatestRecipes({ recipes, dispatch }) {
     </>
   );
 }
+
+LatestRecipes.propTypes = {
+  recipes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default React.memo(LatestRecipes, (prevProps, nextProps) => {
   if (prevProps.recipes === nextProps.recipes) {

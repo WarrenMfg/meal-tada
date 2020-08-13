@@ -5,6 +5,7 @@ import {
   setSearchFeedback,
   clearSearchCriteria
 } from '../../actions/searchActions';
+import PropTypes from 'prop-types';
 
 function SearchForm({ categories, searchCriteria, dispatch }) {
   const [searchInput, setSearchInput] = useState(searchCriteria.searchInput);
@@ -109,6 +110,16 @@ function SearchForm({ categories, searchCriteria, dispatch }) {
     </form>
   );
 }
+
+SearchForm.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  searchCriteria: PropTypes.shape({
+    searchInput: PropTypes.string.isRequired,
+    searchExact: PropTypes.bool.isRequired,
+    searchCategories: PropTypes.object.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default React.memo(SearchForm, (prevProps, nextProps) => {
   if (

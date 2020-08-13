@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Summary({ time, summary }) {
   const { prep, cook, servings } = time;
@@ -25,5 +26,14 @@ function Summary({ time, summary }) {
     </div>
   );
 }
+
+Summary.propTypes = {
+  time: PropTypes.shape({
+    prep: PropTypes.number.isRequired,
+    cook: PropTypes.number.isRequired,
+    servings: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired
+  }).isRequired,
+  summary: PropTypes.string.isRequired
+};
 
 export default Summary;

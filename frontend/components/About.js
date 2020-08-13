@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Aside from './Aside/Aside';
 import kentAndAmy from '../images/kent-and-amy.jpg';
 import withGlobalStore from '../store/withGlobalStore';
+import PropTypes from 'prop-types';
 import './styles/About.css';
 
 function About({ state }) {
@@ -42,6 +43,17 @@ function About({ state }) {
     </div>
   );
 }
+
+About.propTypes = {
+  state: PropTypes.shape({
+    general: PropTypes.shape({
+      about1: PropTypes.string.isRequired,
+      about2: PropTypes.string.isRequired,
+      topFives: PropTypes.array.isRequired
+    }).isRequired,
+    dispatch: PropTypes.func.isRequired
+  }).isRequired
+};
 
 const memoized = React.memo(About, (prevProps, nextProps) => {
   if (prevProps.state.general === nextProps.state.general) {

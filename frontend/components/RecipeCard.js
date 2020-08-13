@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles/RecipeCard.css';
 import { setCurrentRecipe } from '../actions/recipeActions';
+import PropTypes from 'prop-types';
+import './styles/RecipeCard.css';
 
 function RecipeCard({ recipe, dispatch }) {
   const { title, subtitle, cardAndHeroImage, summary, slug } = recipe;
@@ -33,6 +34,22 @@ function RecipeCard({ recipe, dispatch }) {
     </div>
   );
 }
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    categories: PropTypes.array.isRequired,
+    cardAndHeroImage: PropTypes.string.isRequired,
+    ingredients: PropTypes.array.isRequired,
+    time: PropTypes.object.isRequired,
+    summary: PropTypes.string.isRequired,
+    directions: PropTypes.array.isRequired,
+    createdAt: PropTypes.number.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default React.memo(RecipeCard, (prevProps, nextProps) => {
   if (prevProps.recipe === nextProps.recipe) {

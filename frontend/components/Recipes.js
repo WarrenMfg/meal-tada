@@ -5,6 +5,7 @@ import { fetchMoreRecipes } from '../api/fetch';
 import Loading from './Loading';
 import hero from '../images/seasoned-edamame.jpg';
 import withGlobalStore from '../store/withGlobalStore';
+import PropTypes from 'prop-types';
 import './styles/Recipes.css';
 
 function Recipes({ state }) {
@@ -77,5 +78,20 @@ function Recipes({ state }) {
     </div>
   );
 }
+
+Recipes.propTypes = {
+  state: PropTypes.shape({
+    recipes: PropTypes.shape({
+      recipes: PropTypes.array.isRequired
+    }).isRequired,
+    general: PropTypes.shape({
+      topFives: PropTypes.array.isRequired
+    }).isRequired,
+    loading: PropTypes.shape({
+      isFetchingMoreRecipes: PropTypes.bool.isRequired
+    }).isRequired,
+    dispatch: PropTypes.func.isRequired
+  }).isRequired
+};
 
 export default withGlobalStore(Recipes);

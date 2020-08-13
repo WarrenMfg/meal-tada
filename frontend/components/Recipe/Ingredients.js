@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Ingredients({ ingredients }) {
   const tuples = ingredients.map(obj => Object.entries(obj)[0]);
@@ -19,5 +20,9 @@ function Ingredients({ ingredients }) {
     </ul>
   );
 }
+
+Ingredients.propTypes = {
+  ingredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+};
 
 export default Ingredients;

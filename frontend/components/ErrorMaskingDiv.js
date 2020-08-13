@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import withGlobalStore from '../store/withGlobalStore';
+import PropTypes from 'prop-types';
 import './styles/ErrorMaskingDiv.css';
 
 function ErrorMaskingDiv({
@@ -36,5 +37,17 @@ function ErrorMaskingDiv({
     </div>
   );
 }
+
+ErrorMaskingDiv.propTypes = {
+  state: PropTypes.shape({
+    error: PropTypes.shape({
+      message: PropTypes.any
+    }).isRequired
+  }).isRequired
+};
+
+// state: {
+//   error: { message }
+// }
 
 export default withGlobalStore(ErrorMaskingDiv);

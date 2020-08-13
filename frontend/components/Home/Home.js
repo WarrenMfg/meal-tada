@@ -5,6 +5,7 @@ import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside/Aside';
 import hero from '../../images/seasoned-veggies.jpg';
 import withGlobalStore from '../../store/withGlobalStore';
+import PropTypes from 'prop-types';
 import '../styles/Home.css';
 
 function Home({ state }) {
@@ -46,5 +47,19 @@ function Home({ state }) {
     </div>
   );
 }
+
+Home.propTypes = {
+  state: PropTypes.shape({
+    dispatch: PropTypes.func.isRequired,
+    general: PropTypes.shape({
+      introduction: PropTypes.string.isRequired,
+      about1: PropTypes.string.isRequired,
+      topFives: PropTypes.array.isRequired
+    }).isRequired,
+    recipes: PropTypes.shape({
+      recipes: PropTypes.array.isRequired
+    }).isRequired
+  })
+};
 
 export default withGlobalStore(Home);

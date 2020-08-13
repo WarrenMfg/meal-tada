@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import kentAndAmy from '../images/kent-and-amy.jpg';
+import PropTypes from 'prop-types';
 import './styles/KentAndAmyCard.css';
 
 function KentAndAmy({ about1 }) {
@@ -19,6 +20,10 @@ function KentAndAmy({ about1 }) {
     </div>
   );
 }
+
+KentAndAmy.propTypes = {
+  about1: PropTypes.string.isRequired
+};
 
 export default React.memo(KentAndAmy, (prevProps, nextProps) => {
   if (prevProps.about1 === nextProps.about1) {

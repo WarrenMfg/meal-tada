@@ -5,6 +5,7 @@ import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
 import Aside from '../Aside/Aside';
 import withGlobalStore from '../../store/withGlobalStore';
+import PropTypes from 'prop-types';
 import '../styles/Recipe.css';
 
 function Recipe({ state }) {
@@ -82,5 +83,14 @@ function Recipe({ state }) {
     );
   }
 }
+
+Recipe.propTypes = {
+  state: PropTypes.shape({
+    recipes: PropTypes.shape({
+      currentRecipe: PropTypes.any
+    }).isRequired,
+    dispatch: PropTypes.func.isRequired
+  }).isRequired
+};
 
 export default withGlobalStore(Recipe);

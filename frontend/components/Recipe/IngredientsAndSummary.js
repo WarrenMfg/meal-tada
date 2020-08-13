@@ -1,7 +1,8 @@
 import React from 'react';
 import Ingredients from './Ingredients';
 import Summary from './Summary';
-import '../styles/IngredientsAndSummary';
+import PropTypes from 'prop-types';
+import '../styles/IngredientsAndSummary.css';
 
 function IngredientsAndSummary({ ingredients, time, summary }) {
   return (
@@ -14,5 +15,11 @@ function IngredientsAndSummary({ ingredients, time, summary }) {
     </section>
   );
 }
+
+IngredientsAndSummary.propTypes = {
+  ingredients: PropTypes.array.isRequired,
+  time: PropTypes.object.isRequired,
+  summary: PropTypes.string.isRequired
+};
 
 export default IngredientsAndSummary;
