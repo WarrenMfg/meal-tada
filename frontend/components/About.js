@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Meta from './Meta';
 import Aside from './Aside/Aside';
-import kentAndAmy from '../images/kent-and-amy.jpg';
 import withGlobalStore from '../store/withGlobalStore';
 import PropTypes from 'prop-types';
 import './styles/About.css';
@@ -16,15 +15,12 @@ function About({ state }) {
       <Meta
         title='Meal Tada'
         description={introduction}
-        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
       />
       <div className='container about mt-3'>
         <div className='row'>
           <div className='col'>
-            <div
-              className='hero rounded'
-              style={{ backgroundImage: `url(${kentAndAmy})` }}
-            />
+            <div className='hero rounded' />
             <h1 className='text-center mt-5 mb-5'>About</h1>
 
             <div className='row'>
@@ -33,7 +29,7 @@ function About({ state }) {
                   <p>{about1}</p>
                   <img
                     className='img-fluid rounded w-100'
-                    src={kentAndAmy}
+                    src='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy.jpg'
                     alt='Kent and Amy'
                   />
                   <p>{about2}</p>

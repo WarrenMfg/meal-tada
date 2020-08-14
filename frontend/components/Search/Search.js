@@ -19,7 +19,7 @@ function Search({ state }) {
       <Meta
         title='Meal Tada'
         description={introduction}
-        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
       />
       <div className='container search'>
         <div className='row'>

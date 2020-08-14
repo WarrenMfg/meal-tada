@@ -4,7 +4,6 @@ import Meta from '../Meta';
 import KentAndAmyCard from './KentAndAmyCard';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside/Aside';
-import hero from '../../images/seasoned-veggies.jpg';
 import withGlobalStore from '../../store/withGlobalStore';
 import PropTypes from 'prop-types';
 import '../styles/Home.css';
@@ -21,15 +20,12 @@ function Home({ state }) {
       <Meta
         title='Meal Tada'
         description={introduction}
-        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
       />
       <div className='container home mt-3'>
         <div className='row'>
           <div className='col'>
-            <div
-              className='hero rounded'
-              style={{ backgroundImage: `url(${hero})` }}
-            />
+            <div className='hero rounded' />
 
             <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 

@@ -4,7 +4,6 @@ import RecipeCard from './RecipeCard';
 import Aside from './Aside/Aside';
 import { fetchMoreRecipes } from '../api/fetch';
 import Loading from './Loading';
-import hero from '../images/seasoned-edamame.jpg';
 import withGlobalStore from '../store/withGlobalStore';
 import PropTypes from 'prop-types';
 import './styles/Recipes.css';
@@ -48,15 +47,12 @@ function Recipes({ state }) {
       <Meta
         title='Meal Tada'
         description={introduction}
-        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
       />
       <div className='container recipes mt-3'>
         <div className='row'>
           <div className='col'>
-            <div
-              className='rounded hero'
-              style={{ backgroundImage: `url(${hero})` }}
-            />
+            <div className='rounded hero' />
           </div>
         </div>
         <h1 className='mt-5 mb-5 text-center'>Recipes</h1>

@@ -1,6 +1,7 @@
 .about .hero {
   height: 500px;
-  background-position: 50% 20%;
+  background-image: url(https://meal-tada.s3.amazonaws.com/_general/pork-and-veggies.jpg);
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }

@@ -1,5 +1,6 @@
 .home .hero {
   height: 500px;
+  background-image: url(https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg);
   background-position: 50% 55%;
   background-size: cover;
   background-repeat: no-repeat;
