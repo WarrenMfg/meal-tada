@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Meta from './Meta';
 import RecipeCard from './RecipeCard';
 import Aside from './Aside/Aside';
 import { fetchMoreRecipes } from '../api/fetch';
@@ -11,7 +12,7 @@ import './styles/Recipes.css';
 function Recipes({ state }) {
   const { dispatch } = state;
   const { recipes } = state.recipes;
-  const { topFives } = state.general;
+  const { topFives, introduction } = state.general;
   const { isFetchingMoreRecipes } = state.loading;
 
   const observable = useRef(null);
@@ -43,35 +44,42 @@ function Recipes({ state }) {
   }, [recipes]);
 
   return (
-    <div className='container recipes mt-3'>
-      <div className='row'>
-        <div className='col'>
-          <div
-            className='rounded hero'
-            style={{ backgroundImage: `url(${hero})` }}
-          />
+    <>
+      <Meta
+        title='Meal Tada'
+        description={introduction}
+        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+      />
+      <div className='container recipes mt-3'>
+        <div className='row'>
+          <div className='col'>
+            <div
+              className='rounded hero'
+              style={{ backgroundImage: `url(${hero})` }}
+            />
+          </div>
+        </div>
+        <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
+        <div className='row'>
+          <div className='col-12 col-lg-9'>
+            <main className='mb-2'>
+              {recipes.map(recipe => (
+                <RecipeCard
+                  key={recipe._id}
+                  recipe={recipe}
+                  dispatch={dispatch}
+                />
+              ))}
+
+              {isFetchingMoreRecipes && <Loading />}
+            </main>
+            <div ref={observable}></div>
+          </div>
+
+          <Aside topFives={topFives} dispatch={dispatch} />
         </div>
       </div>
-      <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
-      <div className='row'>
-        <div className='col-12 col-lg-9'>
-          <main className='mb-2'>
-            {recipes.map(recipe => (
-              <RecipeCard
-                key={recipe._id}
-                recipe={recipe}
-                dispatch={dispatch}
-              />
-            ))}
-
-            {isFetchingMoreRecipes && <Loading />}
-          </main>
-          <div ref={observable}></div>
-        </div>
-
-        <Aside topFives={topFives} dispatch={dispatch} />
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -81,7 +89,8 @@ Recipes.propTypes = {
       recipes: PropTypes.array.isRequired
     }).isRequired,
     general: PropTypes.shape({
-      topFives: PropTypes.array.isRequired
+      topFives: PropTypes.array.isRequired,
+      introduction: PropTypes.string.isRequired
     }).isRequired,
     loading: PropTypes.shape({
       isFetchingMoreRecipes: PropTypes.bool.isRequired

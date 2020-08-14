@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
+import Meta from '../Meta';
 import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
@@ -51,35 +52,38 @@ function Recipe({ state }) {
     const { dispatch } = state;
 
     return (
-      <div className='container recipe mt-3'>
-        <div className='row'>
-          <div className='col'>
-            <div
-              className='hero rounded'
-              style={{ backgroundImage: `url(${cardAndHeroImage})` }}
-            />
+      <>
+        <Meta title={title} description={summary} image={cardAndHeroImage} />
+        <div className='container recipe mt-3'>
+          <div className='row'>
+            <div className='col'>
+              <div
+                className='hero rounded'
+                style={{ backgroundImage: `url(${cardAndHeroImage})` }}
+              />
+            </div>
           </div>
-        </div>
-        <h1 className='mt-5 mb-5 text-center'>{title}</h1>
-        <div className='row'>
-          <div className='col-12 col-lg-9'>
-            <IngredientsAndSummary
-              ingredients={ingredients}
-              time={time}
-              summary={summary}
-            />
-            <Directions directions={directions} />
-            <button
-              className='btn btn-info btn-block mt-5 mb-5'
-              onClick={handleBackButton}
-            >
-              Back
-            </button>
-          </div>
+          <h1 className='mt-5 mb-5 text-center'>{title}</h1>
+          <div className='row'>
+            <div className='col-12 col-lg-9'>
+              <IngredientsAndSummary
+                ingredients={ingredients}
+                time={time}
+                summary={summary}
+              />
+              <Directions directions={directions} />
+              <button
+                className='btn btn-info btn-block mt-5 mb-5'
+                onClick={handleBackButton}
+              >
+                Back
+              </button>
+            </div>
 
-          <Aside topFives={topFives} dispatch={dispatch} />
+            <Aside topFives={topFives} dispatch={dispatch} />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

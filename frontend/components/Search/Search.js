@@ -1,4 +1,5 @@
 import React from 'react';
+import Meta from '../Meta';
 import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
 import Aside from '../Aside/Aside';
@@ -9,36 +10,43 @@ function Search({ state }) {
   const {
     loading: { isSearching },
     search: { categories, searchCriteria, searchResults, searchFeedback },
-    general: { topFives },
+    general: { topFives, introduction },
     dispatch
   } = state;
 
   return (
-    <div className='container search'>
-      <div className='row'>
-        <div className='col'>
-          <h1 className='text-center mt-5 mb-5'>Search</h1>
+    <>
+      <Meta
+        title='Meal Tada'
+        description={introduction}
+        image='https://i.postimg.cc/yYkxqC2F/seasoned-veggies.jpg'
+      />
+      <div className='container search'>
+        <div className='row'>
+          <div className='col'>
+            <h1 className='text-center mt-5 mb-5'>Search</h1>
 
-          <div className='row'>
-            <div className='col-12 col-lg-9'>
-              <SearchForm
-                categories={categories}
-                searchCriteria={searchCriteria}
-                searchFeedback={searchFeedback}
-                dispatch={dispatch}
-              />
-              <SearchResults
-                isSearching={isSearching}
-                searchResults={searchResults}
-                searchFeedback={searchFeedback}
-                dispatch={dispatch}
-              />
+            <div className='row'>
+              <div className='col-12 col-lg-9'>
+                <SearchForm
+                  categories={categories}
+                  searchCriteria={searchCriteria}
+                  searchFeedback={searchFeedback}
+                  dispatch={dispatch}
+                />
+                <SearchResults
+                  isSearching={isSearching}
+                  searchResults={searchResults}
+                  searchFeedback={searchFeedback}
+                  dispatch={dispatch}
+                />
+              </div>
+              <Aside topFives={topFives} dispatch={dispatch} />
             </div>
-            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
