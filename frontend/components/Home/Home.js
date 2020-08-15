@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Meta from '../Meta';
+import { updateMeta } from '../../utils/utils';
 import KentAndAmyCard from './KentAndAmyCard';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside/Aside';
@@ -15,43 +15,44 @@ function Home({ state }) {
     recipes: { recipes }
   } = state;
 
+  useEffect(() => {
+    if (introduction) {
+      updateMeta({
+        title: 'Meal Tada',
+        description: introduction,
+        image:
+          'https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
+      });
+    }
+  }, [introduction]);
+
   return (
-    <>
-      <Meta
-        title='Meal Tada'
-        description={introduction}
-        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
-      />
-      <div className='container home mt-3'>
-        <div className='row'>
-          <div className='col'>
-            <div className='hero rounded' />
+    <div className='container home mt-3'>
+      <div className='row'>
+        <div className='col'>
+          <div className='hero rounded' />
 
-            <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
+          <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 
-            <div className='row'>
-              <div className='col-12 col-lg-9'>
-                <div>
-                  <p>{introduction}</p>
-                  <KentAndAmyCard about1={about1} />
-                </div>
-
-                {/* Main */}
-                <LatestRecipes recipes={recipes} dispatch={dispatch} />
-
-                <Link
-                  className='btn btn-info btn-block mt-5 mb-5'
-                  to='/recipes'
-                >
-                  Browse All Recipes
-                </Link>
+          <div className='row'>
+            <div className='col-12 col-lg-9'>
+              <div>
+                <p>{introduction}</p>
+                <KentAndAmyCard about1={about1} />
               </div>
-              <Aside topFives={topFives} dispatch={dispatch} />
+
+              {/* Main */}
+              <LatestRecipes recipes={recipes} dispatch={dispatch} />
+
+              <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
+                Browse All Recipes
+              </Link>
             </div>
+            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

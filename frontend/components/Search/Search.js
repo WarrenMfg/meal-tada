@@ -1,5 +1,5 @@
-import React from 'react';
-import Meta from '../Meta';
+import React, { useEffect } from 'react';
+import { updateMeta } from '../../utils/utils';
 import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
 import Aside from '../Aside/Aside';
@@ -14,39 +14,43 @@ function Search({ state }) {
     dispatch
   } = state;
 
-  return (
-    <>
-      <Meta
-        title='Meal Tada'
-        description={introduction}
-        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
-      />
-      <div className='container search'>
-        <div className='row'>
-          <div className='col'>
-            <h1 className='text-center mt-5 mb-5'>Search</h1>
+  useEffect(() => {
+    if (introduction) {
+      updateMeta({
+        title: 'Meal Tada',
+        description: introduction,
+        image:
+          'https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
+      });
+    }
+  }, [introduction]);
 
-            <div className='row'>
-              <div className='col-12 col-lg-9'>
-                <SearchForm
-                  categories={categories}
-                  searchCriteria={searchCriteria}
-                  searchFeedback={searchFeedback}
-                  dispatch={dispatch}
-                />
-                <SearchResults
-                  isSearching={isSearching}
-                  searchResults={searchResults}
-                  searchFeedback={searchFeedback}
-                  dispatch={dispatch}
-                />
-              </div>
-              <Aside topFives={topFives} dispatch={dispatch} />
+  return (
+    <div className='container search'>
+      <div className='row'>
+        <div className='col'>
+          <h1 className='text-center mt-5 mb-5'>Search</h1>
+
+          <div className='row'>
+            <div className='col-12 col-lg-9'>
+              <SearchForm
+                categories={categories}
+                searchCriteria={searchCriteria}
+                searchFeedback={searchFeedback}
+                dispatch={dispatch}
+              />
+              <SearchResults
+                isSearching={isSearching}
+                searchResults={searchResults}
+                searchFeedback={searchFeedback}
+                dispatch={dispatch}
+              />
             </div>
+            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

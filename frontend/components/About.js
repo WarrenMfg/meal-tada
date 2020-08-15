@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Meta from './Meta';
+import { updateMeta } from '../utils/utils';
 import Aside from './Aside/Aside';
 import withGlobalStore from '../store/withGlobalStore';
 import PropTypes from 'prop-types';
@@ -10,44 +10,45 @@ function About({ state }) {
   const { introduction, about1, about2, topFives } = state.general;
   const { dispatch } = state;
 
+  useEffect(() => {
+    if (introduction) {
+      updateMeta({
+        title: 'Meal Tada',
+        description: introduction,
+        image:
+          'https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
+      });
+    }
+  }, [introduction]);
+
   return (
-    <>
-      <Meta
-        title='Meal Tada'
-        description={introduction}
-        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
-      />
-      <div className='container about mt-3'>
-        <div className='row'>
-          <div className='col'>
-            <div className='hero rounded' />
-            <h1 className='text-center mt-5 mb-5'>About</h1>
+    <div className='container about mt-3'>
+      <div className='row'>
+        <div className='col'>
+          <div className='hero rounded' />
+          <h1 className='text-center mt-5 mb-5'>About</h1>
 
-            <div className='row'>
-              <div className='col-12 col-lg-9'>
-                <div>
-                  <p>{about1}</p>
-                  <img
-                    className='img-fluid rounded w-100'
-                    src='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy.jpg'
-                    alt='Kent and Amy'
-                  />
-                  <p>{about2}</p>
-                </div>
-
-                <Link
-                  className='btn btn-info btn-block mt-5 mb-5'
-                  to='/recipes'
-                >
-                  Browse All Recipes
-                </Link>
+          <div className='row'>
+            <div className='col-12 col-lg-9'>
+              <div>
+                <p>{about1}</p>
+                <img
+                  className='img-fluid rounded w-100'
+                  src='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy.jpg'
+                  alt='Kent and Amy'
+                />
+                <p>{about2}</p>
               </div>
-              <Aside topFives={topFives} dispatch={dispatch} />
+
+              <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>
+                Browse All Recipes
+              </Link>
             </div>
+            <Aside topFives={topFives} dispatch={dispatch} />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import Meta from './Meta';
+import { updateMeta } from '../utils/utils';
 import RecipeCard from './RecipeCard';
 import Aside from './Aside/Aside';
 import { fetchMoreRecipes } from '../api/fetch';
@@ -42,40 +42,44 @@ function Recipes({ state }) {
     }
   }, [recipes]);
 
+  useEffect(() => {
+    if (introduction) {
+      updateMeta({
+        title: 'Meal Tada',
+        description: introduction,
+        image:
+          'https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
+      });
+    }
+  }, [introduction]);
+
   return (
-    <>
-      <Meta
-        title='Meal Tada'
-        description={introduction}
-        image='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies.jpg'
-      />
-      <div className='container recipes mt-3'>
-        <div className='row'>
-          <div className='col'>
-            <div className='rounded hero' />
-          </div>
-        </div>
-        <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
-        <div className='row'>
-          <div className='col-12 col-lg-9'>
-            <main className='mb-2'>
-              {recipes.map(recipe => (
-                <RecipeCard
-                  key={recipe._id}
-                  recipe={recipe}
-                  dispatch={dispatch}
-                />
-              ))}
-
-              {isFetchingMoreRecipes && <Loading />}
-            </main>
-            <div ref={observable}></div>
-          </div>
-
-          <Aside topFives={topFives} dispatch={dispatch} />
+    <div className='container recipes mt-3'>
+      <div className='row'>
+        <div className='col'>
+          <div className='rounded hero' />
         </div>
       </div>
-    </>
+      <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
+      <div className='row'>
+        <div className='col-12 col-lg-9'>
+          <main className='mb-2'>
+            {recipes.map(recipe => (
+              <RecipeCard
+                key={recipe._id}
+                recipe={recipe}
+                dispatch={dispatch}
+              />
+            ))}
+
+            {isFetchingMoreRecipes && <Loading />}
+          </main>
+          <div ref={observable}></div>
+        </div>
+
+        <Aside topFives={topFives} dispatch={dispatch} />
+      </div>
+    </div>
   );
 }
 
