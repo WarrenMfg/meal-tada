@@ -25,7 +25,7 @@ function About({ state }) {
     <div className='container about mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' />
+          <div className='hero rounded' title='About' />
           <h1 className='text-center mt-5 mb-5'>About</h1>
 
           <div className='row'>

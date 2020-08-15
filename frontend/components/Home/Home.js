@@ -30,7 +30,7 @@ function Home({ state }) {
     <div className='container home mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' />
+          <div className='hero rounded' title='Home' />
 
           <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 

@@ -57,7 +57,7 @@ function Recipes({ state }) {
     <div className='container recipes mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='rounded hero' />
+          <div className='rounded hero' title='Recipes' />
         </div>
       </div>
       <h1 className='mt-5 mb-5 text-center'>Recipes</h1>

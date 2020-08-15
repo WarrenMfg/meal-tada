@@ -68,6 +68,7 @@ function Recipe({ state }) {
             <div
               className='hero rounded'
               style={{ backgroundImage: `url(${cardAndHeroImage})` }}
+              title={title}
             />
           </div>
         </div>
