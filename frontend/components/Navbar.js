@@ -1,16 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import withGlobalStore from '../store/withGlobalStore';
-import {
-  clearSearchCriteria,
-  clearSearchResults
-} from '../actions/searchActions';
 
-function Navbar({ state }) {
-  const {
-    dispatch,
-    search: { searchCriteria }
-  } = state;
+function Navbar() {
   const location = useLocation();
   const isActive = pathname => {
     if (pathname === '/' && location.pathname === '/') return ' active';
@@ -69,4 +60,4 @@ function Navbar({ state }) {
   );
 }
 
-export default withGlobalStore(Navbar);
+export default Navbar;
