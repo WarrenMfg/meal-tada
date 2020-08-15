@@ -131,6 +131,8 @@ export default (app, db) => {
       exact = /^\$/.test(exact) ? '' : exact;
       if (Array.isArray(categories)) {
         categories = categories.filter(cat => /^\$/.test(cat) === false);
+      } else {
+        categories = [];
       }
 
       if (phrase) {
