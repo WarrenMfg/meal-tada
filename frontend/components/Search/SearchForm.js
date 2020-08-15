@@ -197,7 +197,9 @@ SearchForm.propTypes = {
   searchCriteria: PropTypes.shape({
     searchInput: PropTypes.string.isRequired,
     searchExact: PropTypes.bool.isRequired,
-    searchCategories: PropTypes.object.isRequired
+    searchCategories: PropTypes.object.isRequired,
+    searchTime: PropTypes.string.isRequired,
+    searchServings: PropTypes.string.isRequired
   }).isRequired,
   searchFeedback: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired
