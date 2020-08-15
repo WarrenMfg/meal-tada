@@ -29,7 +29,10 @@ function AsideSearch({ dispatch }) {
   return (
     <>
       {!pathname.includes('search') && (
-        <form className='search-container' onSubmit={handleSetSearchCriteria}>
+        <form
+          className='d-flex search-container'
+          onSubmit={handleSetSearchCriteria}
+        >
           <input
             type='text'
             value={searchInput}

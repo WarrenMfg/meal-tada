@@ -1,5 +1,4 @@
 .ingredients-and-summary {
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
@@ -34,7 +33,6 @@
 
 @media (max-width: 575px) {
   .ingredients-and-summary {
-    display: flex;
     flex-direction: column;
   }
   .ingredients.list-group-flush,

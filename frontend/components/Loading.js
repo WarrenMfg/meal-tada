@@ -4,7 +4,7 @@ import './styles/Loading.css';
 
 function Loading() {
   return (
-    <div className='loading'>
+    <div className='d-flex justify-content-center align-items-center loading'>
       <img src={pacman} />
     </div>
   );

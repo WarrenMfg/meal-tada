@@ -15,7 +15,7 @@ function RecipeCard({ recipe, dispatch }) {
     <div className='card card-body mb-2'>
       <h2 className='text-center'>{title}</h2>
       <h3 className='text-muted text-center card-subtitle mb-2'>{subtitle}</h3>
-      <div className='card-thumbnail-summary-container'>
+      <div className='d-flex card-thumbnail-summary-container'>
         <div
           className='thumbnail rounded mr-3'
           style={{ backgroundImage: `url(${cardAndHeroImage})` }}

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles/Directions.css';
 
 function Directions({ directions }) {
   return (
@@ -27,7 +26,11 @@ function Directions({ directions }) {
             </div>
           );
         } else {
-          return <p key={`${i}-${str}`}>{str}</p>;
+          return (
+            <p className='m-0' key={`${i}-${str}`}>
+              {str}
+            </p>
+          );
         }
       })}
     </section>

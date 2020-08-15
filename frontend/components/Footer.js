@@ -9,7 +9,7 @@ function Footer() {
   return (
     <div className='footer-basic'>
       <footer>
-        <div className='social'>
+        <div className='d-flex justify-content-center social'>
           <Link to='/'>
             <img src={instagram} />
           </Link>
@@ -20,7 +20,7 @@ function Footer() {
             <img src={facebook} />
           </Link>
         </div>
-        <ul className='list-inline'>
+        <ul className='list-inline p-0'>
           <li className='list-inline-item'>
             <Link to='/'>Home</Link>
           </li>
@@ -37,7 +37,9 @@ function Footer() {
             <Link to='/'>Privacy Policy</Link>
           </li>
         </ul>
-        <p className='copyright'>Meal Tada &copy; {new Date().getFullYear()}</p>
+        <p className='copyright text-center'>
+          Meal Tada &copy; {new Date().getFullYear()}
+        </p>
       </footer>
     </div>
   );
