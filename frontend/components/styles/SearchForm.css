@@ -4,3 +4,7 @@
 .search-form .custom-control.custom-switch > * {
   cursor: pointer;
 }
+
+.search-form .custom-select:last-child {
+  margin-top: 0.5rem;
+}

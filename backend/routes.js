@@ -121,47 +121,116 @@ export default (app, db) => {
 
   app.get('/api/search?', async (req, res) => {
     try {
-      let searchResults;
+      let { phrase, exact, categories, time, servings } = req.query;
 
-      let { phrase } = req.query;
-      let { exact, categories } = req.query;
-
-      // sanitize
+      // sanitize phrase
       phrase = /^\$/.test(phrase) ? '' : phrase;
+      // sanitize exact
       exact = /^\$/.test(exact) ? '' : exact;
+      // sanitize categories
       if (Array.isArray(categories)) {
         categories = categories.filter(cat => /^\$/.test(cat) === false);
       } else {
         categories = [];
       }
+      // sanitize time and servings
+      const timeAndServings = { time, servings };
+      Object.keys(timeAndServings).forEach(key => {
+        // if it's an array, ensure contents are numbers
+        if (Array.isArray(timeAndServings[key])) {
+          timeAndServings[key] = timeAndServings[key].map(value => {
+            const num = Number(value);
+            if (!Number.isNaN(num)) {
+              return num;
+            }
+            return 0;
+          });
+          // otherwise, just make an empty array
+        } else {
+          timeAndServings[key] = [];
+        }
+      });
 
+      // define aggregation
+      const agg = [];
+
+      // agg phrase
       if (phrase) {
         phrase =
           exact === 'true' ? `\"${phrase}\"` : phrase; /* eslint-disable-line */
-
-        const agg = [
-          { $match: { $text: { $search: phrase } } },
-          { $sort: { score: { $meta: 'textScore' } } }
-        ];
-
-        if (categories) {
-          const filter = {
-            $match: { categories: { $in: categories } }
-          };
-          agg.push(filter);
-        }
-
-        searchResults = await db.collection('recipes').aggregate(agg).toArray();
-      } else {
-        searchResults = await db
-          .collection('recipes')
-          .aggregate([
-            { $match: { categories: { $in: categories } } },
-            { $sort: { createdAt: -1 } }
-          ])
-          .toArray();
+        agg.push({ $match: { $text: { $search: phrase } } });
+        agg.push({ $sort: { score: { $meta: 'textScore' } } });
       }
 
+      // agg categories
+      if (phrase && categories.length) {
+        agg.push({ $match: { categories: { $in: categories } } });
+      } else if (categories.length) {
+        agg.push({ $match: { categories: { $in: categories } } });
+        agg.push({ $sort: { createdAt: -1 } });
+      }
+
+      // agg time
+      if (timeAndServings.time.length) {
+        const { time } = timeAndServings;
+        agg.push({
+          $match: {
+            $and: [
+              {
+                $expr: {
+                  $gte: [
+                    {
+                      $add: ['$time.prep', '$time.cook']
+                    },
+                    time[0]
+                  ]
+                }
+              },
+              {
+                $expr: {
+                  $lte: [
+                    {
+                      $add: ['$time.prep', '$time.cook']
+                    },
+                    time[1]
+                  ]
+                }
+              }
+            ]
+          }
+        });
+      }
+
+      // agg servings
+      if (timeAndServings.servings.length) {
+        const { servings } = timeAndServings;
+        agg.push({
+          $match: {
+            $or: [
+              {
+                $and: [
+                  { 'servings.0': { $gte: servings[0] } },
+                  { 'servings.0': { $lte: servings[1] } }
+                ]
+              },
+              {
+                $and: [
+                  { 'servings.1': { $gte: servings[0] } },
+                  { 'servings.1': { $lte: servings[1] } }
+                ]
+              }
+            ]
+          }
+        });
+      }
+
+      // search it
+      const searchResults = await db
+        .collection('recipes')
+        .aggregate(agg)
+        .toArray();
+
+      // send it
       res.send(searchResults);
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
@@ -169,3 +238,26 @@ export default (app, db) => {
     }
   });
 };
+
+/*
+
+// search agg for prep and cook times
+['prep', 'cook'].forEach(key => {
+  if (timeAndServings[key].length) {
+    const nested = `time.${key}`;
+    agg.push({
+      $match: {
+        $and: [
+          {
+            [nested]: { $gte: timeAndServings[key][0] }
+          },
+          {
+            [nested]: { $lte: timeAndServings[key][1] }
+          }
+        ]
+      }
+    });
+  }
+});
+
+*/

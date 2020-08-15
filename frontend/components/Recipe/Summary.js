@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Summary({ time, summary }) {
-  const { prep, cook, servings } = time;
+function Summary({ time, servings, summary }) {
+  const { prep, cook } = time;
   const servingsStr =
-    servings.length > 1 ? `${servings[0]} to ${servings[1]}` : servings;
+    servings.length > 1 ? `${servings[0]} to ${servings[1]}` : servings[0];
 
   return (
     <div className='summary'>
@@ -30,9 +30,9 @@ function Summary({ time, summary }) {
 Summary.propTypes = {
   time: PropTypes.shape({
     prep: PropTypes.number.isRequired,
-    cook: PropTypes.number.isRequired,
-    servings: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired
+    cook: PropTypes.number.isRequired
   }).isRequired,
+  servings: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   summary: PropTypes.string.isRequired
 };
 

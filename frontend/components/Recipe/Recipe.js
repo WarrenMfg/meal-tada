@@ -55,6 +55,7 @@ function Recipe({ state }) {
       title,
       ingredients,
       time,
+      servings,
       summary,
       directions
     } = currentRecipe;
@@ -78,6 +79,7 @@ function Recipe({ state }) {
             <IngredientsAndSummary
               ingredients={ingredients}
               time={time}
+              servings={servings}
               summary={summary}
             />
             <Directions directions={directions} />

@@ -14,6 +14,10 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
   const [searchCategories, setSearchCategories] = useState(
     searchCriteria.searchCategories
   );
+  const [searchTime, setSearchTime] = useState(searchCriteria.searchTime);
+  const [searchServings, setSearchServings] = useState(
+    searchCriteria.searchServings
+  );
 
   useEffect(() => {
     if (searchFeedback === 2) {
@@ -21,6 +25,8 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
       setSearchInput('');
       setSearchExact(false);
       setSearchCategories({});
+      setSearchTime('');
+      setSearchServings('');
     }
   }, []);
 
@@ -38,11 +44,25 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
       }
     });
 
-    if (trimmedSearchInput || categorySelected) {
+    if (searchTime) {
+      query += searchTime;
+    }
+    if (searchServings) {
+      query += searchServings;
+    }
+
+    if (
+      trimmedSearchInput ||
+      categorySelected ||
+      searchTime ||
+      searchServings
+    ) {
       const searchCriteria = {
         searchInput: trimmedSearchInput,
         searchExact,
-        searchCategories
+        searchCategories,
+        searchTime,
+        searchServings
       };
       dispatch(fetchSearchResults, query, searchCriteria);
     }
@@ -53,7 +73,9 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
     if (
       searchInput ||
       searchExact ||
-      Object.values(searchCategories).some(bool => bool)
+      Object.values(searchCategories).some(bool => bool) ||
+      searchTime ||
+      searchServings
     ) {
       dispatch(clearSearchResults());
       dispatch(clearSearchCriteria());
@@ -62,12 +84,15 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
       setSearchInput('');
       setSearchExact(false);
       setSearchCategories({});
+      setSearchTime('');
+      setSearchServings('');
     }
   };
 
   return (
     <form className='d-flex flex-column align-items-center search-form'>
-      <div className='input-group mb-3'>
+      {/* Text Input */}
+      <div className='input-group mb-2'>
         <input
           type='text'
           value={searchInput}
@@ -92,7 +117,7 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
           </div>
         </div>
       </div>
-
+      {/* Categories */}
       <div className='container row'>
         {categories.map(category => {
           return (
@@ -118,6 +143,40 @@ function SearchForm({ categories, searchCriteria, searchFeedback, dispatch }) {
           );
         })}
       </div>
+      {/* Select Elements */}
+      <div className='container row mt-2 flex-column flex-sm-row'>
+        <div className='col'>
+          <select
+            className='custom-select mt-0'
+            value={searchTime}
+            onChange={e => setSearchTime(e.target.value)}
+          >
+            <option value=''>Time</option>
+            <option value={`&time[]=0&time[]=15`}>0 - 15 minutes</option>
+            <option value={`&time[]=16&time[]=30`}>16 - 30 minutes</option>
+            <option value={`&time[]=31&time[]=45`}>31 - 45 minutes</option>
+            <option value={`&time[]=46&time[]=60`}>46 - 60 minutes</option>
+            <option value={`&time[]=60&time[]=Infinity`}>61+ minutes</option>
+          </select>
+        </div>
+        <div className='col'>
+          <select
+            className='custom-select mt-0'
+            value={searchServings}
+            onChange={e => setSearchServings(e.target.value)}
+          >
+            <option value=''>Servings</option>
+            <option value={`&servings[]=1&servings[]=2`}>1 - 2 servings</option>
+            <option value={`&servings[]=3&servings[]=4`}>3 - 4 servings</option>
+            <option value={`&servings[]=5&servings[]=6`}>5 - 6 servings</option>
+            <option value={`&servings[]=7&servings[]=8`}>7 - 8 servings</option>
+            <option value={`&servings[]=9&servings[]=Infinity`}>
+              9+ servings
+            </option>
+          </select>
+        </div>
+      </div>
+      {/* Buttons */}
       <div className='d-flex flex-column w-100 mt-3'>
         <button
           className='col-12 btn btn-info btn-block'

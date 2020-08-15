@@ -16,7 +16,9 @@ export const searchReducer = (state, action) => {
         searchCriteria: {
           searchInput: '',
           searchExact: false,
-          searchCategories: {}
+          searchCategories: {},
+          searchTime: '',
+          searchServings: ''
         }
       };
     case 'SET_SEARCH_RESULTS':
@@ -44,7 +46,9 @@ export const searchInitialState = {
   searchCriteria: {
     searchInput: '',
     searchExact: false,
-    searchCategories: {}
+    searchCategories: {},
+    searchTime: '',
+    searchServings: ''
   },
   searchResults: [],
   searchFeedback: 1

@@ -19,7 +19,9 @@ function AsideSearch({ dispatch }) {
       dispatch(fetchSearchResults, query, {
         searchInput: trimmedSearchInput,
         searchExact: true,
-        searchCategories: {}
+        searchCategories: {},
+        searchTime: '',
+        searchServings: ''
       });
 
       push('/search');
