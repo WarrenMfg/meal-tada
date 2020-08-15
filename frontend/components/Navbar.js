@@ -1,11 +1,25 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import withGlobalStore from '../store/withGlobalStore';
+import {
+  clearSearchCriteria,
+  clearSearchResults
+} from '../actions/searchActions';
 
-function Navbar() {
+function Navbar({ state }) {
+  const {
+    dispatch,
+    search: { searchCriteria }
+  } = state;
   const location = useLocation();
   const isActive = pathname => {
     if (pathname === '/' && location.pathname === '/') return ' active';
     else return location.pathname.split('/')[1] === pathname ? ' active' : '';
+  };
+
+  const determineReplace = () => {
+    if (location.pathname === '/search') return true;
+    else return false;
   };
 
   return (
@@ -40,7 +54,11 @@ function Navbar() {
               </Link>
             </li>
             <li className='nav-item' role='presentation'>
-              <Link className={`nav-link${isActive('search')}`} to='/search'>
+              <Link
+                className={`nav-link${isActive('search')}`}
+                to='/search'
+                replace={determineReplace()}
+              >
                 Search
               </Link>
             </li>
@@ -51,4 +69,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default withGlobalStore(Navbar);
