@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { updateMeta } from '../utils/utils';
+import Picture from './Picture';
 import Aside from './Aside/Aside';
 import withGlobalStore from '../store/withGlobalStore';
 import PropTypes from 'prop-types';
@@ -25,17 +26,29 @@ function About({ state }) {
     <div className='container about mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' title='About' />
+          <Picture
+            className='rounded hero'
+            url='https://meal-tada.s3.amazonaws.com/_general/pork-and-veggies'
+            width='880'
+            height='660'
+            alt='About'
+            title='About'
+            loading='eager'
+          />
           <h1 className='text-center mt-5 mb-5'>About</h1>
 
           <div className='row'>
             <div className='col-12 col-lg-9'>
               <div>
                 <p className='m-0'>{about1}</p>
-                <img
+                <Picture
                   className='img-fluid rounded w-100'
-                  src='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy.jpg'
+                  url='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy'
+                  width='1000'
+                  height='1000'
                   alt='Kent and Amy'
+                  title='Kent and Amy'
+                  loading='eager'
                 />
                 <p className='m-0'>{about2}</p>
               </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { setCurrentRecipe } from '../actions/recipeActions';
+import Picture from './Picture';
 import PropTypes from 'prop-types';
 import './styles/RecipeCard.css';
 
@@ -16,10 +17,14 @@ function RecipeCard({ recipe, dispatch }) {
       <h2 className='text-center'>{title}</h2>
       <h3 className='text-muted text-center card-subtitle mb-2'>{subtitle}</h3>
       <div className='d-flex card-thumbnail-summary-container'>
-        <div
-          className='thumbnail rounded mr-3'
-          style={{ backgroundImage: `url(${cardAndHeroImage})` }}
+        <Picture
+          className='thumbnail rounded'
+          url={cardAndHeroImage}
+          width='1000'
+          height='1000'
+          alt={title}
           title={title}
+          loading='lazy'
         />
         <div className='card-summary d-flex flex-column justify-content-between'>
           <p>{summary}</p>

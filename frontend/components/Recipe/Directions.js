@@ -1,10 +1,11 @@
 import React from 'react';
+import Picture from '../Picture';
 import toTitleCase from 'to-title-case';
 import PropTypes from 'prop-types';
 
 function Directions({ directions }) {
   const makeAltAndTitle = str => {
-    const slug = str.split('/').pop().slice(0, -4).split('-').join(' ');
+    const slug = str.split('/').pop().split('-').join(' ');
     return toTitleCase(slug);
   };
 
@@ -16,12 +17,15 @@ function Directions({ directions }) {
         if (str.startsWith('http')) {
           const altAndTitle = makeAltAndTitle(str);
           return (
-            <img
+            <Picture
               key={`${i}-${str}`}
               className='img-fluid rounded w-100'
-              src={str}
+              url={str}
+              width='1000'
+              height='1000'
               alt={altAndTitle}
               title={altAndTitle}
+              loading='lazy'
             />
           );
         } else if (str.startsWith('tada')) {
@@ -29,11 +33,14 @@ function Directions({ directions }) {
           return (
             <div key={`${i}-${str}`}>
               <h2 className='mt-4 mb-4 text-center'>Tada!</h2>
-              <img
-                className='img-fluid rounded w-100 mt-0'
-                src={str.split(' ')[1]}
+              <Picture
+                className='img-fluid rounded w-100 m-0'
+                url={str.split(' ')[1]}
+                width='1000'
+                height='1000'
                 alt={altAndTitle}
                 title={altAndTitle}
+                loading='lazy'
               />
             </div>
           );

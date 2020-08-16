@@ -6,11 +6,16 @@
   font-size: 1rem;
 }
 
-.card .thumbnail {
+.card picture {
   width: 25%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  margin: 0 1rem 0 0;
+}
+
+.card .thumbnail {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
 }
 
 .card .card-summary {
@@ -43,6 +48,11 @@
   }
   .card-thumbnail-summary-container {
     flex-direction: column;
+  }
+
+  .card picture {
+    width: 100%;
+    margin: 0 0 0.5rem 0;
   }
 
   .card .thumbnail {

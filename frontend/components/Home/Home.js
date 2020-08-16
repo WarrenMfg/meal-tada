@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { updateMeta } from '../../utils/utils';
+import Picture from '../Picture';
 import KentAndAmyCard from './KentAndAmyCard';
 import LatestRecipes from './LatestRecipes';
 import Aside from '../Aside/Aside';
@@ -30,8 +31,15 @@ function Home({ state }) {
     <div className='container home mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='hero rounded' title='Home' />
-
+          <Picture
+            className='rounded hero'
+            url='https://meal-tada.s3.amazonaws.com/_general/seasoned-veggies'
+            width='1280'
+            height='1920'
+            alt='Meal Tada'
+            title='Meal Tada'
+            loading='eager'
+          />
           <h1 className='text-center mt-5 mb-5'>Meal Tada</h1>
 
           <div className='row'>

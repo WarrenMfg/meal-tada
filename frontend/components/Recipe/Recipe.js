@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { updateMeta } from '../../utils/utils';
 import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
+import Picture from '../Picture';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
 import Aside from '../Aside/Aside';
@@ -66,10 +67,14 @@ function Recipe({ state }) {
       <div className='container recipe mt-3'>
         <div className='row'>
           <div className='col'>
-            <div
-              className='hero rounded'
-              style={{ backgroundImage: `url(${cardAndHeroImage})` }}
+            <Picture
+              className='rounded hero'
+              url={cardAndHeroImage}
+              width='1000'
+              height='1000'
+              alt={title}
               title={title}
+              loading='eager'
             />
           </div>
         </div>

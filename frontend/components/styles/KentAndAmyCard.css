@@ -3,14 +3,16 @@
   padding: 1.5rem;
 }
 
-.kent-and-amy-container .kent-and-amy {
-  min-width: 25%;
-  height: 200px;
-  background-image: url(https://meal-tada.s3.amazonaws.com/_general/kent-and-amy.jpg);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+.kent-and-amy-container picture {
+  width: 25%;
   margin: 0 1rem 0 0;
+}
+
+.kent-and-amy-container .kent-and-amy {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .kent-and-amy-container p {
@@ -18,10 +20,13 @@
 }
 
 @media (max-width: 767px) {
-  .kent-and-amy-container .kent-and-amy {
+  .kent-and-amy-container picture {
     width: 100%;
     margin: 0;
-    background-position: 50% 27%;
+  }
+
+  .kent-and-amy-container .kent-and-amy {
+    object-position: 50% 27%;
   }
 
   .kent-and-amy-container p {

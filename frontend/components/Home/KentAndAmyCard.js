@@ -1,12 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Picture from '../Picture';
 import PropTypes from 'prop-types';
 import '../styles/KentAndAmyCard.css';
 
 function KentAndAmy({ about1 }) {
   return (
     <div className='kent-and-amy-container d-flex flex-column justify-content-center align-items-center flex-md-row rounded'>
-      <div className='d-flex kent-and-amy rounded' title='Kent and Amy' />
+      <Picture
+        className='d-flex kent-and-amy rounded'
+        url='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy'
+        width='1000'
+        height='1000'
+        alt='Kent and Amy'
+        title='Kent and Amy'
+        loading='eager'
+      />
       <p className='d-flex flex-column mb-0'>
         {about1}
         <Link className='btn btn-info btn-block mt-2' to='/about'>

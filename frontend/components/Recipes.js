@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { updateMeta } from '../utils/utils';
+import Picture from './Picture';
 import RecipeCard from './RecipeCard';
 import Aside from './Aside/Aside';
 import { fetchMoreRecipes } from '../api/fetch';
@@ -57,7 +58,15 @@ function Recipes({ state }) {
     <div className='container recipes mt-3'>
       <div className='row'>
         <div className='col'>
-          <div className='rounded hero' title='Recipes' />
+          <Picture
+            className='rounded hero'
+            url='https://meal-tada.s3.amazonaws.com/_general/edamame'
+            width='1000'
+            height='1000'
+            alt='Recipes'
+            title='Recipes'
+            loading='eager'
+          />
         </div>
       </div>
       <h1 className='mt-5 mb-5 text-center'>Recipes</h1>
