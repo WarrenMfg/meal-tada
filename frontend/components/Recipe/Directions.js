@@ -19,7 +19,7 @@ function Directions({ directions }) {
           return (
             <Picture
               key={`${i}-${str}`}
-              className='img-fluid rounded w-100'
+              className='img-fluid rounded w-100 m-0'
               url={str}
               width='1000'
               height='1000'
@@ -46,7 +46,7 @@ function Directions({ directions }) {
           );
         } else {
           return (
-            <p className='m-0' key={`${i}-${str}`}>
+            <p className='mt-4 mb-4' key={`${i}-${str}`}>
               {str}
             </p>
           );

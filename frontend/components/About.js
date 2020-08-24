@@ -40,9 +40,9 @@ function About({ state }) {
           <div className='row'>
             <div className='col-12 col-lg-9'>
               <div>
-                <p className='m-0'>{about1}</p>
+                <p className='mt-4 mb-4'>{about1}</p>
                 <Picture
-                  className='img-fluid rounded w-100'
+                  className='img-fluid rounded w-100 m-0'
                   url='https://meal-tada.s3.amazonaws.com/_general/kent-and-amy'
                   width='1000'
                   height='1000'
@@ -50,7 +50,16 @@ function About({ state }) {
                   title='Kent and Amy'
                   loading='eager'
                 />
-                <p className='m-0'>{about2}</p>
+                <p className='mt-4 mb-4'>{about2}</p>
+                <Picture
+                  className='img-fluid rounded w-100 m-0'
+                  url='https://meal-tada.s3.amazonaws.com/_general/amy-and-kent'
+                  width='1000'
+                  height='1000'
+                  alt='Amy and Kent'
+                  title='Amy and Kent'
+                  loading='eager'
+                />
               </div>
 
               <Link className='btn btn-info btn-block mt-5 mb-5' to='/recipes'>

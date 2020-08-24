@@ -2,14 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Ingredients({ ingredients }) {
-  const tuples = ingredients.map(obj => Object.entries(obj)[0]);
+  // make tuples
+  const tuples = [];
+  let tuple = [];
+  ingredients.forEach((str, i) => {
+    if (i % 2 === 0) {
+      tuple.push(str);
+    } else {
+      tuple.push(str);
+      tuples.push(tuple);
+      tuple = [];
+    }
+  });
 
   return (
     <ul className='ingredients list-group-flush mb-0'>
       {tuples.map(tuple => {
         return (
           <li
-            key={tuple}
+            key={tuple[0]}
             className='list-group-item d-flex justify-content-between align-items-center'
           >
             <span className='mr-3'>{tuple[0]}</span>
@@ -22,7 +33,7 @@ function Ingredients({ ingredients }) {
 }
 
 Ingredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+  ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
 };
 
 export default Ingredients;

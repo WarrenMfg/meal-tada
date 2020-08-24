@@ -1,0 +1,27 @@
+.social-share h2 {
+  font-size: 1.5rem;
+}
+
+.social-share .social-share-flex-container a {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  margin: 0 8px;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.social-share .social-share-flex-container a:hover {
+  opacity: 0.9;
+}
+
+.social-share .social-share-flex-container a > img {
+  width: 24px;
+  height: 24px;
+}

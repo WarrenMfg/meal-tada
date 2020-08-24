@@ -1,13 +1,19 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import SocialShare from './SocialShare';
 import AsideSearch from './AsideSearch';
 import AsideTopFive from './AsideTopFive';
 import PropTypes from 'prop-types';
 
 function Aside({ topFives, dispatch }) {
+  const { pathname } = useLocation();
+
   return (
     <div className='col-12 col-lg-3'>
       <aside>
         <AsideSearch dispatch={dispatch} />
+
+        {pathname.startsWith('/recipe/') && <SocialShare />}
 
         {topFives.map(topFive => (
           <AsideTopFive

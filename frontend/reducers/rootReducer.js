@@ -41,6 +41,9 @@ const rootReducer = () => {
   // makes fetch use dispatch API
   const dispatch = (action, ...args) => {
     if (typeof action === 'function') {
+      // can move combined state above this,
+      // and pass in combined state after dispatchForLoop,
+      // so functions have access to both dispatch and state
       action(dispatchForLoop, ...args);
     } else {
       dispatchForLoop(action);
