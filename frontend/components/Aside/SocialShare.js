@@ -3,13 +3,14 @@ import withGlobalStore from '../../store/withGlobalStore.js';
 import twitterPNG from '../../images/twitter.png';
 import facebookPNG from '../../images/facebook.png';
 import instagramPNG from '../../images/instagram.png';
+import pinterestPNG from '../../images/pinterest.png';
 import PropTypes from 'prop-types';
 import '../styles/SocialShare.css';
 
 function SocialShare({ state }) {
   const {
     recipes: {
-      currentRecipe: { instagram }
+      currentRecipe: { instagram, cardAndHeroImage, title }
     }
   } = state;
 
@@ -20,8 +21,6 @@ function SocialShare({ state }) {
         {/* Instagram */}
         <a
           href={`https://www.instagram.com/p/${instagram}/?utm_source=ig_embed`}
-          data-size='large'
-          data-show-count='false'
           rel='noreferrer'
           target='_blank'
         >
@@ -30,18 +29,12 @@ function SocialShare({ state }) {
 
         {/* Twitter */}
         <a
-          href='https://twitter.com/share?ref_src=twsrc%5Etfw'
-          className='twitter-share-button'
-          data-size='large'
-          data-show-count='false'
+          href={`https://twitter.com/intent/tweet?url=${window.location.href}`}
+          rel='noreferrer'
+          target='_blank'
         >
           <img src={twitterPNG} />
         </a>
-        <script
-          async
-          src='https://platform.twitter.com/widgets.js'
-          charSet='utf-8'
-        ></script>
 
         {/* Facebook */}
         <div id='fb-root'></div>
@@ -69,6 +62,24 @@ function SocialShare({ state }) {
             <img src={facebookPNG} />
           </a>
         </div>
+
+        {/* Pinterest */}
+        <script
+          type='text/javascript'
+          async
+          defer
+          src='//assets.pinterest.com/js/pinit.js'
+          data-pin-error
+        ></script>
+        <a
+          href={`https://www.pinterest.com/pin/create/button/?url=${window.location.href}&media=${cardAndHeroImage}.jpg&description=${title}`}
+          target='_blank'
+          rel='noreferrer'
+          data-pin-custom='true'
+          data-pin-do='buttonPin'
+        >
+          <img src={pinterestPNG} />
+        </a>
       </div>
     </div>
   );

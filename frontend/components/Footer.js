@@ -10,9 +10,13 @@ function Footer() {
     <div className='footer-basic'>
       <footer>
         <div className='d-flex justify-content-center social'>
-          <Link to='/'>
+          <a
+            href='https://www.instagram.com/mealtada/'
+            target='_blank'
+            rel='noreferrer'
+          >
             <img src={instagram} />
-          </Link>
+          </a>
           <Link to='/'>
             <img src={twitter} />
           </Link>
