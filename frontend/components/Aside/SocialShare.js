@@ -1,13 +1,33 @@
 import React from 'react';
-import twitter from '../../images/twitter.png';
-import facebook from '../../images/facebook.png';
+import withGlobalStore from '../../store/withGlobalStore.js';
+import twitterPNG from '../../images/twitter.png';
+import facebookPNG from '../../images/facebook.png';
+import instagramPNG from '../../images/instagram.png';
+import PropTypes from 'prop-types';
 import '../styles/SocialShare.css';
 
-function SocialShare() {
+function SocialShare({ state }) {
+  const {
+    recipes: {
+      currentRecipe: { instagram }
+    }
+  } = state;
+
   return (
     <div className='social-share mb-3'>
       <h2 className='text-center'>Share Recipe</h2>
       <div className='d-flex justify-content-center social-share-flex-container'>
+        {/* Instagram */}
+        <a
+          href={`https://www.instagram.com/p/${instagram}/?utm_source=ig_embed`}
+          data-size='large'
+          data-show-count='false'
+          rel='noreferrer'
+          target='_blank'
+        >
+          <img src={instagramPNG} />
+        </a>
+
         {/* Twitter */}
         <a
           href='https://twitter.com/share?ref_src=twsrc%5Etfw'
@@ -15,13 +35,14 @@ function SocialShare() {
           data-size='large'
           data-show-count='false'
         >
-          <img src={twitter} />
+          <img src={twitterPNG} />
         </a>
         <script
           async
           src='https://platform.twitter.com/widgets.js'
           charSet='utf-8'
         ></script>
+
         {/* Facebook */}
         <div id='fb-root'></div>
         <script
@@ -45,7 +66,7 @@ function SocialShare() {
             )}`}
             className='fb-xfbml-parse-ignore'
           >
-            <img src={facebook} />
+            <img src={facebookPNG} />
           </a>
         </div>
       </div>
@@ -53,4 +74,8 @@ function SocialShare() {
   );
 }
 
-export default SocialShare;
+SocialShare.propTypes = {
+  state: PropTypes.object.isRequired
+};
+
+export default withGlobalStore(SocialShare);
