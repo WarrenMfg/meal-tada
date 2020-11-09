@@ -58,8 +58,7 @@ function Recipe({ state }) {
       time,
       servings,
       summary,
-      directions,
-      instagram
+      directions
     } = currentRecipe;
     const { topFives } = state.general;
     const { dispatch } = state;
@@ -88,7 +87,7 @@ function Recipe({ state }) {
               servings={servings}
               summary={summary}
             />
-            <Directions directions={directions} instagram={instagram} />
+            <Directions directions={directions} />
             <button
               className='btn btn-info btn-block mt-5 mb-5'
               onClick={handleBackButton}
