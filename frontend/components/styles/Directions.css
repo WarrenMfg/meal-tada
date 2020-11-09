@@ -1,0 +1,13 @@
+.instagram-container {
+  display: block;
+  overflow: hidden;
+  box-shadow: 0 0 35px lightgray;
+}
+
+.instagram {
+  transition: 2s transform ease;
+}
+
+.instagram:hover {
+  transform: scale(1.1);
+}

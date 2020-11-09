@@ -2,6 +2,7 @@ import React from 'react';
 import Picture from '../Picture';
 import toTitleCase from 'to-title-case';
 import PropTypes from 'prop-types';
+import '../styles/Directions.css';
 
 function Directions({ directions }) {
   const makeAltAndTitle = str => {
@@ -38,9 +39,10 @@ function Directions({ directions }) {
                 href={`https://www.instagram.com/p/${split[2]}`}
                 target='_blank'
                 rel='noreferrer'
+                className='rounded instagram-container'
               >
                 <Picture
-                  className='img-fluid rounded w-100 m-0'
+                  className='img-fluid w-100 m-0 instagram'
                   url={str.split(' ')[1]}
                   width='1000'
                   height='1000'
