@@ -14,12 +14,16 @@ function ErrorMaskingDiv({
   const history = useHistory();
 
   const handleRefresh = () => {
+    // clear error
     dispatch(clearError());
+    // reload
     window.location.reload();
   };
 
   const handleGoBack = () => {
+    // clear error
     dispatch(clearError());
+    // go back
     history.goBack();
   };
 
