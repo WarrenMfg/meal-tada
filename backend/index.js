@@ -31,15 +31,6 @@ app.use(
     }
   }
 );
-// everything else
-app.use(
-  '/',
-  (req, res, next) => {
-    // res.set({ 'Cache-Control': 'public, max-age=604800, immutable' });
-    next();
-  },
-  express.static(resolve(__dirname, '../distFrontend'))
-);
 
 (async () => {
   try {
@@ -48,6 +39,25 @@ app.use(
 
     // setup routes
     routes(app, db);
+
+    // redirect 404s to '/'
+    app.get(
+      '*',
+      (req, res, next) => {
+        // res.set({ 'Cache-Control': 'public, max-age=604800, immutable' });
+        next();
+      },
+      express.static(resolve(__dirname, '../distFrontend')),
+      (req, res) => {
+        try {
+          // res.set({ 'Cache-Control': 'public, max-age=604800, immutable' });
+          res.redirect('/');
+        } catch (err) {
+          console.log(err.message, err.stack);
+          res.sendStatus(404).json({ message: 'Not found' });
+        }
+      }
+    );
 
     // connect express
     app.listen(process.env.PORT, () =>
