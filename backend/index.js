@@ -19,7 +19,8 @@ app.use(
     '/recipes',
     '/about',
     `/search\*` /* eslint-disable-line */,
-    '/search'
+    '/search',
+    '/admin'
   ],
   (req, res) => {
     try {
