@@ -1,21 +1,25 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { clearError } from '../actions/errorActions';
 import withGlobalStore from '../store/withGlobalStore';
 import PropTypes from 'prop-types';
 import './styles/ErrorMaskingDiv.css';
 
 function ErrorMaskingDiv({
   state: {
-    error: { message }
+    error: { message },
+    dispatch
   }
 }) {
   const history = useHistory();
 
   const handleRefresh = () => {
+    dispatch(clearError());
     window.location.reload();
   };
 
   const handleGoBack = () => {
+    dispatch(clearError());
     history.goBack();
   };
 
@@ -42,12 +46,9 @@ ErrorMaskingDiv.propTypes = {
   state: PropTypes.shape({
     error: PropTypes.shape({
       message: PropTypes.any
-    }).isRequired
+    }).isRequired,
+    dispatch: PropTypes.func.isRequired
   }).isRequired
 };
-
-// state: {
-//   error: { message }
-// }
 
 export default withGlobalStore(ErrorMaskingDiv);
