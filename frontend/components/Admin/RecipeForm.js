@@ -25,6 +25,9 @@ function Form({ state }) {
     activeRecipe.directions?.join('\n\n') || ''
   );
   const [instagram, setInstagram] = useState(activeRecipe.instagram || '');
+  const [isPublished, setIsPublished] = useState(
+    activeRecipe.isPublished || false
+  );
 
   const handleSetCategories = e => {
     if (!e.metaKey) return;
@@ -166,7 +169,13 @@ function Form({ state }) {
         />
       </div>
       <div className='custom-control custom-switch d-flex justify-content-center align-items-center'>
-        <input type='checkbox' className='custom-control-input' id='publish' />
+        <input
+          type='checkbox'
+          className='custom-control-input'
+          id='publish'
+          value={isPublished}
+          onChange={() => setIsPublished(!isPublished)}
+        />
         <label className='custom-control-label' htmlFor='publish'>
           Publish
         </label>
@@ -203,3 +212,5 @@ function ingredientsToString(ingredients) {
 
   return str;
 }
+
+function validateRecipeSubmission() {}
