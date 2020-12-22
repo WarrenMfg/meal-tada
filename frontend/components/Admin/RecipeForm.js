@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import withGlobalStore from '../../store/withGlobalStore';
+import validateRecipe from '../../utils/validateRecipe';
 
-function Form({ state }) {
-  const {
-    admin: { activeRecipe }
-  } = state;
+function Form({ activeRecipe, dispatch }) {
+  console.log('Form:', activeRecipe);
+  // state
   const [title, setTitle] = useState(activeRecipe.title || '');
   const [slug, setSlug] = useState(activeRecipe.slug || '');
   const [subtitle, setSubtitle] = useState(activeRecipe.subtitle || '');
@@ -15,11 +14,11 @@ function Form({ state }) {
       ingredientsToString(activeRecipe.ingredients)) ||
       ''
   );
-  const [prepTime, setPrepTime] = useState(activeRecipe.time?.prep || ''); // parseInt
-  const [cookTime, setCookTime] = useState(activeRecipe.time?.cook || ''); // parseInt
+  const [prepTime, setPrepTime] = useState(activeRecipe.time?.prep || '');
+  const [cookTime, setCookTime] = useState(activeRecipe.time?.cook || '');
   const [servings, setServings] = useState(
     activeRecipe.servings?.join(' to ') || ''
-  ); // parse
+  );
   const [summary, setSummary] = useState(activeRecipe.summary || []);
   const [directions, setDirections] = useState(
     activeRecipe.directions?.join('\n\n') || ''
@@ -28,7 +27,7 @@ function Form({ state }) {
   const [isPublished, setIsPublished] = useState(
     activeRecipe.isPublished || false
   );
-
+  // select element helper
   const handleSetCategories = e => {
     if (!e.metaKey) return;
     const i = categories.indexOf(e.target.value);
@@ -36,6 +35,46 @@ function Form({ state }) {
       setCategories([...categories.splice(0, i), ...categories.splice(i + 1)]);
     } else {
       setCategories([...categories, e.target.value]);
+    }
+  };
+  // update recipe
+  const handleUpdateRecipe = e => {
+    e.preventDefault();
+
+    const recipe = Object.assign({}, activeRecipe, {
+      title,
+      slug,
+      subtitle,
+      categories,
+      ingredients,
+      time: {
+        prep: prepTime,
+        cook: cookTime
+      },
+      servings,
+      summary,
+      directions,
+      instagram,
+      isPublished
+    });
+
+    const errors = validateRecipe(recipe);
+    if (errors) {
+      // show toasts
+    } else {
+      // dispatch upsert fetch (update activeRecipe in fetch handler)
+    }
+  };
+
+  // submit recipe
+  const handleSubmitRecipe = e => {
+    e.preventDefault();
+
+    const errors = validateRecipe();
+    if (errors) {
+      // show toasts
+    } else {
+      // dispatch upsert fetch (clear activeRecipe in fetch handler)
     }
   };
 
@@ -185,10 +224,18 @@ function Form({ state }) {
         role='group'
         aria-label='Update or Submit'
       >
-        <button className='btn btn-info' type='button'>
+        <button
+          className='btn btn-info'
+          type='button'
+          onClick={handleUpdateRecipe}
+        >
           Update
         </button>
-        <button className='btn btn-primary' type='button'>
+        <button
+          className='btn btn-primary'
+          type='button'
+          onClick={handleSubmitRecipe}
+        >
           Submit
         </button>
       </div>
@@ -197,10 +244,11 @@ function Form({ state }) {
 }
 
 Form.propTypes = {
-  state: PropTypes.object.isRequired
+  activeRecipe: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
-export default withGlobalStore(Form);
+export default Form;
 
 // HELPER FUNCTIONS
 
@@ -212,5 +260,3 @@ function ingredientsToString(ingredients) {
 
   return str;
 }
-
-function validateRecipeSubmission() {}

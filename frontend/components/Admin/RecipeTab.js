@@ -6,8 +6,7 @@ import Loading from '../Loading';
 import { fetchAdminRecipeSearchResults } from '../../api/fetch';
 import {
   clearAdminRecipeSearchResults,
-  setActiveRecipe,
-  clearActiveRecipe
+  setActiveRecipe
 } from '../../actions/adminActions';
 import searchIcon from '../../images/magnifier.png';
 
@@ -28,13 +27,14 @@ function RecipeTab({ state }) {
 
   const handleAddNewRecipe = () => {
     dispatch(clearAdminRecipeSearchResults());
-    clearActiveRecipe({});
+    dispatch(setActiveRecipe({}));
   };
 
   const handleClickRow = ({ target }) => {
     const row = target.closest('tr');
     const recipe = adminRecipeSearchResults.find(obj => obj._id === row.id);
-    setActiveRecipe(recipe);
+    console.log(recipe);
+    dispatch(setActiveRecipe(recipe));
   };
 
   return (
@@ -69,7 +69,9 @@ function RecipeTab({ state }) {
         />
       )}
 
-      {activeRecipe && <RecipeForm activeRecipe={activeRecipe} />}
+      {activeRecipe && (
+        <RecipeForm activeRecipe={activeRecipe} dispatch={dispatch} />
+      )}
     </div>
   );
 }

@@ -23,7 +23,7 @@ export const adminReducer = (state, action) => {
     case 'CLEAR_ACTIVE_RECIPE':
       return {
         ...state,
-        activeRecipe: {}
+        activeRecipe: null
       };
     default:
       return state;
@@ -33,5 +33,5 @@ export const adminReducer = (state, action) => {
 export const adminInitialState = {
   adminUser: {},
   adminRecipeSearchResults: [],
-  activeRecipe: {}
+  activeRecipe: null
 };
