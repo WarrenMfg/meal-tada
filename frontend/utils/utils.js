@@ -6,6 +6,12 @@ export const parseAndHandleErrors = async res => {
   }
 };
 
+export const wait = async ms => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(), ms);
+  });
+};
+
 export const updateMeta = ({ title, description, image }) => {
   const jpg = `${image}.jpg`;
 

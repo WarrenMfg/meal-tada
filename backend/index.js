@@ -5,6 +5,9 @@ import morgan from 'morgan';
 import { resolve } from 'path';
 import connect from './db';
 import routes from './routes';
+import adminRoutes from './adminRoutes';
+import jwt from 'jsonwebtoken';
+import jwtDecode from 'jwt-decode';
 
 const app = express();
 app.disable('etag').disable('x-powered-by');
@@ -12,6 +15,31 @@ app.disable('etag').disable('x-powered-by');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// verify JWT
+app.use((req, res, next) => {
+  try {
+    if (req.headers?.authorization?.split(' ')[0] === 'MTA') {
+      const token = req.headers.authorization.split(' ')[1];
+      jwt.verify(token, process.env.SECRET, (err, decode) => {
+        if (err) {
+          req.expiredUser = jwtDecode(token);
+          req.user = undefined;
+        } else {
+          // for isAuthed middleware
+          req.user = decode;
+        }
+        next();
+      });
+    } else {
+      req.user = undefined;
+      next();
+    }
+  } catch (e) {
+    res.sendStatus(400);
+  }
+});
+
 // for direct navigation
 app.use(
   [
@@ -38,10 +66,13 @@ app.use(
     // connect mongodb
     const db = await connect();
 
-    // setup routes
+    // setup public routes
     routes(app, db);
 
-    // redirect 404s to '/'
+    // setup admin routes
+    adminRoutes(app, db);
+
+    // redirect route for 404s
     app.get(
       '*',
       (req, res, next) => {

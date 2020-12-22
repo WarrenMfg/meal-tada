@@ -9,6 +9,7 @@ import Footer from './Footer';
 import LoadingMaskingDiv from './LoadingMaskingDiv';
 import ErrorMaskingDiv from './ErrorMaskingDiv';
 import Recipe from './Recipe/Recipe';
+import Admin from './Admin/Admin';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function Switcheroo() {
       <Route path='/about' component={About} />
       <Route path='/search' component={Search} />
       <Route path='/recipe/:name' component={Recipe} />
+      <Route path='/admin' component={Admin} />
     </Switch>
   );
 }

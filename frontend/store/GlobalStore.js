@@ -13,7 +13,8 @@ function GlobalStore({ children }) {
 
   useEffect(() => {
     // on load, Recipe component makes own fetch request
-    if (!location.pathname.includes('recipe/')) {
+    // on load, Admin component doesn't need fetchInit
+    if (!['recipe/'].includes(location.pathname)) {
       dispatch(fetchInit);
     }
   }, []);
