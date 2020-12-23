@@ -4,7 +4,7 @@ import toTitleCase from 'to-title-case';
 import PropTypes from 'prop-types';
 import '../styles/Directions.css';
 
-function Directions({ directions }) {
+function Directions({ directions, instagram }) {
   const makeAltAndTitle = str => {
     const slug = str.split('/').pop().split('-').join(' ');
     return toTitleCase(slug);
@@ -36,14 +36,14 @@ function Directions({ directions }) {
             <div key={`${i}-${str}`}>
               <h2 className='mt-4 mb-4 text-center'>Tada!</h2>
               <a
-                href={`https://www.instagram.com/p/${split[2]}`}
+                href={`https://www.instagram.com/p/${instagram}`}
                 target='_blank'
                 rel='noreferrer'
                 className='rounded instagram-container'
               >
                 <Picture
                   className='img-fluid w-100 m-0 instagram'
-                  url={str.split(' ')[1]}
+                  url={split[1]}
                   width='1000'
                   height='1000'
                   alt={altAndTitle}
@@ -66,7 +66,8 @@ function Directions({ directions }) {
 }
 
 Directions.propTypes = {
-  directions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+  directions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  instagram: PropTypes.string.isRequired
 };
 
 export default Directions;

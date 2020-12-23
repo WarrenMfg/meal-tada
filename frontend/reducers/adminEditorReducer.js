@@ -44,4 +44,5 @@ export const adminEditorInitialState = {
   directions: '',
   instagram: '',
   isPublished: false
+  // createdAt and updatedAt are handled on backend
 };

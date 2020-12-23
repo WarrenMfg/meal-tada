@@ -32,7 +32,7 @@ export default (app, db) => {
       const initialRecipes = await db
         .collection('recipes')
         .aggregate([
-          { $match: {} },
+          { $match: { isPublished: true } },
           { $sort: { createdAt: -1 } },
           { $limit: 20 }
         ])
@@ -59,7 +59,7 @@ export default (app, db) => {
       const initialRecipes = await db
         .collection('recipes')
         .aggregate([
-          { $match: {} },
+          { $match: { isPublished: true } },
           { $sort: { createdAt: -1 } },
           { $limit: 20 }
         ])
@@ -69,7 +69,11 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
-      res.send({ general, initialRecipes, currentRecipe });
+      if (currentRecipe.isPublished) {
+        res.send({ general, initialRecipes, currentRecipe });
+      } else {
+        throw new Error();
+      }
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
@@ -88,7 +92,12 @@ export default (app, db) => {
       const moreRecipes = await db
         .collection('recipes')
         .aggregate([
-          { $match: { createdAt: { $lt: lastRecipeCreatedAt } } },
+          {
+            $match: {
+              isPublished: true,
+              createdAt: { $lt: lastRecipeCreatedAt }
+            }
+          },
           { $sort: { createdAt: -1 } },
           { $limit: 20 }
         ])
@@ -112,7 +121,11 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
-      res.send(currentRecipe);
+      if (currentRecipe.isPublished) {
+        res.send(currentRecipe);
+      } else {
+        throw new Error();
+      }
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
@@ -158,7 +171,7 @@ export default (app, db) => {
       if (phrase) {
         phrase =
           exact === 'true' ? `\"${phrase}\"` : phrase; /* eslint-disable-line */
-        agg.push({ $match: { $text: { $search: phrase } } });
+        agg.push({ $match: { isPublished: true, $text: { $search: phrase } } });
         agg.push({ $sort: { score: { $meta: 'textScore' } } });
       }
 

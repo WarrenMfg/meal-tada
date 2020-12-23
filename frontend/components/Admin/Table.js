@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './styles/Table.css';
 
 function Table({ title, rows, handleClickRow }) {
   return (
     <table
       id='example'
-      className='table table-striped table-bordered'
+      className='table table-striped border'
       cellSpacing='0'
       width='100%'
     >
-      <thead>
+      <thead className='shadow-sm'>
         <tr>
-          <th>{title}</th>
+          <th className='border-0'>{title}</th>
         </tr>
       </thead>
       <tbody>

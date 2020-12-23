@@ -22,15 +22,15 @@ export const adminReducer = (state, action) => {
       });
       return {
         ...state,
-        errors: action.payload
+        recipeFormErrors: action.payload
       };
     case 'CLEAR_RECIPE_FORM_ERRORS':
-      state.errors.forEach(name => {
+      state.recipeFormErrors.forEach(name => {
         document.querySelector(`[name=${name}]`).classList.remove('is-invalid');
       });
       return {
         ...state,
-        errors: []
+        recipeFormErrors: []
       };
     default:
       return state;
@@ -40,5 +40,5 @@ export const adminReducer = (state, action) => {
 export const adminInitialState = {
   adminUser: {},
   adminRecipeSearchResults: [],
-  errors: []
+  recipeFormErrors: []
 };

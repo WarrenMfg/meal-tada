@@ -1,12 +1,15 @@
 import React from 'react';
+import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import { updateProperty } from '../../actions/adminEditorActions';
 import { setRecipeFormErrors } from '../../actions/adminActions';
 import { validateRecipe } from '../../utils/adminUtils';
+import { fetchUpsertRecipe } from '../../api/adminFetch';
 
 function RecipeForm({ activeRecipe, dispatch }) {
   let {
     title,
+    slug,
     subtitle,
     categories,
     ingredients,
@@ -18,6 +21,10 @@ function RecipeForm({ activeRecipe, dispatch }) {
     instagram,
     isPublished
   } = activeRecipe;
+
+  const summaryWordCount = summary.trim().length
+    ? summary.trim().split(' ').length
+    : 0;
 
   // input change handler
   const handleInputChange = (key, value) => {
@@ -38,16 +45,22 @@ function RecipeForm({ activeRecipe, dispatch }) {
     }
   };
 
+  // handle errors
+  const handleValidationErrors = errors => {
+    dispatch(setRecipeFormErrors(errors));
+    window.scrollTo(0, 0);
+    toast.error('Please fix form errors.');
+  };
+
   // update recipe
   const handleUpdateRecipe = e => {
     e.preventDefault();
 
     const validationResponse = validateRecipe(activeRecipe);
     if (Array.isArray(validationResponse)) {
-      dispatch(setRecipeFormErrors(validationResponse));
+      handleValidationErrors(validationResponse);
     } else {
-      // dispatch upsert fetch (update activeRecipe in fetch handler)
-      console.log(validationResponse);
+      dispatch(fetchUpsertRecipe, validationResponse, false); // false --> isSubmit
     }
   };
 
@@ -57,14 +70,14 @@ function RecipeForm({ activeRecipe, dispatch }) {
 
     const validationResponse = validateRecipe(activeRecipe);
     if (Array.isArray(validationResponse)) {
-      handleErrors(validationResponse);
+      handleValidationErrors(validationResponse);
     } else {
-      // dispatch upsert fetch (clear activeRecipe in fetch handler)
+      dispatch(fetchUpsertRecipe, validationResponse, true); // true --> isSubmit
     }
   };
 
   return (
-    <form className='mt-4'>
+    <form className='mt-5'>
       <div className='form-group'>
         <label>Title</label>
         <input
@@ -75,7 +88,10 @@ function RecipeForm({ activeRecipe, dispatch }) {
           value={title}
           onChange={({ target }) => {
             handleInputChange(target.name, target.value);
-            handleInputChange('slug', target.value);
+            handleInputChange(
+              'slug',
+              target.value.toLowerCase().replace(/\s+/g, '-').replace(/,/g, '')
+            );
           }}
           onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
@@ -86,7 +102,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
           type='text'
           className='form-control'
           placeholder='Slug'
-          value={title.toLowerCase().replace(/\s+/g, '-')}
+          value={slug}
           disabled
         />
       </div>
@@ -133,6 +149,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
       </div>
       <div className='form-group'>
         <label>Ingredients</label>
+        <small className='d-block mb-1'>Ingredient: Quantity</small>
         <textarea
           className='form-control'
           placeholder='Ingredients'
@@ -191,6 +208,9 @@ function RecipeForm({ activeRecipe, dispatch }) {
       </div>
       <div className='form-group'>
         <label>Summary</label>
+        <small className='d-block mb-1'>
+          About 60 words. Current word count: {summaryWordCount}
+        </small>
         <textarea
           className='form-control'
           placeholder='Summary'
@@ -205,6 +225,9 @@ function RecipeForm({ activeRecipe, dispatch }) {
       </div>
       <div className='form-group'>
         <label>Directions</label>
+        <small className='d-block mb-1'>
+          Placeholder for images: &quot;/image descriptive-image-title&quot;
+        </small>
         <textarea
           className='form-control'
           placeholder='Directions'
@@ -218,11 +241,11 @@ function RecipeForm({ activeRecipe, dispatch }) {
         />
       </div>
       <div className='form-group'>
-        <label>Instagram</label>
+        <label>Instagram ID</label>
         <input
           type='text'
           className='form-control'
-          placeholder='Instagram'
+          placeholder='Instagram ID'
           name='instagram'
           value={instagram}
           onChange={({ target }) =>
@@ -236,9 +259,9 @@ function RecipeForm({ activeRecipe, dispatch }) {
           className='custom-control-input'
           id='publish'
           name='isPublished'
-          value={isPublished}
+          checked={isPublished}
           onChange={({ target }) =>
-            handleInputChange(target.name, target.value)
+            handleInputChange(target.name, target.checked)
           }
         />
         <label className='custom-control-label' htmlFor='publish'>

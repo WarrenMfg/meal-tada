@@ -1,0 +1,22 @@
+table {
+  display: block;
+}
+
+tbody {
+  cursor: pointer;
+  display: block;
+  max-height: 245px;
+  overflow-y: scroll;
+}
+
+thead,
+th,
+tr,
+td {
+  display: block;
+  width: 100%;
+}
+
+table {
+  border-radius: 5px;
+}

@@ -26,6 +26,8 @@ function RecipeTab({ state }) {
     e.preventDefault();
     if (!searchQuery) return;
     dispatch(fetchAdminRecipeSearchResults, searchQuery);
+    // update form
+    dispatch(initializeState(adminEditorInitialState));
     setSearchQuery('');
   };
 
@@ -34,15 +36,22 @@ function RecipeTab({ state }) {
     dispatch(clearRecipeFormErrors());
     // clear search results
     dispatch(clearAdminRecipeSearchResults());
-    // update state
+    // update form
     dispatch(initializeState(adminEditorInitialState));
   };
 
   const handleClickRow = ({ target }) => {
     // clear errors
     dispatch(clearRecipeFormErrors());
-    // handl click
+    // clear form
+    dispatch(initializeState(adminEditorInitialState));
+    // remove active recipe classes
+    Array.from(target.closest('tbody').children).forEach(child =>
+      child.classList.remove('bg-primary', 'text-white')
+    );
+    // handle click
     const row = target.closest('tr');
+    row.classList.add('bg-primary', 'text-white');
     const recipe = adminRecipeSearchResults.find(obj => obj._id === row.id);
     dispatch(initializeState(recipe));
   };

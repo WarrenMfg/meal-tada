@@ -1,4 +1,5 @@
 import React, { useEffect, createContext } from 'react';
+import { Toaster } from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth';
 import adminRootReducer from '../../reducers/adminRootReducer';
 import Tabs from './Tabs';
@@ -34,6 +35,14 @@ function Admin() {
           </div>
         </div>
       </div>
+      <Toaster
+        toastOptions={{
+          duration: 4000,
+          style: {
+            margin: '35px'
+          }
+        }}
+      />
     </Provider>
   );
 }
