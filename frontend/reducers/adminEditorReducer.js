@@ -4,7 +4,6 @@ export const adminEditorReducer = (state, action) => {
   switch (action.type) {
     case 'INITIALIZE_STATE': {
       const recipe = action.payload;
-      console.log(recipe);
       // make type adjustments
       if (Array.isArray(recipe.ingredients))
         recipe.ingredients = ingredientsToString(recipe.ingredients);

@@ -4,7 +4,10 @@ import Table from './Table';
 import RecipeForm from './RecipeForm';
 import Loading from '../Loading';
 import { fetchAdminRecipeSearchResults } from '../../api/adminFetch';
-import { clearAdminRecipeSearchResults } from '../../actions/adminActions';
+import {
+  clearAdminRecipeSearchResults,
+  clearRecipeFormErrors
+} from '../../actions/adminActions';
 import { adminEditorInitialState } from '../../reducers/adminEditorReducer';
 import { initializeState } from '../../actions/adminEditorActions';
 import searchIcon from '../../images/magnifier.png';
@@ -27,11 +30,18 @@ function RecipeTab({ state }) {
   };
 
   const handleAddNewRecipe = () => {
+    // clear errors
+    dispatch(clearRecipeFormErrors());
+    // clear search results
     dispatch(clearAdminRecipeSearchResults());
+    // update state
     dispatch(initializeState(adminEditorInitialState));
   };
 
   const handleClickRow = ({ target }) => {
+    // clear errors
+    dispatch(clearRecipeFormErrors());
+    // handl click
     const row = target.closest('tr');
     const recipe = adminRecipeSearchResults.find(obj => obj._id === row.id);
     dispatch(initializeState(recipe));

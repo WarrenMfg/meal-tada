@@ -15,6 +15,23 @@ export const adminReducer = (state, action) => {
         ...state,
         adminRecipeSearchResults: []
       };
+    case 'SET_RECIPE_FORM_ERRORS':
+      action.payload.forEach(name => {
+        document.querySelector(`[name=${name}]`).classList.add('is-invalid');
+        window.scrollTo(0, 0);
+      });
+      return {
+        ...state,
+        errors: action.payload
+      };
+    case 'CLEAR_RECIPE_FORM_ERRORS':
+      state.errors.forEach(name => {
+        document.querySelector(`[name=${name}]`).classList.remove('is-invalid');
+      });
+      return {
+        ...state,
+        errors: []
+      };
     default:
       return state;
   }
@@ -22,5 +39,6 @@ export const adminReducer = (state, action) => {
 
 export const adminInitialState = {
   adminUser: {},
-  adminRecipeSearchResults: []
+  adminRecipeSearchResults: [],
+  errors: []
 };

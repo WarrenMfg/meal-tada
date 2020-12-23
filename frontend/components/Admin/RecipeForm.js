@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { updateProperty } from '../../actions/adminEditorActions';
+import { setRecipeFormErrors } from '../../actions/adminActions';
 import { validateRecipe } from '../../utils/adminUtils';
 
-function Form({ activeRecipe, dispatch }) {
+function RecipeForm({ activeRecipe, dispatch }) {
   let {
     title,
     subtitle,
@@ -37,21 +38,13 @@ function Form({ activeRecipe, dispatch }) {
     }
   };
 
-  // handle errors
-  const handleErrors = errors => {
-    errors.forEach(name => {
-      document.querySelector(`[name=${name}]`).classList.add('is-invalid');
-      window.scrollTo(0, 0);
-    });
-  };
-
   // update recipe
   const handleUpdateRecipe = e => {
     e.preventDefault();
 
     const validationResponse = validateRecipe(activeRecipe);
     if (Array.isArray(validationResponse)) {
-      handleErrors(validationResponse);
+      dispatch(setRecipeFormErrors(validationResponse));
     } else {
       // dispatch upsert fetch (update activeRecipe in fetch handler)
       console.log(validationResponse);
@@ -276,9 +269,9 @@ function Form({ activeRecipe, dispatch }) {
   );
 }
 
-Form.propTypes = {
+RecipeForm.propTypes = {
   activeRecipe: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
-export default Form;
+export default RecipeForm;

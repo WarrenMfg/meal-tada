@@ -1,8 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { clearRecipeFormErrors } from '../../actions/adminActions';
 
-export default function TabList() {
+export default function Tabs({ dispatch }) {
   return (
-    <ul className='nav nav-tabs' role='tablist'>
+    <ul
+      className='nav nav-tabs'
+      role='tablist'
+      onClick={() => dispatch(clearRecipeFormErrors())}
+    >
       <li className='nav-item flex-grow-1' role='presentation' title='Editor'>
         <a
           className='nav-link active text-center'
@@ -50,6 +56,10 @@ export default function TabList() {
     </ul>
   );
 }
+
+Tabs.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
 
 export const tabTwo = () => (
   <div className='tab-pane' role='tabpanel' id='tab-2'>

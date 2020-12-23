@@ -25,7 +25,7 @@ function Admin() {
           <div className='col-12'>
             <main>
               <div>
-                <Tabs />
+                <Tabs dispatch={combinedState.dispatch} />
                 <div className='tab-content'>
                   <RecipeTab state={combinedState} />
                 </div>

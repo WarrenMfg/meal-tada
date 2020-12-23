@@ -11,3 +11,12 @@ export const setAdminRecipeSearchResults = data => ({
 export const clearAdminRecipeSearchResults = () => ({
   type: 'CLEAR_ADMIN_RECIPE_SEARCH_RESULTS'
 });
+
+export const setRecipeFormErrors = errors => ({
+  type: 'SET_RECIPE_FORM_ERRORS',
+  payload: errors
+});
+
+export const clearRecipeFormErrors = () => ({
+  type: 'CLEAR_RECIPE_FORM_ERRORS'
+});
