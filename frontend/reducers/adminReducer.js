@@ -15,16 +15,6 @@ export const adminReducer = (state, action) => {
         ...state,
         adminRecipeSearchResults: []
       };
-    case 'SET_ACTIVE_RECIPE':
-      return {
-        ...state,
-        activeRecipe: action.payload
-      };
-    case 'CLEAR_ACTIVE_RECIPE':
-      return {
-        ...state,
-        activeRecipe: null
-      };
     default:
       return state;
   }
@@ -32,6 +22,5 @@ export const adminReducer = (state, action) => {
 
 export const adminInitialState = {
   adminUser: {},
-  adminRecipeSearchResults: [],
-  activeRecipe: null
+  adminRecipeSearchResults: []
 };

@@ -1,68 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import validateRecipe from '../../utils/validateRecipe';
+import { updateProperty } from '../../actions/adminEditorActions';
+import { validateRecipe } from '../../utils/adminUtils';
 
 function Form({ activeRecipe, dispatch }) {
-  console.log('Form:', activeRecipe);
-  // state
-  const [title, setTitle] = useState(activeRecipe.title || '');
-  const [slug, setSlug] = useState(activeRecipe.slug || '');
-  const [subtitle, setSubtitle] = useState(activeRecipe.subtitle || '');
-  const [categories, setCategories] = useState(activeRecipe.categories || []);
-  const [ingredients, setIngredients] = useState(
-    (activeRecipe.ingredients &&
-      ingredientsToString(activeRecipe.ingredients)) ||
-      ''
-  );
-  const [prepTime, setPrepTime] = useState(activeRecipe.time?.prep || '');
-  const [cookTime, setCookTime] = useState(activeRecipe.time?.cook || '');
-  const [servings, setServings] = useState(
-    activeRecipe.servings?.join(' to ') || ''
-  );
-  const [summary, setSummary] = useState(activeRecipe.summary || []);
-  const [directions, setDirections] = useState(
-    activeRecipe.directions?.join('\n\n') || ''
-  );
-  const [instagram, setInstagram] = useState(activeRecipe.instagram || '');
-  const [isPublished, setIsPublished] = useState(
-    activeRecipe.isPublished || false
-  );
+  let {
+    title,
+    subtitle,
+    categories,
+    ingredients,
+    prepTime,
+    cookTime,
+    servings,
+    summary,
+    directions,
+    instagram,
+    isPublished
+  } = activeRecipe;
+
+  // input change handler
+  const handleInputChange = (key, value) => {
+    dispatch(updateProperty({ key, value }));
+  };
+
   // select element helper
   const handleSetCategories = e => {
-    if (!e.metaKey) return;
+    if (!e.metaKey) return; // TODO - what else is metaKey?
     const i = categories.indexOf(e.target.value);
     if (i >= 0) {
-      setCategories([...categories.splice(0, i), ...categories.splice(i + 1)]);
+      handleInputChange('categories', [
+        ...categories.splice(0, i),
+        ...categories.splice(i + 1)
+      ]);
     } else {
-      setCategories([...categories, e.target.value]);
+      handleInputChange('categories', [...categories, e.target.value]);
     }
   };
+
+  // handle errors
+  const handleErrors = errors => {
+    errors.forEach(name => {
+      document.querySelector(`[name=${name}]`).classList.add('is-invalid');
+      window.scrollTo(0, 0);
+    });
+  };
+
   // update recipe
   const handleUpdateRecipe = e => {
     e.preventDefault();
 
-    const recipe = Object.assign({}, activeRecipe, {
-      title,
-      slug,
-      subtitle,
-      categories,
-      ingredients,
-      time: {
-        prep: prepTime,
-        cook: cookTime
-      },
-      servings,
-      summary,
-      directions,
-      instagram,
-      isPublished
-    });
-
-    const errors = validateRecipe(recipe);
-    if (errors) {
-      // show toasts
+    const validationResponse = validateRecipe(activeRecipe);
+    if (Array.isArray(validationResponse)) {
+      handleErrors(validationResponse);
     } else {
       // dispatch upsert fetch (update activeRecipe in fetch handler)
+      console.log(validationResponse);
     }
   };
 
@@ -70,9 +62,9 @@ function Form({ activeRecipe, dispatch }) {
   const handleSubmitRecipe = e => {
     e.preventDefault();
 
-    const errors = validateRecipe();
-    if (errors) {
-      // show toasts
+    const validationResponse = validateRecipe(activeRecipe);
+    if (Array.isArray(validationResponse)) {
+      handleErrors(validationResponse);
     } else {
       // dispatch upsert fetch (clear activeRecipe in fetch handler)
     }
@@ -86,8 +78,13 @@ function Form({ activeRecipe, dispatch }) {
           type='text'
           className='form-control'
           placeholder='Title'
+          name='title'
           value={title}
-          onChange={({ target }) => setTitle(target.value)}
+          onChange={({ target }) => {
+            handleInputChange(target.name, target.value);
+            handleInputChange('slug', target.value);
+          }}
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='form-group'>
@@ -96,8 +93,8 @@ function Form({ activeRecipe, dispatch }) {
           type='text'
           className='form-control'
           placeholder='Slug'
-          value={slug}
-          onChange={({ target }) => setSlug(target.value)}
+          value={title.toLowerCase().replace(/\s+/g, '-')}
+          disabled
         />
       </div>
       <div className='form-group'>
@@ -106,8 +103,12 @@ function Form({ activeRecipe, dispatch }) {
           type='text'
           className='form-control'
           placeholder='Subtitle'
+          name='subtitle'
           value={subtitle}
-          onChange={({ target }) => setSubtitle(target.value)}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='form-group' multiple=''>
@@ -116,10 +117,12 @@ function Form({ activeRecipe, dispatch }) {
         <select
           className='form-control'
           multiple={true}
+          size={6}
+          name='categories'
           value={categories}
           onChange={() => {}}
           onClick={handleSetCategories}
-          size={6}
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         >
           <option value='Breakfast'>Breakfast</option>
           <option value='Lunch'>Lunch</option>
@@ -140,9 +143,13 @@ function Form({ activeRecipe, dispatch }) {
         <textarea
           className='form-control'
           placeholder='Ingredients'
-          value={ingredients}
-          onChange={({ target }) => setIngredients(target.value)}
           rows={5}
+          name='ingredients'
+          value={ingredients}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='d-flex flex-column flex-sm-row mb-3'>
@@ -152,8 +159,12 @@ function Form({ activeRecipe, dispatch }) {
             type='number'
             className='form-control w-75'
             placeholder='Prep Time'
+            name='prepTime'
             value={prepTime}
-            onChange={({ target }) => setPrepTime(target.value)}
+            onChange={({ target }) =>
+              handleInputChange(target.name, target.value)
+            }
+            onFocus={({ target }) => target.classList.remove('is-invalid')}
           />
         </div>
         <div className='flex-grow-1'>
@@ -162,8 +173,12 @@ function Form({ activeRecipe, dispatch }) {
             type='number'
             className='form-control w-75'
             placeholder='Cook Time'
+            name='cookTime'
             value={cookTime}
-            onChange={({ target }) => setCookTime(target.value)}
+            onChange={({ target }) =>
+              handleInputChange(target.name, target.value)
+            }
+            onFocus={({ target }) => target.classList.remove('is-invalid')}
           />
         </div>
         <div className='flex-grow-1'>
@@ -172,8 +187,12 @@ function Form({ activeRecipe, dispatch }) {
             type='text'
             className='form-control w-75'
             placeholder='2 to 4'
+            name='servings'
             value={servings}
-            onChange={({ target }) => setServings(target.value)}
+            onChange={({ target }) =>
+              handleInputChange(target.name, target.value)
+            }
+            onFocus={({ target }) => target.classList.remove('is-invalid')}
           />
         </div>
       </div>
@@ -182,9 +201,13 @@ function Form({ activeRecipe, dispatch }) {
         <textarea
           className='form-control'
           placeholder='Summary'
-          value={summary}
-          onChange={({ target }) => setSummary(target.value)}
           rows={5}
+          name='summary'
+          value={summary}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='form-group'>
@@ -192,9 +215,13 @@ function Form({ activeRecipe, dispatch }) {
         <textarea
           className='form-control'
           placeholder='Directions'
-          value={directions}
-          onChange={({ target }) => setDirections(target.value)}
           rows={10}
+          name='directions'
+          value={directions}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='form-group'>
@@ -203,8 +230,11 @@ function Form({ activeRecipe, dispatch }) {
           type='text'
           className='form-control'
           placeholder='Instagram'
+          name='instagram'
           value={instagram}
-          onChange={({ target }) => setInstagram(target.value)}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
         />
       </div>
       <div className='custom-control custom-switch d-flex justify-content-center align-items-center'>
@@ -212,8 +242,11 @@ function Form({ activeRecipe, dispatch }) {
           type='checkbox'
           className='custom-control-input'
           id='publish'
+          name='isPublished'
           value={isPublished}
-          onChange={() => setIsPublished(!isPublished)}
+          onChange={({ target }) =>
+            handleInputChange(target.name, target.value)
+          }
         />
         <label className='custom-control-label' htmlFor='publish'>
           Publish
@@ -249,14 +282,3 @@ Form.propTypes = {
 };
 
 export default Form;
-
-// HELPER FUNCTIONS
-
-function ingredientsToString(ingredients) {
-  let str = '';
-  for (let i = 0; i < ingredients.length; i += 2) {
-    str += `${ingredients[i]}: ${ingredients[i + 1]}\n`;
-  }
-
-  return str;
-}

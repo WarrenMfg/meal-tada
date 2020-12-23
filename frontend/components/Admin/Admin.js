@@ -1,42 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, createContext } from 'react';
 import useAuth from '../../hooks/useAuth';
+import adminRootReducer from '../../reducers/adminRootReducer';
 import Tabs from './Tabs';
 import RecipeTab from './RecipeTab';
-import withGlobalStore from '../../store/withGlobalStore';
-import PropTypes from 'prop-types';
 
-function Admin({ state }) {
-  const { admin } = state;
+const { Provider } = createContext();
+
+function Admin() {
+  const combinedState = adminRootReducer();
 
   // check if authed (reroutes if not)
-  useAuth(state.dispatch);
+  useAuth(combinedState.dispatch);
 
   // scroll to top on mount
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <div className='container'>
-      <h1 className='mt-5 text-center'>
-        Welcome to the Admin Portal, {admin.adminUser.user}
-      </h1>
-      <div className='row mt-5'>
-        <div className='col-12'>
-          <main>
-            <div>
-              <Tabs />
-              <div className='tab-content'>
-                <RecipeTab state={state} />
+    <Provider value={combinedState}>
+      <div className='container'>
+        <h1 className='mt-5 text-center'>
+          Welcome to the Admin Portal, {combinedState.admin.adminUser.user}
+        </h1>
+        <div className='row mt-5'>
+          <div className='col-12'>
+            <main>
+              <div>
+                <Tabs />
+                <div className='tab-content'>
+                  <RecipeTab state={combinedState} />
+                </div>
               </div>
-            </div>
-          </main>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 
-Admin.propTypes = {
-  state: PropTypes.object.isRequired
-};
-
-export default withGlobalStore(Admin);
+export default Admin;

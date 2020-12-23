@@ -34,7 +34,7 @@ function ErrorMaskingDiv({
     >
       <div className='text-center'>
         <h1>Sorry...</h1>
-        <h2>An error has occurred 😭</h2>
+        <h2>{message}</h2>
         <button className='btn btn-info btn-block' onClick={handleRefresh}>
           Refresh
         </button>

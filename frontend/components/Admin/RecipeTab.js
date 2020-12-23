@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import Table from './Table';
 import RecipeForm from './RecipeForm';
 import Loading from '../Loading';
-import { fetchAdminRecipeSearchResults } from '../../api/fetch';
-import {
-  clearAdminRecipeSearchResults,
-  setActiveRecipe
-} from '../../actions/adminActions';
+import { fetchAdminRecipeSearchResults } from '../../api/adminFetch';
+import { clearAdminRecipeSearchResults } from '../../actions/adminActions';
+import { adminEditorInitialState } from '../../reducers/adminEditorReducer';
+import { initializeState } from '../../actions/adminEditorActions';
 import searchIcon from '../../images/magnifier.png';
 
 function RecipeTab({ state }) {
   const {
-    dispatch,
+    admin: { adminRecipeSearchResults },
+    adminEditor: activeRecipe,
     loading,
-    admin: { adminRecipeSearchResults, activeRecipe }
+    dispatch
   } = state;
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchRecipes = e => {
@@ -27,14 +28,13 @@ function RecipeTab({ state }) {
 
   const handleAddNewRecipe = () => {
     dispatch(clearAdminRecipeSearchResults());
-    dispatch(setActiveRecipe({}));
+    dispatch(initializeState(adminEditorInitialState));
   };
 
   const handleClickRow = ({ target }) => {
     const row = target.closest('tr');
     const recipe = adminRecipeSearchResults.find(obj => obj._id === row.id);
-    console.log(recipe);
-    dispatch(setActiveRecipe(recipe));
+    dispatch(initializeState(recipe));
   };
 
   return (
@@ -69,9 +69,7 @@ function RecipeTab({ state }) {
         />
       )}
 
-      {activeRecipe && (
-        <RecipeForm activeRecipe={activeRecipe} dispatch={dispatch} />
-      )}
+      <RecipeForm activeRecipe={activeRecipe} dispatch={dispatch} />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import {
   isLoading,
   isNotLoading,
@@ -20,10 +21,6 @@ import {
   clearSearchResults,
   setSearchFeedback
 } from '../actions/searchActions';
-import {
-  setAdminRecipeSearchResults,
-  clearAdminRecipeSearchResults
-} from '../actions/adminActions';
 import { parseAndHandleErrors } from '../utils/utils';
 
 export const fetchInit = async dispatch => {
@@ -40,7 +37,7 @@ export const fetchInit = async dispatch => {
     dispatch(setGeneral(general));
     dispatch(setCategories(categories));
   } catch (err) {
-    dispatch(setError(err.message));
+    dispatch(setError('An error has occurred 😭'));
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
@@ -59,7 +56,7 @@ export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
       dispatch(addMoreRecipes(data));
     }
   } catch (err) {
-    dispatch(setError(err.message));
+    dispatch(setError('An error has occurred 😭'));
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotFetchingMoreRecipes());
@@ -74,15 +71,16 @@ export const fetchInitAndCurrentRecipe = async (dispatch, pathname) => {
     const res = await fetch(`/api/init-and-current-recipe${pathname}`);
     const data = await parseAndHandleErrors(res);
 
+    if (!data.currentRecipe) throw new Error();
+
     dispatch(setCurrentRecipe(data.currentRecipe));
     dispatch(setInitialRecipes(data.initialRecipes));
 
     const { categories, ...general } = data.general;
     dispatch(setGeneral(general));
     dispatch(setCategories(categories));
-  } catch (err) {
-    dispatch(setError(err.message));
-    console.log(err.message, err.stack);
+  } catch {
+    window.location.replace('/');
   } finally {
     dispatch(isNotLoading());
   }
@@ -98,7 +96,7 @@ export const fetchTopFiveRecipe = async (dispatch, pathname) => {
 
     dispatch(setCurrentRecipe(data));
   } catch (err) {
-    dispatch(setError(err.message));
+    dispatch(setError('An error has occurred 😭'));
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
@@ -122,25 +120,7 @@ export const fetchSearchResults = async (dispatch, query, searchCriteria) => {
       dispatch(setSearchFeedback(2));
     }
   } catch (err) {
-    dispatch(setError(err.message));
-    console.log(err.message, err.stack);
-  } finally {
-    dispatch(isNotSearching());
-  }
-};
-
-export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
-  try {
-    dispatch(isSearching());
-    dispatch(clearAdminRecipeSearchResults());
-
-    const res = await fetch(`/api/search?phrase=${query}`);
-    const data = await parseAndHandleErrors(res);
-
-    if (data.length) {
-      dispatch(setAdminRecipeSearchResults(data));
-    }
-  } catch (err) {
+    dispatch(setError('An error has occurred 😭'));
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());

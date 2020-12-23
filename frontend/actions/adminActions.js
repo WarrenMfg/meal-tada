@@ -11,12 +11,3 @@ export const setAdminRecipeSearchResults = data => ({
 export const clearAdminRecipeSearchResults = () => ({
   type: 'CLEAR_ADMIN_RECIPE_SEARCH_RESULTS'
 });
-
-export const setActiveRecipe = activeRecipe => ({
-  type: 'SET_ACTIVE_RECIPE',
-  payload: activeRecipe
-});
-
-export const clearActiveRecipe = () => ({
-  type: 'CLEAR_ACTIVE_RECIPE'
-});

@@ -47,7 +47,11 @@ function Recipe({ state }) {
     goBack();
   };
 
-  if (state.loading.isLoading || !currentRecipe) {
+  if (
+    state.loading.isLoading ||
+    !Object.keys(currentRecipe).length ||
+    !currentRecipe
+  ) {
     // LoadingMaskingDiv component renders from App component
     return null;
   } else {

@@ -4,7 +4,6 @@ import { errorReducer, errorInitialState } from './errorReducer';
 import { recipesReducer, recipesInitialState } from './recipesReducer';
 import { generalReducer, generalInitialState } from './generalReducer';
 import { searchReducer, searchInitialState } from './searchReducer';
-import { adminReducer, adminInitialState } from './adminReducer';
 
 const rootReducer = () => {
   const [loading, loadingDispatch] = useReducer(
@@ -24,15 +23,13 @@ const rootReducer = () => {
     searchReducer,
     searchInitialState
   );
-  const [admin, adminDispatch] = useReducer(adminReducer, adminInitialState);
 
   const combinedDispatches = [
     loadingDispatch,
     errorDispatch,
     recipesDispatch,
     generalDispatch,
-    searchDispatch,
-    adminDispatch
+    searchDispatch
   ];
 
   const dispatchForLoop = action => {
@@ -60,7 +57,6 @@ const rootReducer = () => {
     recipes,
     general,
     search,
-    admin,
     dispatch
   };
 };
