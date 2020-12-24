@@ -39,8 +39,8 @@ function RecipeForm({ activeRecipe, dispatch }) {
     const i = categories.indexOf(e.target.value);
     if (i >= 0) {
       handleInputChange('categories', [
-        ...categories.splice(0, i),
-        ...categories.splice(i + 1)
+        ...categories.slice(0, i),
+        ...categories.slice(i + 1)
       ]);
     } else {
       handleInputChange('categories', [...categories, e.target.value]);
