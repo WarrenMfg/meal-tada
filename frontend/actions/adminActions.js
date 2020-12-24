@@ -12,6 +12,11 @@ export const clearAdminRecipeSearchResults = () => ({
   type: 'CLEAR_ADMIN_RECIPE_SEARCH_RESULTS'
 });
 
+export const updateAdminRecipeSearchResults = newRecipe => ({
+  type: 'UPDATE_ADMIN_RECIPE_SEARCH_RESULTS',
+  payload: newRecipe
+});
+
 export const setRecipeFormErrors = errors => ({
   type: 'SET_RECIPE_FORM_ERRORS',
   payload: errors

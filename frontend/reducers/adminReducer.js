@@ -15,6 +15,21 @@ export const adminReducer = (state, action) => {
         ...state,
         adminRecipeSearchResults: []
       };
+    case 'UPDATE_ADMIN_RECIPE_SEARCH_RESULTS': {
+      const updatedAdminRecipeSearchResults = state.adminRecipeSearchResults.map(
+        recipe => {
+          if (recipe._id === action.payload._id) {
+            return action.payload;
+          } else {
+            return recipe;
+          }
+        }
+      );
+      return {
+        ...state,
+        adminRecipeSearchResults: updatedAdminRecipeSearchResults
+      };
+    }
     case 'SET_RECIPE_FORM_ERRORS':
       action.payload.forEach(name => {
         document.querySelector(`[name=${name}]`).classList.add('is-invalid');

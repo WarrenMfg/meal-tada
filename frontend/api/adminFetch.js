@@ -1,7 +1,8 @@
 import toast from 'react-hot-toast';
 import {
   setAdminRecipeSearchResults,
-  clearAdminRecipeSearchResults
+  clearAdminRecipeSearchResults,
+  updateAdminRecipeSearchResults
 } from '../actions/adminActions';
 import { initializeState } from '../actions/adminEditorActions';
 import { adminEditorInitialState } from '../reducers/adminEditorReducer';
@@ -50,10 +51,14 @@ export const fetchUpsertRecipe = async (dispatch, recipe, isSubmit) => {
     window.scrollTo(0, 0);
 
     if (isSubmit) {
+      // clear search
+      dispatch(clearAdminRecipeSearchResults());
       // clear form
       dispatch(initializeState(adminEditorInitialState));
       toast.success('Recipe submitted!');
     } else {
+      // update title of searched/updated recipe in search results
+      dispatch(updateAdminRecipeSearchResults(data));
       // populate form with upserted data
       dispatch(initializeState(data));
       toast.success('Recipe updated!');
