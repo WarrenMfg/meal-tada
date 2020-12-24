@@ -33,7 +33,9 @@ function RecipeForm({ activeRecipe, dispatch }) {
 
   // select element helper
   const handleSetCategories = e => {
-    if (!e.metaKey) return; // TODO - what else is metaKey?
+    const keyPress = e.ctrlKey || e.metaKey;
+    if (!keyPress) return;
+
     const i = categories.indexOf(e.target.value);
     if (i >= 0) {
       handleInputChange('categories', [
