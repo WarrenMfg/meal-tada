@@ -69,10 +69,10 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
-      if (currentRecipe.isPublished) {
+      if (currentRecipe?.isPublished) {
         res.send({ general, initialRecipes, currentRecipe });
       } else {
-        throw new Error();
+        res.status(404).send({ route: '/' });
       }
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
@@ -121,10 +121,10 @@ export default (app, db) => {
       const currentRecipe = await db.collection('recipes').findOne({ slug });
 
       // send it
-      if (currentRecipe.isPublished) {
+      if (currentRecipe?.isPublished) {
         res.send(currentRecipe);
       } else {
-        throw new Error();
+        res.status(404).send({ route: '/' });
       }
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });

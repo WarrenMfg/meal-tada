@@ -49,8 +49,8 @@ function Recipe({ state }) {
 
   if (
     state.loading.isLoading ||
-    !Object.keys(currentRecipe).length ||
-    !currentRecipe
+    !currentRecipe ||
+    !Object.keys(currentRecipe).length
   ) {
     // LoadingMaskingDiv component renders from App component
     return null;

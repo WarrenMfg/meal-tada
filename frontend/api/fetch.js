@@ -70,16 +70,14 @@ export const fetchInitAndCurrentRecipe = async (dispatch, pathname) => {
     const res = await fetch(`/api/init-and-current-recipe${pathname}`);
     const data = await parseAndHandleErrors(res);
 
-    if (!data.currentRecipe) throw new Error();
-
     dispatch(setCurrentRecipe(data.currentRecipe));
     dispatch(setInitialRecipes(data.initialRecipes));
 
     const { categories, ...general } = data.general;
     dispatch(setGeneral(general));
     dispatch(setCategories(categories));
-  } catch {
-    window.location.replace('/');
+  } catch (err) {
+    window.location.replace(err.route);
   } finally {
     dispatch(isNotLoading());
   }
@@ -95,8 +93,7 @@ export const fetchTopFiveRecipe = async (dispatch, pathname) => {
 
     dispatch(setCurrentRecipe(data));
   } catch (err) {
-    dispatch(setError('An error has occurred 😭'));
-    console.log(err.message, err.stack);
+    window.location.replace(err.route);
   } finally {
     dispatch(isNotLoading());
   }
