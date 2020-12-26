@@ -96,7 +96,7 @@ export const validateRecipe = recipe => {
       let modified = cur.trim();
       // if title is ok, then slug is ok; and if '/image', then make url
       const isImage = !errors.includes('title') && modified.includes('/image');
-      if (isImage && i === arr[arr.length - 1]) {
+      if (isImage && i === arr.length - 1) {
         modified = 'tada ' + aws + modified.split('/image')[1].trim();
       } else if (isImage) {
         modified = aws + modified.split('/image')[1].trim();
