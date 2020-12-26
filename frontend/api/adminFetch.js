@@ -12,7 +12,7 @@ import {
   isSearching,
   isNotSearching
 } from '../actions/loadingActions';
-import { parseAndHandleErrors } from '../utils/utils';
+import { parseAndHandleErrors, wait } from '../utils/utils';
 import { getHeaders } from '../utils/adminUtils';
 
 export const fetchAdminRecipeSearchResults = async (dispatch, query) => {

@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import adminRootReducer from '../../reducers/adminRootReducer';
 import Tabs from './Tabs';
 import RecipeTab from './RecipeTab';
+import pacman from '../../images/pacman.gif';
 
 const { Provider } = createContext();
 
@@ -43,6 +44,15 @@ function Admin() {
           }
         }}
       />
+      {/* Loading Masking Div */}
+      <div
+        className='loading-masking-div'
+        style={{
+          display: `${combinedState.loading.isLoading ? 'flex' : 'none'}`
+        }}
+      >
+        <img src={pacman} />
+      </div>
     </Provider>
   );
 }
