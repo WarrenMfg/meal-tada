@@ -22,7 +22,7 @@ function Navbar() {
 
   return (
     <nav className='navbar navbar-light navbar-expand-md navigation-clean sticky-top bg-white shadow-sm'>
-      <div className='container'>
+      <div className='container pl-sm-3 pr-sm-3 pr-md-2'>
         <Link className='navbar-brand' to='/'>
           Meal Tada
         </Link>
@@ -35,7 +35,10 @@ function Navbar() {
           <span className='sr-only'>Toggle navigation</span>
           <span className='navbar-toggler-icon' />
         </button>
-        <div className='collapse navbar-collapse' id='navcol-1'>
+        <div
+          className='collapse navbar-collapse justify-content-end'
+          id='navcol-1'
+        >
           <ul className='nav navbar-nav text-right'>
             <li className='nav-item' role='presentation'>
               <Link className={`nav-link${isActive('/')}`} to='/'>
