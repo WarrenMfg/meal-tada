@@ -2,7 +2,7 @@ import { ingredientsToString } from '../utils/adminUtils';
 
 export const adminEditorReducer = (state, action) => {
   switch (action.type) {
-    case 'INITIALIZE_STATE': {
+    case 'UPDATE_FORM_WITH_RECIPE': {
       const recipe = action.payload;
       // make type adjustments
       if (Array.isArray(recipe.ingredients))
@@ -26,6 +26,10 @@ export const adminEditorReducer = (state, action) => {
         ...state,
         [action.payload.key]: action.payload.value
       };
+    case 'CLEAR_EDITOR':
+      return {
+        ...adminEditorInitialState
+      };
     default:
       return state;
   }
@@ -35,7 +39,7 @@ export const adminEditorInitialState = {
   title: '',
   slug: '',
   subtitle: '',
-  categories: [],
+  categories: [], // this is always length 0
   ingredients: '',
   prepTime: '',
   cookTime: '',

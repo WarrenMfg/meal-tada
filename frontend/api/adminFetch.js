@@ -4,8 +4,10 @@ import {
   clearAdminRecipeSearchResults,
   updateAdminRecipeSearchResults
 } from '../actions/adminActions';
-import { initializeState } from '../actions/adminEditorActions';
-import { adminEditorInitialState } from '../reducers/adminEditorReducer';
+import {
+  clearEditor,
+  updateFormWithRecipe
+} from '../actions/adminEditorActions';
 import {
   isLoading,
   isNotLoading,
@@ -54,13 +56,13 @@ export const fetchUpsertRecipe = async (dispatch, recipe, isSubmit) => {
       // clear search
       dispatch(clearAdminRecipeSearchResults());
       // clear form
-      dispatch(initializeState(adminEditorInitialState));
+      dispatch(clearEditor());
       toast.success('Recipe submitted!');
     } else {
       // update title of searched/updated recipe in search results
       dispatch(updateAdminRecipeSearchResults(data));
       // populate form with upserted data
-      dispatch(initializeState(data));
+      dispatch(updateFormWithRecipe(data));
       toast.success('Recipe updated!');
     }
   } catch (err) {

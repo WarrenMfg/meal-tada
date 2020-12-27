@@ -8,8 +8,10 @@ import {
   clearAdminRecipeSearchResults,
   clearRecipeFormErrors
 } from '../../actions/adminActions';
-import { adminEditorInitialState } from '../../reducers/adminEditorReducer';
-import { initializeState } from '../../actions/adminEditorActions';
+import {
+  clearEditor,
+  updateFormWithRecipe
+} from '../../actions/adminEditorActions';
 import searchIcon from '../../images/magnifier.png';
 
 function RecipeTab({ state }) {
@@ -27,7 +29,7 @@ function RecipeTab({ state }) {
     if (!searchQuery) return;
     dispatch(fetchAdminRecipeSearchResults, searchQuery);
     // update form
-    dispatch(initializeState(adminEditorInitialState));
+    dispatch(clearEditor());
     setSearchQuery('');
   };
 
@@ -37,23 +39,27 @@ function RecipeTab({ state }) {
     // clear search results
     dispatch(clearAdminRecipeSearchResults());
     // update form
-    dispatch(initializeState(adminEditorInitialState));
+    dispatch(clearEditor());
   };
 
   const handleClickRow = ({ target }) => {
     // clear errors
     dispatch(clearRecipeFormErrors());
     // clear form
-    dispatch(initializeState(adminEditorInitialState));
+    dispatch(clearEditor());
     // remove active recipe classes
     Array.from(target.closest('tbody').children).forEach(child =>
       child.classList.remove('bg-primary', 'text-white')
     );
     // handle click
     const row = target.closest('tr');
-    row.classList.add('bg-primary', 'text-white');
     const recipe = adminRecipeSearchResults.find(obj => obj._id === row.id);
-    dispatch(initializeState(recipe));
+    // if click on active recipe, it's already toggled off, so do nothing;
+    // otherwise, if click on different recipe, toggle on
+    if (recipe._id !== activeRecipe._id) {
+      row.classList.add('bg-primary', 'text-white');
+      dispatch(updateFormWithRecipe(recipe));
+    }
   };
 
   return (
