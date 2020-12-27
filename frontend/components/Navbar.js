@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 function Navbar() {
+  const navButton = useRef(null);
+  useEffect(() => {
+    if (!navButton.current.classList.contains('collapsed')) {
+      navButton.current.click();
+    }
+  });
+
   const location = useLocation();
   const isActive = pathname => {
     if (pathname === '/' && location.pathname === '/') return ' active';
@@ -20,15 +27,16 @@ function Navbar() {
           Meal Tada
         </Link>
         <button
+          ref={navButton}
           data-toggle='collapse'
-          className='navbar-toggler'
+          className='navbar-toggler collapsed'
           data-target='#navcol-1'
         >
           <span className='sr-only'>Toggle navigation</span>
           <span className='navbar-toggler-icon' />
         </button>
         <div className='collapse navbar-collapse' id='navcol-1'>
-          <ul className='nav navbar-nav ml-auto'>
+          <ul className='nav navbar-nav text-right'>
             <li className='nav-item' role='presentation'>
               <Link className={`nav-link${isActive('/')}`} to='/'>
                 Home

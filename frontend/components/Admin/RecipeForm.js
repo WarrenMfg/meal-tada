@@ -26,6 +26,13 @@ function RecipeForm({ activeRecipe, dispatch }) {
     ? summary.trim().split(' ').length
     : 0;
 
+  // copy slug handler
+  const handleCopySlug = async () => {
+    if (!slug) return;
+    await navigator.clipboard.writeText(slug);
+    toast.success('Slug copied!');
+  };
+
   // input change handler
   const handleInputChange = (key, value) => {
     dispatch(updateProperty({ key, value }));
@@ -99,7 +106,17 @@ function RecipeForm({ activeRecipe, dispatch }) {
         />
       </div>
       <div className='form-group'>
-        <label>Slug</label>
+        <label>
+          Slug{' '}
+          <span
+            className='ml-1'
+            onClick={handleCopySlug}
+            role='button'
+            title='Copy Slug'
+          >
+            <i className='far fa-copy'></i>
+          </span>
+        </label>
         <input
           type='text'
           className='form-control'
