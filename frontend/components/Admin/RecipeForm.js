@@ -61,18 +61,6 @@ function RecipeForm({ activeRecipe, dispatch }) {
     toast.error('Please fix form errors.');
   };
 
-  // update recipe
-  const handleUpdateRecipe = e => {
-    e.preventDefault();
-
-    const validationResponse = validateRecipe(activeRecipe);
-    if (Array.isArray(validationResponse)) {
-      handleValidationErrors(validationResponse);
-    } else {
-      dispatch(fetchUpsertRecipe, validationResponse, false); // false --> isSubmit
-    }
-  };
-
   // submit recipe
   const handleSubmitRecipe = e => {
     e.preventDefault();
@@ -81,7 +69,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
     if (Array.isArray(validationResponse)) {
       handleValidationErrors(validationResponse);
     } else {
-      dispatch(fetchUpsertRecipe, validationResponse, true); // true --> isSubmit
+      dispatch(fetchUpsertRecipe, validationResponse);
     }
   };
 
@@ -287,26 +275,14 @@ function RecipeForm({ activeRecipe, dispatch }) {
           Publish
         </label>
       </div>
-      <div
-        className='btn-group mt-3 w-100'
-        role='group'
-        aria-label='Update or Submit'
+
+      <button
+        className='btn btn-primary btn-block mt-3'
+        type='button'
+        onClick={handleSubmitRecipe}
       >
-        <button
-          className='btn btn-info'
-          type='button'
-          onClick={handleUpdateRecipe}
-        >
-          Update
-        </button>
-        <button
-          className='btn btn-primary'
-          type='button'
-          onClick={handleSubmitRecipe}
-        >
-          Submit
-        </button>
-      </div>
+        Submit
+      </button>
     </form>
   );
 }

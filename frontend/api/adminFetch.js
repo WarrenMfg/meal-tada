@@ -1,13 +1,11 @@
+import React from 'react';
 import toast from 'react-hot-toast';
 import {
   setAdminRecipeSearchResults,
   clearAdminRecipeSearchResults,
   updateAdminRecipeSearchResults
 } from '../actions/adminActions';
-import {
-  clearEditor,
-  updateFormWithRecipe
-} from '../actions/adminEditorActions';
+import { updateFormWithRecipe } from '../actions/adminEditorActions';
 import {
   isLoading,
   isNotLoading,
@@ -39,7 +37,7 @@ export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
   }
 };
 
-export const fetchUpsertRecipe = async (dispatch, recipe, isSubmit) => {
+export const fetchUpsertRecipe = async (dispatch, recipe) => {
   try {
     dispatch(isLoading());
 
@@ -52,19 +50,19 @@ export const fetchUpsertRecipe = async (dispatch, recipe, isSubmit) => {
 
     window.scrollTo(0, 0);
 
-    if (isSubmit) {
-      // clear search
-      dispatch(clearAdminRecipeSearchResults());
-      // clear form
-      dispatch(clearEditor());
-      toast.success('Recipe submitted!');
-    } else {
-      // update title of searched/updated recipe in search results
-      dispatch(updateAdminRecipeSearchResults(data));
-      // populate form with upserted data
-      dispatch(updateFormWithRecipe(data));
-      toast.success('Recipe updated!');
-    }
+    // update title of searched/updated recipe in search results
+    dispatch(updateAdminRecipeSearchResults(data));
+    // populate form with upserted data
+    dispatch(updateFormWithRecipe(data));
+    toast.success(
+      <span className='text-center'>
+        <span>
+          Submitted and{' '}
+          <span className='font-weight-bold'>{!data.isPublished && 'not'}</span>{' '}
+          published!
+        </span>
+      </span>
+    );
   } catch (err) {
     toast.error('Oops, something went wrong');
     console.error(err);

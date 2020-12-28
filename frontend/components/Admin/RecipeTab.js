@@ -12,7 +12,7 @@ import {
   clearEditor,
   updateFormWithRecipe
 } from '../../actions/adminEditorActions';
-import searchIcon from '../../images/magnifier.png';
+import './styles/RecipeTab.css';
 
 function RecipeTab({ state }) {
   const {
@@ -33,9 +33,12 @@ function RecipeTab({ state }) {
     setSearchQuery('');
   };
 
-  const handleAddNewRecipe = () => {
+  const handleClearSearchAndForm = e => {
+    e.preventDefault();
     // clear errors
     dispatch(clearRecipeFormErrors());
+    // clear search input
+    setSearchQuery('');
     // clear search results
     dispatch(clearAdminRecipeSearchResults());
     // update form
@@ -64,24 +67,22 @@ function RecipeTab({ state }) {
 
   return (
     <div className='tab-pane active' role='tabpanel' id='tab-1'>
-      <button
-        className='btn btn-success btn-block mt-4 mb-4'
-        type='button'
-        onClick={handleAddNewRecipe}
-      >
-        Add New Recipe
-      </button>
-      <form className='d-flex mb-4'>
+      <form className='mt-4 mb-4' id='search-form'>
         <input
           type='text'
-          className='search-input flex-grow-1'
+          className='form-control flex-grow-1'
           placeholder='Search recipes'
           value={searchQuery}
           onChange={({ target }) => setSearchQuery(target.value)}
         />
-        <button className='btn btn-light' onClick={handleSearchRecipes}>
-          <img src={searchIcon} />
-        </button>
+        <div className='d-flex btn-group'>
+          <button className='btn btn-info' onClick={handleSearchRecipes}>
+            Search
+          </button>
+          <button className='btn btn-dark' onClick={handleClearSearchAndForm}>
+            Clear
+          </button>
+        </div>
       </form>
 
       {loading.isSearching && <Loading />}

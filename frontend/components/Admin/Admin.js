@@ -40,7 +40,8 @@ function Admin() {
         toastOptions={{
           duration: 4000,
           style: {
-            margin: '35px'
+            margin: '35px',
+            paddingLeft: '1.25em'
           }
         }}
       />
