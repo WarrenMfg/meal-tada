@@ -3,6 +3,6 @@ node_modules
 .env
 distFrontend
 distBackend
-config.js
 seed.js
 addOne
+scratch.js

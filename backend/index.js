@@ -84,7 +84,6 @@ app.use(
       express.static(resolve(__dirname, '../distFrontend')),
       (req, res) => {
         try {
-          // res.set({ 'Cache-Control': 'public, max-age=604800, immutable' });
           res.redirect('/');
         } catch (err) {
           console.log(err.message, err.stack);

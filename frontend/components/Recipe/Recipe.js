@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { updateMeta } from '../../utils/utils';
-import { fetchTopFiveRecipe, fetchInitAndCurrentRecipe } from '../../api/fetch';
+import { fetchCurrentRecipe } from '../../api/fetch';
 import Picture from '../Picture';
 import IngredientsAndSummary from './IngredientsAndSummary';
 import Directions from './Directions';
@@ -16,19 +16,9 @@ function Recipe({ state }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // if empty object (in the case of page reload or direct navigation)
-    // GlobalStore fetchInit does not run
-    if (currentRecipe && !Object.keys(currentRecipe).length) {
-      dispatch(fetchInitAndCurrentRecipe, pathname.split('/recipe')[1]);
-    }
-  }, []);
-
-  useEffect(() => {
-    // AsideTopFive component Links set currentRecipe to null
-    // below will trigger a fetch when navigating from
-    // Recipe component to Recipe component via AsideTopFive Links
+    // when null, GlobalStore fetchInit does not run
     if (!currentRecipe) {
-      dispatch(fetchTopFiveRecipe, pathname.split('/recipe')[1]);
+      dispatch(fetchCurrentRecipe, pathname.split('/recipe')[1]);
     }
   }, [currentRecipe]);
 
@@ -47,12 +37,8 @@ function Recipe({ state }) {
     goBack();
   };
 
-  if (
-    state.loading.isLoading ||
-    !currentRecipe ||
-    !Object.keys(currentRecipe).length
-  ) {
-    // LoadingMaskingDiv component renders from App component
+  if (state.loading.isLoading || !currentRecipe) {
+    // LoadingMaskingDiv component is toggled on in fetch functions
     return null;
   } else {
     const {

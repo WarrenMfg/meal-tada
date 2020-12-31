@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import {
   isLoading,
   isNotLoading,
@@ -43,6 +45,32 @@ export const fetchInit = async dispatch => {
   }
 };
 
+export const fetchCurrentRecipe = async (dispatch, pathname) => {
+  try {
+    dispatch(clearError());
+    dispatch(isLoading());
+
+    const res = await fetch(`/api/current-recipe${pathname}`);
+    const data = await parseAndHandleErrors(res);
+
+    dispatch(setCurrentRecipe(data.currentRecipe));
+    dispatch(setInitialRecipes(data.initialRecipes));
+
+    const { categories, ...general } = data.general;
+    dispatch(setGeneral(general));
+    dispatch(setCategories(categories));
+  } catch (err) {
+    if (err.route) {
+      window.location.replace(err.route);
+    } else {
+      dispatch(setError('An error has occurred 😭'));
+      console.log(err.message, err.stack);
+    }
+  } finally {
+    dispatch(isNotLoading());
+  }
+};
+
 export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
   try {
     dispatch(clearError());
@@ -59,43 +87,6 @@ export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
     console.log(err.message, err.stack);
   } finally {
     dispatch(isNotFetchingMoreRecipes());
-  }
-};
-
-export const fetchInitAndCurrentRecipe = async (dispatch, pathname) => {
-  try {
-    dispatch(clearError());
-    dispatch(isLoading());
-
-    const res = await fetch(`/api/init-and-current-recipe${pathname}`);
-    const data = await parseAndHandleErrors(res);
-
-    dispatch(setCurrentRecipe(data.currentRecipe));
-    dispatch(setInitialRecipes(data.initialRecipes));
-
-    const { categories, ...general } = data.general;
-    dispatch(setGeneral(general));
-    dispatch(setCategories(categories));
-  } catch (err) {
-    window.location.replace(err.route);
-  } finally {
-    dispatch(isNotLoading());
-  }
-};
-
-export const fetchTopFiveRecipe = async (dispatch, pathname) => {
-  try {
-    dispatch(clearError());
-    dispatch(isLoading());
-
-    const res = await fetch(`/api/top-five-recipe${pathname}`);
-    const data = await parseAndHandleErrors(res);
-
-    dispatch(setCurrentRecipe(data));
-  } catch (err) {
-    window.location.replace(err.route);
-  } finally {
-    dispatch(isNotLoading());
   }
 };
 

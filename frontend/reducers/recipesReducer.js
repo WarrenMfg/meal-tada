@@ -22,5 +22,5 @@ export const recipesReducer = (state, action) => {
 
 export const recipesInitialState = {
   recipes: [],
-  currentRecipe: {}
+  currentRecipe: null
 };

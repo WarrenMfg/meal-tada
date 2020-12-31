@@ -1,42 +1,12 @@
 /* eslint-disable no-console */
 
+import { getGeneralAndIntialRecipes } from './utils';
+
 export default (app, db) => {
-  app.post('/api/seed/general', async (req, res) => {
-    try {
-      const general = await db.collection('general').insertOne(req.body);
-      res.send(general.ops[0]);
-    } catch (err) {
-      res.status(400);
-      console.log(err.message, err.stack);
-    }
-  });
-
-  app.post('/api/seed/recipes', async (req, res) => {
-    try {
-      const newRecipe = await db.collection('recipes').insertOne(req.body);
-      res.send(newRecipe.ops[0]);
-    } catch (err) {
-      res.status(400);
-      console.log(err.message, err.stack);
-    }
-  });
-
-  /////////////////////////// END SEED ///////////////////////////
-
   app.get('/api/init', async (req, res) => {
     try {
-      // get general
-      const general = await db.collection('general').findOne({ meta: true });
-
-      // get initial recipes
-      const initialRecipes = await db
-        .collection('recipes')
-        .aggregate([
-          { $match: { isPublished: true } },
-          { $sort: { createdAt: -1 } },
-          { $limit: 20 }
-        ])
-        .toArray();
+      // get general and initial recipes
+      const { general, initialRecipes } = await getGeneralAndIntialRecipes(db);
 
       // send it
       res.send({ general, initialRecipes });
@@ -46,27 +16,23 @@ export default (app, db) => {
     }
   });
 
-  app.get('/api/init-and-current-recipe/:slug', async (req, res) => {
+  app.get('/api/current-recipe/:slug', async (req, res) => {
     try {
       // sanitize
       let { slug } = req.params;
       slug = /^\$/.test(slug) ? '' : slug;
 
-      // get general
-      const general = await db.collection('general').findOne({ meta: true });
-
-      // get initial recipes
-      const initialRecipes = await db
-        .collection('recipes')
-        .aggregate([
-          { $match: { isPublished: true } },
-          { $sort: { createdAt: -1 } },
-          { $limit: 20 }
-        ])
-        .toArray();
+      // get general and initial recipes
+      const { general, initialRecipes } = await getGeneralAndIntialRecipes(db);
 
       // get current recipe
-      const currentRecipe = await db.collection('recipes').findOne({ slug });
+      const { value: currentRecipe } = await db
+        .collection('recipes')
+        .findOneAndUpdate(
+          { slug },
+          { $inc: { views: 1 } },
+          { returnOriginal: false }
+        );
 
       // send it
       if (currentRecipe?.isPublished) {
@@ -105,27 +71,6 @@ export default (app, db) => {
 
       // send it
       res.send(moreRecipes);
-    } catch (err) {
-      res.status(400).json({ message: 'Bad request' });
-      console.log(err.message, err.stack);
-    }
-  });
-
-  app.get('/api/top-five-recipe/:slug', async (req, res) => {
-    try {
-      // sanitize
-      let { slug } = req.params;
-      slug = /^\$/.test(slug) ? '' : slug;
-
-      // get top five recipe
-      const currentRecipe = await db.collection('recipes').findOne({ slug });
-
-      // send it
-      if (currentRecipe?.isPublished) {
-        res.send(currentRecipe);
-      } else {
-        res.status(404).send({ route: '/' });
-      }
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
@@ -250,6 +195,34 @@ export default (app, db) => {
       console.log(err.message, err.stack);
     }
   });
+
+  /**
+   * start seed
+   */
+
+  app.post('/api/seed/general', async (req, res) => {
+    try {
+      const general = await db.collection('general').insertOne(req.body);
+      res.send(general.ops[0]);
+    } catch (err) {
+      res.status(400);
+      console.log(err.message, err.stack);
+    }
+  });
+
+  app.post('/api/seed/recipes', async (req, res) => {
+    try {
+      const newRecipe = await db.collection('recipes').insertOne(req.body);
+      res.send(newRecipe.ops[0]);
+    } catch (err) {
+      res.status(400);
+      console.log(err.message, err.stack);
+    }
+  });
+
+  /**
+   * end seed
+   */
 };
 
 /*

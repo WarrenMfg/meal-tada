@@ -7,7 +7,7 @@ import '../styles/AsideTopFive.css';
 function AsideTopFive({ topFive, dispatch }) {
   const { title, recipes } = topFive;
 
-  const handleTopFive = () => {
+  const handleRecipeLink = () => {
     dispatch(setCurrentRecipe(null));
   };
 
@@ -19,7 +19,7 @@ function AsideTopFive({ topFive, dispatch }) {
           <Link
             key={recipe.slug}
             to={`/recipe/${recipe.slug}`}
-            onClick={handleTopFive}
+            onClick={handleRecipeLink}
             className='top-five-link'
           >
             <li className='text-center'>

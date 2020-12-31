@@ -9,7 +9,7 @@ function RecipeCard({ recipe, dispatch }) {
   const { title, subtitle, cardAndHeroImage, summary, slug } = recipe;
 
   const handleRecipeLink = () => {
-    dispatch(setCurrentRecipe(recipe));
+    dispatch(setCurrentRecipe(null));
   };
 
   return (
