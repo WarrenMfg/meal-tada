@@ -22,170 +22,100 @@ export const getGeneralAndIntialRecipes = async db => {
   }
 };
 
-export const getTopFives = async (db, topFives) => {
+export const getTopFives = (db, topFives) => {
   try {
-    const aggregatedTopFives = [];
+    const facet = {};
+    let topFive;
     for (let i = 0; i < topFives.length; i++) {
-      switch (topFives[i]) {
+      topFive = topFives[i];
+      switch (topFive) {
         case 'Popular':
-          aggregatedTopFives.push({
-            title: 'Popular',
-            recipes: await getPopular(db)
-          });
+          facet[topFive] = [
+            { $match: { isPublished: true } },
+            { $sort: { views: -1 } }
+          ];
           break;
         case 'Quick Meals':
-          aggregatedTopFives.push({
-            title: 'Quick Meals',
-            recipes: await getQuickMeals(db)
-          });
+          facet[topFive] = [
+            {
+              $match: {
+                isPublished: true,
+                $expr: {
+                  $lte: [
+                    {
+                      $add: ['$time.prep', '$time.cook']
+                    },
+                    30
+                  ]
+                },
+                categories: { $in: ['Breakfast', 'Lunch', 'Dinner'] }
+              }
+            },
+            { $sort: { views: -1 } }
+          ];
           break;
         case 'Simple Sides':
-          aggregatedTopFives.push({
-            title: 'Simple Sides',
-            recipes: await getSimpleSides(db)
-          });
+          facet[topFive] = [
+            { $match: { isPublished: true, categories: { $in: ['Sides'] } } },
+            { $sort: { views: -1 } }
+          ];
           break;
         case 'Large Meals':
-          aggregatedTopFives.push({
-            title: 'Large Meals',
-            recipes: await getLargeMeals(db)
-          });
+          facet[topFive] = [
+            {
+              $match: {
+                isPublished: true,
+                categories: {
+                  $in: ['Breakfast', 'Lunch', 'Dinner']
+                },
+                $expr: {
+                  $or: [
+                    {
+                      $gte: [{ $arrayElemAt: ['$servings', 0] }, 7]
+                    },
+                    {
+                      $gte: [{ $arrayElemAt: ['$servings', 1] }, 7]
+                    }
+                  ]
+                }
+              }
+            },
+            { $sort: { views: -1 } }
+          ];
           break;
         case 'Latest':
-          aggregatedTopFives.push({
-            title: 'Latest',
-            recipes: await getLatest(db)
-          });
+          facet[topFive] = [
+            { $match: { isPublished: true } },
+            { $sort: { createdAt: -1 } }
+          ];
           break;
-        default:
-          aggregatedTopFives.push({
-            title: 'Coming Soon',
-            recipes: [
-              {
-                title: 'Apricot Chicken',
-                slug: '-',
-                cardAndHeroImage: 'https://via.placeholder.com/1000'
-              }
-            ]
-          });
       }
+
+      facet[topFive].push(
+        { $limit: 5 },
+        {
+          $project: {
+            _id: false,
+            title: true,
+            slug: true,
+            cardAndHeroImage: true
+          }
+        }
+      );
     }
 
-    return aggregatedTopFives;
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getTopFiveData = recipe => ({
-  title: recipe.title,
-  slug: recipe.slug,
-  cardAndHeroImage: recipe.cardAndHeroImage
-});
-
-const getPopular = async db => {
-  try {
-    return await db
+    return db
       .collection('recipes')
-      .aggregate([
-        { $match: { isPublished: true } },
-        { $sort: { views: -1 } },
-        { $limit: 5 }
-      ])
+      .aggregate([{ $facet: facet }])
       .toArray()
-      .then(recipes => recipes.map(getTopFiveData));
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getQuickMeals = async db => {
-  try {
-    return await db
-      .collection('recipes')
-      .aggregate([
-        {
-          $match: {
-            isPublished: true,
-            $expr: {
-              $lte: [
-                {
-                  $add: ['$time.prep', '$time.cook']
-                },
-                30
-              ]
-            },
-            categories: { $in: ['Breakfast', 'Lunch', 'Dinner'] }
-          }
-        },
-        { $sort: { views: -1 } },
-        { $limit: 5 }
-      ])
-      .toArray()
-      .then(recipes => recipes.map(getTopFiveData));
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getSimpleSides = async db => {
-  try {
-    return await db
-      .collection('recipes')
-      .aggregate([
-        { $match: { isPublished: true, categories: { $in: ['Sides'] } } },
-        { $sort: { views: -1 } },
-        { $limit: 5 }
-      ])
-      .toArray()
-      .then(recipes => recipes.map(getTopFiveData));
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getLargeMeals = async db => {
-  try {
-    return await db
-      .collection('recipes')
-      .aggregate([
-        {
-          $match: {
-            isPublished: true,
-            $or: [
-              {
-                'servings.0': { $gte: 7 }
-              },
-              {
-                'servings.1': { $gte: 7 }
-              }
-            ],
-            categories: {
-              $in: ['Breakfast', 'Lunch', 'Dinner']
-            }
-          }
-        },
-        { $sort: { views: -1 } },
-        { $limit: 5 }
-      ])
-      .toArray()
-      .then(recipes => recipes.map(getTopFiveData));
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getLatest = async db => {
-  try {
-    return await db
-      .collection('recipes')
-      .aggregate([
-        { $match: { isPublished: true } },
-        { $sort: { createdAt: -1 } },
-        { $limit: 5 }
-      ])
-      .toArray()
-      .then(recipes => recipes.map(getTopFiveData));
+      .then(([topFiveAggResults]) => {
+        return Object.keys(topFiveAggResults).map(key => {
+          return {
+            title: key,
+            recipes: topFiveAggResults[key]
+          };
+        });
+      });
   } catch (err) {
     throw err;
   }
