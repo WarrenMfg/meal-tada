@@ -25,3 +25,26 @@ export const setRecipeFormErrors = errors => ({
 export const clearRecipeFormErrors = () => ({
   type: 'CLEAR_RECIPE_FORM_ERRORS'
 });
+
+export const setAdminIngredientsSearchResults = data => ({
+  type: 'SET_ADMIN_INGREDIENTS_SEARCH_RESULTS',
+  payload: data
+});
+
+export const clearAdminIngredientsSearchResults = () => ({
+  type: 'CLEAR_ADMIN_INGREDIENTS_SEARCH_RESULTS'
+});
+
+export const updateAdminIngredientsSearchResults = newIngredient => ({
+  type: 'UPDATE_ADMIN_INGREDIENTS_SEARCH_RESULTS',
+  payload: newIngredient
+});
+
+export const clearIngredientFormErrors = () => ({
+  type: 'CLEAR_INGREDIENT_FORM_ERRORS'
+});
+
+export const setIngredientFormErrors = errors => ({
+  type: 'SET_INGREDIENT_FORM_ERRORS',
+  payload: errors
+});

@@ -2,6 +2,10 @@ import { useReducer } from 'react';
 import { loadingReducer, loadingInitialState } from './loadingReducer';
 import { adminReducer, adminInitialState } from './adminReducer';
 import {
+  adminIngredientReducer,
+  adminIngredientInitialState
+} from './adminIngredientsReducer';
+import {
   adminEditorReducer,
   adminEditorInitialState
 } from './adminEditorReducer';
@@ -12,6 +16,10 @@ const adminRootReducer = () => {
     adminEditorReducer,
     adminEditorInitialState
   );
+  const [adminIngredient, adminIngredientDispatch] = useReducer(
+    adminIngredientReducer,
+    adminIngredientInitialState
+  );
   const [loading, loadingDispatch] = useReducer(
     loadingReducer,
     loadingInitialState
@@ -20,6 +28,7 @@ const adminRootReducer = () => {
   const combinedDispatches = [
     adminDispatch,
     adminEditorDispatch,
+    adminIngredientDispatch,
     loadingDispatch
   ];
 
@@ -45,6 +54,7 @@ const adminRootReducer = () => {
   return {
     admin,
     adminEditor,
+    adminIngredient,
     loading,
     dispatch
   };

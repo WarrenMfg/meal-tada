@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import adminRootReducer from '../../reducers/adminRootReducer';
 import Tabs from './Tabs';
 import RecipeTab from './RecipeTab';
+import IngredientsTab from './IngredientsTab';
 import pacman from '../../images/pacman.gif';
 
 const { Provider } = createContext();
@@ -30,6 +31,7 @@ function Admin() {
                 <Tabs dispatch={combinedState.dispatch} />
                 <div className='tab-content'>
                   <RecipeTab state={combinedState} />
+                  <IngredientsTab state={combinedState} />
                 </div>
               </div>
             </main>

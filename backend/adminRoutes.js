@@ -54,52 +54,72 @@ export default (app, db) => {
     }
   });
 
-  app.post('/api/upsertRecipe', isAuthed, async (req, res) => {
-    try {
-      const { _id, ...body } = req.body;
+  app.post(
+    ['/api/upsertRecipe', '/api/upsertIngredient'],
+    isAuthed,
+    async (req, res) => {
+      try {
+        const collection = req.originalUrl.includes('Recipe')
+          ? 'recipes'
+          : req.originalUrl.includes('Ingredient')
+          ? 'ingredients'
+          : '';
+        const { _id, ...body } = req.body;
 
-      const now = Date.now();
-      if (!body.createdAt) body.createdAt = now;
-      body.updatedAt = now;
+        const now = Date.now();
+        if (!body.createdAt) body.createdAt = now;
+        body.updatedAt = now;
 
-      const upsertedRecipe = await db
-        .collection('recipes')
-        .findOneAndReplace({ _id: ObjectId(_id) }, body, {
-          upsert: true,
-          returnOriginal: false
-        });
-      res.send(upsertedRecipe.value);
-    } catch (err) {
-      res.status(500);
-      console.log(err.message, err.stack);
+        console.log('id', _id, 'body', body);
+
+        const upserted = await db
+          .collection(collection)
+          .findOneAndReplace({ _id: ObjectId(_id) }, body, {
+            upsert: true,
+            returnOriginal: false
+          });
+        res.send(upserted.value);
+      } catch (err) {
+        res.status(500);
+        console.log(err.message, err.stack);
+      }
     }
-  });
+  );
 
-  app.get('/api/admin/search?', isAuthed, async (req, res) => {
-    try {
-      let { phrase } = req.query;
+  app.get(
+    ['/api/admin/search-recipes?', '/api/admin/search-ingredients?'],
+    isAuthed,
+    async (req, res) => {
+      try {
+        let collection = req.originalUrl.includes('recipes')
+          ? 'recipes'
+          : req.originalUrl.includes('ingredients')
+          ? 'ingredients'
+          : '';
+        let { phrase } = req.query;
 
-      // sanitize phrase
-      phrase = /^\$/.test(phrase) ? '' : phrase;
+        // sanitize phrase
+        phrase = /^\$/.test(phrase) ? '' : phrase;
 
-      // define aggregation
-      const agg = [];
+        // define aggregation
+        const agg = [];
 
-      // agg phrase
-      agg.push({ $match: { $text: { $search: phrase } } });
-      agg.push({ $sort: { score: { $meta: 'textScore' } } });
+        // agg phrase
+        agg.push({ $match: { $text: { $search: phrase } } });
+        agg.push({ $sort: { score: { $meta: 'textScore' } } });
 
-      // search it
-      const searchResults = await db
-        .collection('recipes')
-        .aggregate(agg)
-        .toArray();
+        // search it
+        const searchResults = await db
+          .collection(collection)
+          .aggregate(agg)
+          .toArray();
 
-      // send it
-      res.send(searchResults);
-    } catch (err) {
-      res.status(400).json({ message: 'Bad request' });
-      console.log(err.message, err.stack);
+        // send it
+        res.send(searchResults);
+      } catch (err) {
+        res.status(400).json({ message: 'Bad request' });
+        console.log(err.message, err.stack);
+      }
     }
-  });
+  );
 };

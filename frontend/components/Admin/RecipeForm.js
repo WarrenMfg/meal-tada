@@ -33,6 +33,14 @@ function RecipeForm({ activeRecipe, dispatch }) {
     toast.success('Slug copied!');
   };
 
+  // go to ingredients
+  const handleGoToIngredients = () => {
+    document.querySelector('a[href="#tab-2"]').click();
+    document
+      .querySelector('#ingredients')
+      .scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+
   // input change handler
   const handleInputChange = (key, value) => {
     dispatch(updateProperty({ key, value }));
@@ -97,12 +105,12 @@ function RecipeForm({ activeRecipe, dispatch }) {
         <label>
           Slug{' '}
           <span
-            className='ml-1'
+            className='ml-2'
             onClick={handleCopySlug}
             role='button'
             title='Copy Slug'
           >
-            <i className='far fa-copy'></i>
+            <i className='fas fa-copy'></i>
           </span>
         </label>
         <input
@@ -230,8 +238,18 @@ function RecipeForm({ activeRecipe, dispatch }) {
           onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
-      <div className='form-group'>
-        <label>Directions</label>
+      <div className='form-group' id='directions'>
+        <label>
+          Directions{' '}
+          <span
+            className='ml-2'
+            onClick={handleGoToIngredients}
+            role='button'
+            title='Go to Ingredients'
+          >
+            <i className='fas fa-shopping-cart'></i>
+          </span>
+        </label>
         <small className='d-block mb-1'>
           Placeholder for images: &quot;/image descriptive-image-title&quot;
         </small>

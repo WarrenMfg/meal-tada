@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import SearchForm from './SearchForm';
 import Table from './Table';
 import RecipeForm from './RecipeForm';
 import Loading from '../Loading';
@@ -12,7 +13,6 @@ import {
   clearEditor,
   updateFormWithRecipe
 } from '../../actions/adminEditorActions';
-import './styles/RecipeTab.css';
 
 function RecipeTab({ state }) {
   const {
@@ -67,23 +67,13 @@ function RecipeTab({ state }) {
 
   return (
     <div className='tab-pane active' role='tabpanel' id='tab-1'>
-      <form className='mt-4 mb-4' id='search-form'>
-        <input
-          type='text'
-          className='form-control flex-grow-1'
-          placeholder='Search recipes'
-          value={searchQuery}
-          onChange={({ target }) => setSearchQuery(target.value)}
-        />
-        <div className='d-flex btn-group'>
-          <button className='btn btn-info' onClick={handleSearchRecipes}>
-            Search
-          </button>
-          <button className='btn btn-dark' onClick={handleClearSearchAndForm}>
-            Clear
-          </button>
-        </div>
-      </form>
+      <SearchForm
+        inputPlaceholder='Search recipes'
+        inputValue={searchQuery}
+        inputOnChangeHandler={setSearchQuery}
+        searchButtonHandler={handleSearchRecipes}
+        clearButtonHandler={handleClearSearchAndForm}
+      />
 
       {loading.isSearching && <Loading />}
 

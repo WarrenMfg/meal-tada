@@ -5,9 +5,13 @@ import toast from 'react-hot-toast';
 import {
   setAdminRecipeSearchResults,
   clearAdminRecipeSearchResults,
-  updateAdminRecipeSearchResults
+  updateAdminRecipeSearchResults,
+  setAdminIngredientsSearchResults,
+  clearAdminIngredientsSearchResults,
+  updateAdminIngredientsSearchResults
 } from '../actions/adminActions';
 import { updateFormWithRecipe } from '../actions/adminEditorActions';
+import { updateFormWithIngredient } from '../actions/adminIngredientsActions';
 import {
   isLoading,
   isNotLoading,
@@ -22,7 +26,7 @@ export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
     dispatch(isSearching());
     dispatch(clearAdminRecipeSearchResults());
 
-    const res = await fetch(`/api/admin/search?phrase=${query}`, {
+    const res = await fetch(`/api/admin/search-recipes?phrase=${query}`, {
       headers: getHeaders()
     });
     const data = await parseAndHandleErrors(res);
@@ -65,6 +69,54 @@ export const fetchUpsertRecipe = async (dispatch, recipe) => {
         </span>
       </span>
     );
+  } catch (err) {
+    toast.error('Oops, something went wrong');
+    console.error(err);
+  } finally {
+    dispatch(isNotLoading());
+  }
+};
+
+export const fetchSearchIngredientsResults = async (dispatch, query) => {
+  try {
+    dispatch(isSearching());
+    dispatch(clearAdminIngredientsSearchResults());
+
+    const res = await fetch(`/api/admin/search-ingredients?phrase=${query}`, {
+      headers: getHeaders()
+    });
+    const data = await parseAndHandleErrors(res);
+
+    if (data.length) {
+      dispatch(setAdminIngredientsSearchResults(data));
+    } else {
+      toast('No ingredients results.', { icon: '🧐' });
+    }
+  } catch (err) {
+    console.log(err.message, err.stack);
+  } finally {
+    dispatch(isNotSearching());
+  }
+};
+
+export const fetchUpsertIngredient = async (dispatch, ingredient) => {
+  try {
+    dispatch(isLoading());
+
+    const res = await fetch('/api/upsertIngredient', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(ingredient)
+    });
+    const data = await parseAndHandleErrors(res);
+
+    window.scrollTo(0, 0);
+
+    // update title of searched/updated ingredient in search results
+    dispatch(updateAdminIngredientsSearchResults(data));
+    // populate form with upserted data
+    dispatch(updateFormWithIngredient(data));
+    toast.success('Ingredient updated!');
   } catch (err) {
     toast.error('Oops, something went wrong');
     console.error(err);

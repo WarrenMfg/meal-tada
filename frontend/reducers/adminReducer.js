@@ -33,7 +33,6 @@ export const adminReducer = (state, action) => {
     case 'SET_RECIPE_FORM_ERRORS':
       action.payload.forEach(name => {
         document.querySelector(`[name=${name}]`).classList.add('is-invalid');
-        window.scrollTo(0, 0);
       });
       return {
         ...state,
@@ -47,6 +46,47 @@ export const adminReducer = (state, action) => {
         ...state,
         recipeFormErrors: []
       };
+    case 'SET_ADMIN_INGREDIENTS_SEARCH_RESULTS':
+      return {
+        ...state,
+        adminIngredientsSearchResults: action.payload
+      };
+    case 'CLEAR_ADMIN_INGREDIENTS_SEARCH_RESULTS':
+      return {
+        ...state,
+        adminIngredientsSearchResults: []
+      };
+    case 'UPDATE_ADMIN_INGREDIENTS_SEARCH_RESULTS': {
+      const updatedAdminIngredientsSearchResults = state.adminIngredientsSearchResults.map(
+        ingredient => {
+          if (ingredient._id === action.payload._id) {
+            return action.payload;
+          } else {
+            return ingredient;
+          }
+        }
+      );
+      return {
+        ...state,
+        adminIngredientsSearchResults: updatedAdminIngredientsSearchResults
+      };
+    }
+    case 'SET_INGREDIENT_FORM_ERRORS':
+      action.payload.forEach(name => {
+        document.querySelector(`[name=${name}]`).classList.add('is-invalid');
+      });
+      return {
+        ...state,
+        adminIngredientsErrors: action.payload
+      };
+    case 'CLEAR_INGREDIENT_FORM_ERRORS':
+      state.adminIngredientsErrors.forEach(name => {
+        document.querySelector(`[name=${name}]`).classList.remove('is-invalid');
+      });
+      return {
+        ...state,
+        adminIngredientsErrors: []
+      };
     default:
       return state;
   }
@@ -55,5 +95,7 @@ export const adminReducer = (state, action) => {
 export const adminInitialState = {
   adminUser: {},
   adminRecipeSearchResults: [],
-  recipeFormErrors: []
+  recipeFormErrors: [],
+  adminIngredientsSearchResults: [],
+  adminIngredientsErrors: []
 };

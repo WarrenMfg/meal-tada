@@ -18,7 +18,7 @@ function Table({ title, rows, handleClickRow }) {
       <tbody>
         {rows.map(row => (
           <tr key={row._id} id={row._id} onClick={handleClickRow}>
-            <td>{row.title}</td>
+            <td>{row.title || row.ingredient}</td>
           </tr>
         ))}
       </tbody>
