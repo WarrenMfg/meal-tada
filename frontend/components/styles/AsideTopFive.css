@@ -11,17 +11,23 @@
   background-color: #ebebeb;
   max-height: 75px;
   cursor: pointer;
-  transition: all 0.2s ease;
   overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.aside-top-five .top-five-link:hover {
+  background-color: rgb(209, 209, 209);
 }
 
 .aside-top-five li {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.aside-top-five .top-five-link:hover {
-  background-color: rgb(209, 209, 209);
+.aside-top-five .thumbnail-container {
+  min-width: 75px;
+  overflow: hidden;
 }
 
 .aside-top-five li:hover .aside-top-five-image {
@@ -37,15 +43,10 @@
   border-radius: 0 0 0.25rem 0.25rem;
 }
 
-.aside-top-five .thumbnail-container {
-  min-width: 75px;
-  overflow: hidden;
-}
-
 .aside-top-five .aside-top-five-image {
   width: 75px;
   height: auto;
-  transition: 1s transform ease;
+  transition: 0.5s transform ease;
 }
 
 .aside-top-five li span.clamp-container {

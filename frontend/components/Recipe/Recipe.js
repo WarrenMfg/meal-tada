@@ -11,14 +11,18 @@ import PropTypes from 'prop-types';
 import '../styles/Recipe.css';
 
 function Recipe({ state }) {
-  const { currentRecipe } = state.recipes;
+  const { currentRecipe, recipes } = state.recipes;
   const { dispatch } = state;
   const { pathname } = useLocation();
 
   useEffect(() => {
     // when null, GlobalStore fetchInit does not run
     if (!currentRecipe) {
-      dispatch(fetchCurrentRecipe, pathname.split('/recipe')[1]);
+      dispatch(
+        fetchCurrentRecipe,
+        pathname.split('/recipe')[1],
+        !!recipes.length
+      );
     }
   }, [currentRecipe]);
 

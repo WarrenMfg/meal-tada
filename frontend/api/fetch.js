@@ -45,20 +45,23 @@ export const fetchInit = async dispatch => {
   }
 };
 
-export const fetchCurrentRecipe = async (dispatch, pathname) => {
+export const fetchCurrentRecipe = async (dispatch, pathname, isAlreadyInit) => {
   try {
     dispatch(clearError());
     dispatch(isLoading());
 
-    const res = await fetch(`/api/current-recipe${pathname}`);
+    const initAnd = isAlreadyInit ? '' : 'init-and-';
+    const res = await fetch(`/api/${initAnd}current-recipe${pathname}`);
     const data = await parseAndHandleErrors(res);
 
     dispatch(setCurrentRecipe(data.currentRecipe));
-    dispatch(setInitialRecipes(data.initialRecipes));
 
-    const { categories, ...general } = data.general;
-    dispatch(setGeneral(general));
-    dispatch(setCategories(categories));
+    if (!isAlreadyInit) {
+      dispatch(setInitialRecipes(data.initialRecipes));
+      const { categories, ...general } = data.general;
+      dispatch(setGeneral(general));
+      dispatch(setCategories(categories));
+    }
   } catch (err) {
     if (err.route) {
       window.location.replace(err.route);

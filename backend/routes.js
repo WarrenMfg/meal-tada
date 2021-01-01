@@ -16,35 +16,47 @@ export default (app, db) => {
     }
   });
 
-  app.get('/api/current-recipe/:slug', async (req, res) => {
-    try {
-      // sanitize
-      let { slug } = req.params;
-      slug = /^\$/.test(slug) ? '' : slug;
+  app.get(
+    ['/api/init-and-current-recipe/:slug', '/api/current-recipe/:slug'],
+    async (req, res) => {
+      try {
+        // sanitize
+        let { slug } = req.params;
+        slug = /^\$/.test(slug) ? '' : slug;
 
-      // get general and initial recipes
-      const { general, initialRecipes } = await getGeneralAndIntialRecipes(db);
+        let general, initialRecipes;
+        if (req.originalUrl.includes('init-and-current-recipe')) {
+          // get general and initial recipes
+          const generalAndInitialRecipes = await getGeneralAndIntialRecipes(db);
+          general = generalAndInitialRecipes.general;
+          initialRecipes = generalAndInitialRecipes.initialRecipes;
+        }
 
-      // get current recipe
-      const { value: currentRecipe } = await db
-        .collection('recipes')
-        .findOneAndUpdate(
-          { slug },
-          { $inc: { views: 1 } },
-          { returnOriginal: false }
-        );
+        const increment = process.env.NODE_ENV === 'production' ? 1 : 0;
 
-      // send it
-      if (currentRecipe?.isPublished) {
-        res.send({ general, initialRecipes, currentRecipe });
-      } else {
-        res.status(404).send({ route: '/' });
+        // get current recipe
+        const { value: currentRecipe } = await db
+          .collection('recipes')
+          .findOneAndUpdate(
+            { slug },
+            { $inc: { views: increment } },
+            { returnOriginal: false }
+          );
+
+        // send it
+        if (currentRecipe?.isPublished && general && initialRecipes) {
+          res.send({ general, initialRecipes, currentRecipe });
+        } else if (currentRecipe?.isPublished) {
+          res.send({ currentRecipe });
+        } else {
+          res.status(404).send({ route: '/' });
+        }
+      } catch (err) {
+        res.status(400).json({ message: 'Bad request' });
+        console.log(err.message, err.stack);
       }
-    } catch (err) {
-      res.status(400).json({ message: 'Bad request' });
-      console.log(err.message, err.stack);
     }
-  });
+  );
 
   app.get('/api/more-recipes/:lastRecipeCreatedAt', async (req, res) => {
     try {
@@ -65,7 +77,7 @@ export default (app, db) => {
             }
           },
           { $sort: { createdAt: -1 } },
-          { $limit: 20 }
+          { $limit: parseInt(process.env.RECIPE_BATCH_LIMIT, 10) }
         ])
         .toArray();
 

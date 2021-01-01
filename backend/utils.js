@@ -12,7 +12,7 @@ export const getGeneralAndIntialRecipes = async db => {
       .aggregate([
         { $match: { isPublished: true } },
         { $sort: { createdAt: -1 } },
-        { $limit: 20 }
+        { $limit: parseInt(process.env.RECIPE_BATCH_LIMIT, 10) }
       ])
       .toArray();
 
