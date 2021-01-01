@@ -2,28 +2,73 @@
   font-size: 1.5em;
 }
 
-.aside-top-five li {
-  padding: 1rem;
-  background-color: #ebebeb;
+.aside-top-five .top-five-link {
+  color: rgb(33, 37, 41);
+  text-decoration: none;
+  display: flex;
   border-bottom: 1px solid rgb(209, 209, 209);
+  font-size: 0.85em;
+  background-color: #ebebeb;
+  max-height: 75px;
   cursor: pointer;
   transition: all 0.2s ease;
+  overflow: hidden;
 }
 
-.aside-top-five .top-five-link:first-child li {
+.aside-top-five li {
+  display: flex;
+  align-items: center;
+}
+
+.aside-top-five .top-five-link:hover {
+  background-color: rgb(209, 209, 209);
+}
+
+.aside-top-five li:hover .aside-top-five-image {
+  transform: scale(1.1);
+}
+
+.aside-top-five .top-five-link:first-child {
   border-radius: 0.25rem 0.25rem 0 0;
 }
 
-.aside-top-five .top-five-link:last-child li {
+.aside-top-five .top-five-link:last-child {
   border-bottom: none;
   border-radius: 0 0 0.25rem 0.25rem;
 }
 
-.aside-top-five li:hover {
-  background-color: rgb(209, 209, 209) !important;
+.aside-top-five .thumbnail-container {
+  min-width: 75px;
+  overflow: hidden;
 }
 
-.aside-top-five a {
-  color: rgb(33, 37, 41);
-  text-decoration: none;
+.aside-top-five .aside-top-five-image {
+  width: 75px;
+  height: auto;
+  transition: 1s transform ease;
+}
+
+.aside-top-five li span.clamp-container {
+  padding: 0.75em;
+}
+
+.aside-top-five li span.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .aside-top-five .top-five-link {
+    font-size: 1em;
+  }
+
+  .aside-top-five li span.clamp-container {
+    padding: 1em;
+  }
+
+  .aside-top-five li span.clamp {
+    -webkit-line-clamp: 2;
+  }
 }
