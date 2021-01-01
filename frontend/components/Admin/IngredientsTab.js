@@ -34,14 +34,12 @@ function IngredientsTab({ state }) {
 
   const handleSearchIngredients = e => {
     e.preventDefault();
-
     if (!searchQuery) return;
     dispatch(fetchSearchIngredientsResults, searchQuery);
   };
 
   const handleClearIngredientsAndForm = e => {
     e.preventDefault();
-
     setSearchQuery('');
     dispatch(clearAdminIngredientsSearchResults());
     dispatch(clearAdminIngredientForm());
@@ -126,7 +124,7 @@ function IngredientsTab({ state }) {
       )}
 
       <form className='mt-5' onSubmit={e => e.preventDefault()}>
-        <div className='form-group' id='ingredients'>
+        <div className='form-group'>
           <label>Ingredient</label>
           <input
             type='text'
@@ -142,7 +140,7 @@ function IngredientsTab({ state }) {
         </div>
 
         <div className='form-group'>
-          <label>
+          <label id='notes'>
             Notes{' '}
             <span
               className='ml-2'

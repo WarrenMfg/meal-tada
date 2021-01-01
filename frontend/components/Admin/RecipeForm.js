@@ -37,7 +37,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
   const handleGoToIngredients = () => {
     document.querySelector('a[href="#tab-2"]').click();
     document
-      .querySelector('#ingredients')
+      .querySelector('#notes')
       .scrollIntoView({ block: 'center', behavior: 'smooth' });
   };
 

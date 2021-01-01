@@ -59,18 +59,17 @@ export default (app, db) => {
     isAuthed,
     async (req, res) => {
       try {
-        const collection = req.originalUrl.includes('Recipe')
-          ? 'recipes'
-          : req.originalUrl.includes('Ingredient')
-          ? 'ingredients'
-          : '';
+        const collection =
+          req.originalUrl === '/api/upsertRecipe'
+            ? 'recipes'
+            : req.originalUrl === '/api/upsertIngredient'
+            ? 'ingredients'
+            : '';
         const { _id, ...body } = req.body;
 
         const now = Date.now();
         if (!body.createdAt) body.createdAt = now;
         body.updatedAt = now;
-
-        console.log('id', _id, 'body', body);
 
         const upserted = await db
           .collection(collection)
@@ -91,9 +90,11 @@ export default (app, db) => {
     isAuthed,
     async (req, res) => {
       try {
-        let collection = req.originalUrl.includes('recipes')
+        let collection = req.originalUrl.startsWith(
+          '/api/admin/search-recipes?'
+        )
           ? 'recipes'
-          : req.originalUrl.includes('ingredients')
+          : req.originalUrl.startsWith('/api/admin/search-ingredients?')
           ? 'ingredients'
           : '';
         let { phrase } = req.query;
