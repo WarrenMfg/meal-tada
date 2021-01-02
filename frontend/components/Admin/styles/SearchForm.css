@@ -1,10 +1,11 @@
-[id^='tab-'] #search-form input {
+[id^='tab-'] form.search-form input.form-control {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom: none;
 }
 
-[id^='tab-'] #search-form button {
+[id^='tab-'] form.search-form button.btn,
+[id^='tab-'] form.search-form button.btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

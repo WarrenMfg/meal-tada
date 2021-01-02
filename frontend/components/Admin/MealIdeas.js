@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Loading from '../Loading';
+import FilterAndSort from './FilterAndSort';
 import Table from './Table';
 import Modal from './Modal';
 import {
@@ -17,8 +18,12 @@ import './styles/MealIdeas.css';
 
 function MealIdeas({ state }) {
   const {
-    admin: { adminMealIdeasResults },
-    adminMealIdeas: { isLoadingMealIdeas, ...mealIdea },
+    admin: {
+      adminMealIdeasResults,
+      adminMealIdeasFilter,
+      adminMealIdeasFilteredResults
+    },
+    adminMealIdeas: { isLoadingMealIdeas, isFiltering, ...mealIdea },
     dispatch
   } = state;
 
@@ -105,6 +110,7 @@ function MealIdeas({ state }) {
             className='form-control'
             type='text'
             name='idea'
+            placeholder='Idea'
             value={idea}
             onChange={({ target }) =>
               handleInputChange(target.name, target.value)
@@ -115,8 +121,9 @@ function MealIdeas({ state }) {
           <label>Notes</label>
           <textarea
             className='form-control'
-            value={notes}
             name='notes'
+            placeholder='Notes'
+            value={notes}
             onChange={({ target }) =>
               handleInputChange(target.name, target.value)
             }
@@ -135,14 +142,23 @@ function MealIdeas({ state }) {
         <Loading />
       ) : (
         <>
-          {/* <FilterAndSort /> */}
-          <Table
-            title='Ideas'
-            rows={adminMealIdeasResults}
-            handleClickRow={handleClickRow}
-            className='ideas'
-            handleDelete={handleDelete}
-          />
+          <FilterAndSort state={state} />
+
+          {isFiltering ? (
+            <Loading />
+          ) : (
+            <Table
+              title='Ideas'
+              rows={
+                adminMealIdeasFilter
+                  ? adminMealIdeasFilteredResults
+                  : adminMealIdeasResults
+              }
+              handleClickRow={handleClickRow}
+              className='ideas'
+              handleDelete={handleDelete}
+            />
+          )}
         </>
       )}
 

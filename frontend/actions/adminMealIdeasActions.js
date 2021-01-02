@@ -23,3 +23,11 @@ export const isLoadingMealIdeas = () => ({
 export const isNotLoadingMealIdeas = () => ({
   type: 'IS_NOT_LOADING_MEAL_IDEAS'
 });
+
+export const setIsFiltering = () => ({
+  type: 'IS_FILTERING'
+});
+
+export const setIsNotFiltering = () => ({
+  type: 'IS_NOT_FILTERING'
+});

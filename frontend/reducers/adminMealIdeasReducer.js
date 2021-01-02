@@ -35,6 +35,16 @@ export const adminMealIdeasReducer = (state, action) => {
         ...state,
         isLoadingMealIdeas: false
       };
+    case 'IS_FILTERING':
+      return {
+        ...state,
+        isFiltering: true
+      };
+    case 'IS_NOT_FILTERING':
+      return {
+        ...state,
+        isFiltering: false
+      };
     default:
       return state;
   }
@@ -51,5 +61,6 @@ export const adminMealIdeasInitialState = {
   createdAt: null,
   updatedAt: null,
   // loader
-  isLoadingMealIdeas: true // useEffect initiates fetch on mount, then toggles to false
+  isLoadingMealIdeas: true, // useEffect initiates fetch on mount, then toggles to false
+  isFiltering: false
 };

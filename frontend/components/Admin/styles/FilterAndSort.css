@@ -1,0 +1,10 @@
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.far.fa-caret-square-up,
+.far.fa-caret-square-down {
+  margin-right: 0.5em;
+}

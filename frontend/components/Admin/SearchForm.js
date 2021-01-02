@@ -10,7 +10,7 @@ function SearchForm({
   clearButtonHandler
 }) {
   return (
-    <form className='mb-4' id='search-form'>
+    <form className='mb-4 search-form'>
       <label>Search</label>
       <input
         type='text'

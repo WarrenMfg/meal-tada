@@ -53,3 +53,17 @@ export const setMealIdeasResults = mealIdeas => ({
   type: 'SET_MEAL_IDEAS_RESULTS',
   payload: mealIdeas
 });
+
+export const setMealIdeasFilter = filter => ({
+  type: 'SET_MEAL_IDEAS_FILTER',
+  payload: filter
+});
+
+export const clearMealIdeasFilter = () => ({
+  type: 'CLEAR_MEAL_IDEAS_FILTER'
+});
+
+export const setMealIdeasFilteredResults = filtered => ({
+  type: 'SET_MEAL_IDEAS_FILTERED_RESULTS',
+  payload: filtered
+});

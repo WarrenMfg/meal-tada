@@ -92,6 +92,21 @@ export const adminReducer = (state, action) => {
         ...state,
         adminMealIdeasResults: action.payload
       };
+    case 'SET_MEAL_IDEAS_FILTER':
+      return {
+        ...state,
+        adminMealIdeasFilter: action.payload
+      };
+    case 'CLEAR_MEAL_IDEAS_FILTER':
+      return {
+        ...state,
+        adminMealIdeasFilter: ''
+      };
+    case 'SET_MEAL_IDEAS_FILTERED_RESULTS':
+      return {
+        ...state,
+        adminMealIdeasFilteredResults: action.payload
+      };
     default:
       return state;
   }
@@ -103,5 +118,7 @@ export const adminInitialState = {
   recipeFormErrors: [],
   adminIngredientsSearchResults: [],
   adminIngredientsErrors: [],
-  adminMealIdeasResults: []
+  adminMealIdeasResults: [],
+  adminMealIdeasFilter: '',
+  adminMealIdeasFilteredResults: []
 };
