@@ -19,11 +19,6 @@ function Admin() {
   // scroll to top on mount
   useEffect(() => window.scrollTo(0, 0), []);
 
-  // temporary
-  useEffect(() => {
-    document.querySelector('a[href="#tab-3"]').click();
-  }, []);
-
   return (
     <Provider value={combinedState}>
       <div className='container'>

@@ -47,8 +47,10 @@ export default function Tabs({ dispatch }) {
         <a
           className='nav-link text-center'
           role='tab'
-          data-toggle='tab'
-          href='#tab-4'
+          // data-toggle='tab'
+          href='https://trello.com/b/BKfayBOY/meal-tada'
+          target='_blank'
+          rel='noreferrer'
         >
           <i className='fas fa-list-alt'></i>
         </a>
