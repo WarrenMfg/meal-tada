@@ -87,6 +87,11 @@ export const adminReducer = (state, action) => {
         ...state,
         adminIngredientsErrors: []
       };
+    case 'SET_MEAL_IDEAS_RESULTS':
+      return {
+        ...state,
+        adminMealIdeasResults: action.payload
+      };
     default:
       return state;
   }
@@ -97,5 +102,6 @@ export const adminInitialState = {
   adminRecipeSearchResults: [],
   recipeFormErrors: [],
   adminIngredientsSearchResults: [],
-  adminIngredientsErrors: []
+  adminIngredientsErrors: [],
+  adminMealIdeasResults: []
 };

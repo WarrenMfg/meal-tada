@@ -9,6 +9,10 @@ import {
   adminEditorReducer,
   adminEditorInitialState
 } from './adminEditorReducer';
+import {
+  adminMealIdeasReducer,
+  adminMealIdeasInitialState
+} from './adminMealIdeasReducer';
 
 const adminRootReducer = () => {
   const [admin, adminDispatch] = useReducer(adminReducer, adminInitialState);
@@ -20,6 +24,10 @@ const adminRootReducer = () => {
     adminIngredientReducer,
     adminIngredientInitialState
   );
+  const [adminMealIdeas, adminMealIdeasDispatch] = useReducer(
+    adminMealIdeasReducer,
+    adminMealIdeasInitialState
+  );
   const [loading, loadingDispatch] = useReducer(
     loadingReducer,
     loadingInitialState
@@ -29,6 +37,7 @@ const adminRootReducer = () => {
     adminDispatch,
     adminEditorDispatch,
     adminIngredientDispatch,
+    adminMealIdeasDispatch,
     loadingDispatch
   ];
 
@@ -55,6 +64,7 @@ const adminRootReducer = () => {
     admin,
     adminEditor,
     adminIngredient,
+    adminMealIdeas,
     loading,
     dispatch
   };

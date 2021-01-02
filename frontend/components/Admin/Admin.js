@@ -5,6 +5,7 @@ import adminRootReducer from '../../reducers/adminRootReducer';
 import Tabs from './Tabs';
 import RecipeTab from './RecipeTab';
 import IngredientsTab from './IngredientsTab';
+import MealIdeas from './MealIdeas';
 import pacman from '../../images/pacman.gif';
 
 const { Provider } = createContext();
@@ -17,6 +18,11 @@ function Admin() {
 
   // scroll to top on mount
   useEffect(() => window.scrollTo(0, 0), []);
+
+  // temporary
+  useEffect(() => {
+    document.querySelector('a[href="#tab-3"]').click();
+  }, []);
 
   return (
     <Provider value={combinedState}>
@@ -32,6 +38,7 @@ function Admin() {
                 <div className='tab-content'>
                   <RecipeTab state={combinedState} />
                   <IngredientsTab state={combinedState} />
+                  <MealIdeas state={combinedState} />
                 </div>
               </div>
             </main>

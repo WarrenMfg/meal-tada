@@ -48,3 +48,8 @@ export const setIngredientFormErrors = errors => ({
   type: 'SET_INGREDIENT_FORM_ERRORS',
   payload: errors
 });
+
+export const setMealIdeasResults = mealIdeas => ({
+  type: 'SET_MEAL_IDEAS_RESULTS',
+  payload: mealIdeas
+});

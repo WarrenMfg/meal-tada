@@ -61,67 +61,6 @@ Tabs.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export const tabThree = () => (
-  <div className='tab-pane' role='tabpanel' id='tab-3'>
-    <button className='btn btn-success btn-block mt-4' type='button'>
-      Add New Idea
-    </button>
-    <div className='search-container'>
-      <input
-        type='text'
-        className='search-input'
-        name='search-bar'
-        placeholder='Search...'
-      />
-      <button className='btn btn-light search-btn' type='button'>
-        <i className='fa fa-search'></i>
-      </button>
-    </div>
-    <table
-      id='example'
-      className='table table-striped table-bordered'
-      cellSpacing='0'
-      width='100%'
-    >
-      <thead>
-        <tr>
-          <th>Idea Search Results</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>This is meal idea one</td>
-        </tr>
-        <tr>
-          <td>This is meal idea two</td>
-        </tr>
-        <tr>
-          <td>This is meal idea three</td>
-        </tr>
-        <tr>
-          <td>This is meal idea four</td>
-        </tr>
-        <tr>
-          <td>This is meal idea five</td>
-        </tr>
-      </tbody>
-    </table>
-    <form className='mt-4'>
-      <div className='form-group'>
-        <label>Idea</label>
-        <input className='form-control' type='text' />
-      </div>
-      <div className='form-group mt-3'>
-        <label>Notes</label>
-        <textarea className='form-control'></textarea>
-      </div>
-      <button className='btn btn-primary btn-block mt-5' type='button'>
-        Submit
-      </button>
-    </form>
-  </div>
-);
-
 export const tabFour = () => (
   <div className='tab-pane' role='tabpanel' id='tab-4'>
     <button className='btn btn-success btn-block mt-4' type='button'>

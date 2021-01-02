@@ -8,10 +8,17 @@ import {
   updateAdminRecipeSearchResults,
   setAdminIngredientsSearchResults,
   clearAdminIngredientsSearchResults,
-  updateAdminIngredientsSearchResults
+  updateAdminIngredientsSearchResults,
+  setMealIdeasResults
 } from '../actions/adminActions';
 import { updateFormWithRecipe } from '../actions/adminEditorActions';
 import { updateFormWithIngredient } from '../actions/adminIngredientsActions';
+import {
+  isLoadingMealIdeas,
+  isNotLoadingMealIdeas,
+  clearMealIdeaModal,
+  clearMealIdeaFormAndModal
+} from '../actions/adminMealIdeasActions';
 import {
   isLoading,
   isNotLoading,
@@ -26,7 +33,7 @@ export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
     dispatch(isSearching());
     dispatch(clearAdminRecipeSearchResults());
 
-    const res = await fetch(`/api/admin/search-recipes?phrase=${query}`, {
+    const res = await fetch(`/api/admin/searchRecipes?phrase=${query}`, {
       headers: getHeaders()
     });
     const data = await parseAndHandleErrors(res);
@@ -37,7 +44,8 @@ export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
       toast('No search results.', { icon: '🧐' });
     }
   } catch (err) {
-    console.log(err.message, err.stack);
+    toast.error('Oops, something went wrong');
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());
   }
@@ -71,7 +79,7 @@ export const fetchUpsertRecipe = async (dispatch, recipe) => {
     );
   } catch (err) {
     toast.error('Oops, something went wrong');
-    console.error(err);
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
   }
@@ -82,7 +90,7 @@ export const fetchSearchIngredientsResults = async (dispatch, query) => {
     dispatch(isSearching());
     dispatch(clearAdminIngredientsSearchResults());
 
-    const res = await fetch(`/api/admin/search-ingredients?phrase=${query}`, {
+    const res = await fetch(`/api/admin/searchIngredients?phrase=${query}`, {
       headers: getHeaders()
     });
     const data = await parseAndHandleErrors(res);
@@ -93,7 +101,8 @@ export const fetchSearchIngredientsResults = async (dispatch, query) => {
       toast('No ingredients results.', { icon: '🧐' });
     }
   } catch (err) {
-    console.log(err.message, err.stack);
+    toast.error('Oops, something went wrong');
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());
   }
@@ -119,8 +128,57 @@ export const fetchUpsertIngredient = async (dispatch, ingredient) => {
     toast.success('Ingredient updated!');
   } catch (err) {
     toast.error('Oops, something went wrong');
-    console.error(err);
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
+  }
+};
+
+export const fetchAdminGetMealIdeas = async dispatch => {
+  try {
+    dispatch(isLoadingMealIdeas());
+
+    const res = await fetch('/api/getMealIdeas', {
+      headers: getHeaders()
+    });
+    const data = await parseAndHandleErrors(res);
+
+    dispatch(setMealIdeasResults(data));
+  } catch (err) {
+    toast.error('Oops, something went wrong');
+    console.error(err.message, err.stack);
+  } finally {
+    dispatch(isNotLoadingMealIdeas());
+  }
+};
+
+export const fetchAdminUpsertMealIdea = async (
+  dispatch,
+  mealIdea,
+  shouldClearMealIdeaFormAndModal
+) => {
+  try {
+    dispatch(isLoadingMealIdeas());
+
+    const res = await fetch('/api/upsertMealIdea', {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(mealIdea)
+    });
+    const data = await parseAndHandleErrors(res);
+
+    dispatch(setMealIdeasResults(data));
+
+    if (shouldClearMealIdeaFormAndModal) {
+      dispatch(clearMealIdeaFormAndModal());
+    } else {
+      dispatch(clearMealIdeaModal());
+    }
+    toast.success('Meal idea updated!');
+  } catch (err) {
+    toast.error('Oops, something went wrong');
+    console.error(err.message, err.stack);
+  } finally {
+    dispatch(isNotLoadingMealIdeas());
   }
 };

@@ -86,15 +86,13 @@ export default (app, db) => {
   );
 
   app.get(
-    ['/api/admin/search-recipes?', '/api/admin/search-ingredients?'],
+    ['/api/admin/searchRecipes?', '/api/admin/searchIngredients?'],
     isAuthed,
     async (req, res) => {
       try {
-        let collection = req.originalUrl.startsWith(
-          '/api/admin/search-recipes?'
-        )
+        let collection = req.originalUrl.startsWith('/api/admin/searchRecipes?')
           ? 'recipes'
-          : req.originalUrl.startsWith('/api/admin/search-ingredients?')
+          : req.originalUrl.startsWith('/api/admin/searchIngredients?')
           ? 'ingredients'
           : '';
         let { phrase } = req.query;
@@ -123,4 +121,39 @@ export default (app, db) => {
       }
     }
   );
+
+  app.get('/api/getMealIdeas', isAuthed, async (req, res) => {
+    try {
+      const mealIdeas = await db.collection('meal-ideas').find({}).toArray();
+
+      // send it
+      res.send(mealIdeas);
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
+
+  app.post('/api/upsertMealIdea', isAuthed, async (req, res) => {
+    try {
+      const { _id, ...body } = req.body;
+      const now = Date.now();
+      if (!body.createdAt) body.createdAt = now;
+      body.updatedAt = now;
+
+      await db
+        .collection('meal-ideas')
+        .findOneAndReplace({ _id: ObjectId(_id) }, body, {
+          upsert: true
+        });
+
+      const mealIdeas = await db.collection('meal-ideas').find({}).toArray();
+
+      // send it
+      res.send(mealIdeas);
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
 };
