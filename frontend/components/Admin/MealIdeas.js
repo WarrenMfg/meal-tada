@@ -146,6 +146,11 @@ function MealIdeas({ state }) {
 
           {isFiltering ? (
             <Loading />
+          ) : adminMealIdeasFilter &&
+            adminMealIdeasFilteredResults.length === 0 ? (
+            <div className='p-5 no-filtered-results'>
+              <h2 className='text-center'>Think of some more ideas! 🤓</h2>
+            </div>
           ) : (
             <Table
               title='Ideas'

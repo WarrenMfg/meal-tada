@@ -1,3 +1,7 @@
 .ideas {
   max-height: none;
 }
+
+.no-filtered-results {
+  height: 250px;
+}

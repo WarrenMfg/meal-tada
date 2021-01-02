@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
   setMealIdeasFilter,
   clearMealIdeasFilter,
-  setMealIdeasFilteredResults
+  setMealIdeasFilteredResults,
+  setMealIdeasResults
 } from '../../actions/adminActions';
 import {
   setIsFiltering,
@@ -13,7 +14,11 @@ import './styles/FilterAndSort.css';
 
 function FilterAndSort({ state }) {
   const {
-    admin: { adminMealIdeasResults, adminMealIdeasFilter: filter },
+    admin: {
+      adminMealIdeasResults,
+      adminMealIdeasFilter: filter,
+      adminMealIdeasFilteredResults
+    },
     dispatch
   } = state;
 
@@ -75,16 +80,64 @@ function FilterAndSort({ state }) {
         </button>
 
         <div className='dropdown-menu'>
-          <span className='dropdown-item'>
+          <span
+            className='dropdown-item'
+            onClick={() =>
+              sort({
+                filter,
+                adminMealIdeasResults,
+                adminMealIdeasFilteredResults,
+                direction: 'ascending',
+                type: 'alpha',
+                dispatch
+              })
+            }
+          >
             <i className='far fa-caret-square-up'></i> Alpha
           </span>
-          <span className='dropdown-item'>
+          <span
+            className='dropdown-item'
+            onClick={() =>
+              sort({
+                filter,
+                adminMealIdeasResults,
+                adminMealIdeasFilteredResults,
+                direction: 'descending',
+                type: 'alpha',
+                dispatch
+              })
+            }
+          >
             <i className='far fa-caret-square-down'></i> Alpha
           </span>
-          <span className='dropdown-item'>
+          <span
+            className='dropdown-item'
+            onClick={() =>
+              sort({
+                filter,
+                adminMealIdeasResults,
+                adminMealIdeasFilteredResults,
+                direction: 'ascending',
+                type: 'date',
+                dispatch
+              })
+            }
+          >
             <i className='far fa-caret-square-up'></i> Date
           </span>
-          <span className='dropdown-item'>
+          <span
+            className='dropdown-item'
+            onClick={() =>
+              sort({
+                filter,
+                adminMealIdeasResults,
+                adminMealIdeasFilteredResults,
+                direction: 'descending',
+                type: 'date',
+                dispatch
+              })
+            }
+          >
             <i className='far fa-caret-square-down'></i> Date
           </span>
         </div>
@@ -95,6 +148,81 @@ function FilterAndSort({ state }) {
 
 FilterAndSort.propTypes = {
   state: PropTypes.object.isRequired
+};
+
+const sort = ({
+  filter,
+  adminMealIdeasResults,
+  adminMealIdeasFilteredResults,
+  direction,
+  type,
+  dispatch
+}) => {
+  function mergeSort(arr) {
+    if (arr.length <= 1) return arr;
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+
+    return mergeTwoSortedArrays(left, right);
+  }
+
+  function mergeTwoSortedArrays(arrL, arrR) {
+    let l = 0;
+    let r = 0;
+    let result = [];
+
+    if (type === 'alpha') {
+      // while both have length, push into result
+      while (l < arrL.length && r < arrR.length) {
+        if (arrL[l].idea.toLowerCase() <= arrR[r].idea.toLowerCase()) {
+          result.push(arrL[l]);
+          l++;
+        } else {
+          result.push(arrR[r]);
+          r++;
+        }
+      }
+    } else if (type === 'date') {
+      // while both have length, push into result
+      while (l < arrL.length && r < arrR.length) {
+        if (arrL[l].createdAt <= arrR[r].createdAt) {
+          result.push(arrL[l]);
+          l++;
+        } else {
+          result.push(arrR[r]);
+          r++;
+        }
+      }
+    }
+
+    // only one of these will run
+    while (l < arrL.length) {
+      result.push(arrL[l]);
+      l++;
+    }
+
+    while (r < arrR.length) {
+      result.push(arrR[r]);
+      r++;
+    }
+
+    return result;
+  }
+
+  dispatch(setIsFiltering());
+
+  let sorted = filter
+    ? mergeSort(adminMealIdeasFilteredResults)
+    : mergeSort(adminMealIdeasResults);
+
+  sorted = direction === 'ascending' ? sorted : sorted.reverse();
+
+  filter
+    ? dispatch(setMealIdeasFilteredResults(sorted))
+    : dispatch(setMealIdeasResults(sorted));
+
+  dispatch(setIsNotFiltering());
 };
 
 export default FilterAndSort;
