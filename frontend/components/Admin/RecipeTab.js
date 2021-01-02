@@ -67,6 +67,7 @@ function RecipeTab({ state }) {
 
   return (
     <div className='tab-pane active' role='tabpanel' id='tab-1'>
+      <h2 className='text-center'>Recipes</h2>
       <SearchForm
         inputPlaceholder='Search recipes'
         inputValue={searchQuery}

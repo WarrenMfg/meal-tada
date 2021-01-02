@@ -10,7 +10,8 @@ import {
 } from '../../actions/adminMealIdeasActions';
 import {
   fetchAdminGetMealIdeas,
-  fetchAdminUpsertMealIdea
+  fetchAdminUpsertMealIdea,
+  fetchAdminDeleteMealIdea
 } from '../../api/adminFetch';
 import './styles/MealIdeas.css';
 
@@ -55,6 +56,18 @@ function MealIdeas({ state }) {
     );
   };
 
+  const handleDelete = e => {
+    if (
+      confirm(
+        `Are you sure you want to delete ${e.target.previousElementSibling.innerText}`
+      )
+    ) {
+      const _id = e.target.closest('tr').id;
+      dispatch(fetchAdminDeleteMealIdea, _id);
+    }
+    e.stopPropagation();
+  };
+
   const handleUpsertMealIdea = e => {
     if (modalMealIdea._id && !modalMealIdea.modalIdea.trim()) return;
     if (!modalMealIdea._id && !idea.trim()) return;
@@ -83,6 +96,8 @@ function MealIdeas({ state }) {
 
   return (
     <div className='tab-pane' role='tabpanel' id='tab-3'>
+      <h2 className='text-center'>Meal Ideas</h2>
+
       <form className='mb-5' onSubmit={e => e.preventDefault()}>
         <div className='form-group mb-3'>
           <label>Idea</label>
@@ -119,12 +134,16 @@ function MealIdeas({ state }) {
       {isLoadingMealIdeas ? (
         <Loading />
       ) : (
-        <Table
-          title='Ideas'
-          rows={adminMealIdeasResults}
-          handleClickRow={handleClickRow}
-          className='ideas'
-        />
+        <>
+          {/* <FilterAndSort /> */}
+          <Table
+            title='Ideas'
+            rows={adminMealIdeasResults}
+            handleClickRow={handleClickRow}
+            className='ideas'
+            handleDelete={handleDelete}
+          />
+        </>
       )}
 
       <Modal

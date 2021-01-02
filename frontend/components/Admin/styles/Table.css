@@ -1,5 +1,6 @@
 table {
   display: block;
+  border-radius: 5px;
 }
 
 tbody {
@@ -14,9 +15,15 @@ th,
 tr,
 td {
   display: block;
-  width: 100%;
 }
 
-table {
-  border-radius: 5px;
+td div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+i.fas.fa-trash-alt:hover {
+  color: rgb(220, 53, 69);
+  transition: color 0.2s ease;
 }

@@ -182,3 +182,23 @@ export const fetchAdminUpsertMealIdea = async (
     dispatch(isNotLoadingMealIdeas());
   }
 };
+
+export const fetchAdminDeleteMealIdea = async (dispatch, _id) => {
+  try {
+    dispatch(isLoadingMealIdeas());
+
+    const res = await fetch(`/api/deleteMealIdea/${_id}`, {
+      method: 'DELETE',
+      headers: getHeaders()
+    });
+    const data = await parseAndHandleErrors(res);
+
+    dispatch(setMealIdeasResults(data));
+    toast.success('Meal idea deleted!');
+  } catch (err) {
+    toast.error('Oops, something went wrong');
+    console.error(err.message, err.stack);
+  } finally {
+    dispatch(isNotLoadingMealIdeas());
+  }
+};

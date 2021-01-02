@@ -71,12 +71,15 @@ export default (app, db) => {
         if (!body.createdAt) body.createdAt = now;
         body.updatedAt = now;
 
+        // upsert
         const upserted = await db
           .collection(collection)
           .findOneAndReplace({ _id: ObjectId(_id) }, body, {
             upsert: true,
             returnOriginal: false
           });
+
+        // send it
         res.send(upserted.value);
       } catch (err) {
         res.status(500);
@@ -124,7 +127,11 @@ export default (app, db) => {
 
   app.get('/api/getMealIdeas', isAuthed, async (req, res) => {
     try {
-      const mealIdeas = await db.collection('meal-ideas').find({}).toArray();
+      // find all
+      const mealIdeas = await db
+        .collection('meal-ideas')
+        .find({}, { sort: [['createdAt', -1]] })
+        .toArray();
 
       // send it
       res.send(mealIdeas);
@@ -141,13 +148,39 @@ export default (app, db) => {
       if (!body.createdAt) body.createdAt = now;
       body.updatedAt = now;
 
+      // replace it
       await db
         .collection('meal-ideas')
         .findOneAndReplace({ _id: ObjectId(_id) }, body, {
           upsert: true
         });
 
-      const mealIdeas = await db.collection('meal-ideas').find({}).toArray();
+      // find all
+      const mealIdeas = await db
+        .collection('meal-ideas')
+        .find({}, { sort: [['createdAt', -1]] })
+        .toArray();
+
+      // send it
+      res.send(mealIdeas);
+    } catch (err) {
+      res.status(400).json({ message: 'Bad request' });
+      console.log(err.message, err.stack);
+    }
+  });
+
+  app.delete('/api/deleteMealIdea/:_id', isAuthed, async (req, res) => {
+    try {
+      // delete it
+      await db
+        .collection('meal-ideas')
+        .findOneAndDelete({ _id: ObjectId(req.params._id) });
+
+      // find all
+      const mealIdeas = await db
+        .collection('meal-ideas')
+        .find({}, { sort: [['createdAt', -1]] })
+        .toArray();
 
       // send it
       res.send(mealIdeas);

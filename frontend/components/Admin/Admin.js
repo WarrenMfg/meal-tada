@@ -28,7 +28,7 @@ function Admin() {
     <Provider value={combinedState}>
       <div className='container'>
         <h1 className='mt-5 text-center'>
-          Welcome to the Admin Portal, {combinedState.admin.adminUser.user}
+          Welcome, {combinedState.admin.adminUser.user}!
         </h1>
         <div className='row mt-5'>
           <div className='col-12'>
