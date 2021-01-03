@@ -2,9 +2,13 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import { updateProperty } from '../../actions/adminEditorActions';
-import { setRecipeFormErrors } from '../../actions/adminActions';
+import {
+  setRecipeFormErrors,
+  clearRecipeFormErrors
+} from '../../actions/adminActions';
 import { validateRecipe } from '../../utils/adminUtils';
 import { fetchUpsertRecipe } from '../../api/adminFetch';
+import './styles/RecipeForm.css';
 
 function RecipeForm({ activeRecipe, dispatch }) {
   let {
@@ -15,7 +19,8 @@ function RecipeForm({ activeRecipe, dispatch }) {
     ingredients,
     prepTime,
     cookTime,
-    servings,
+    servings0,
+    servings1,
     summary,
     directions,
     instagram,
@@ -77,6 +82,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
     if (Array.isArray(validationResponse)) {
       handleValidationErrors(validationResponse);
     } else {
+      dispatch(clearRecipeFormErrors());
       dispatch(fetchUpsertRecipe, validationResponse);
     }
   };
@@ -177,12 +183,12 @@ function RecipeForm({ activeRecipe, dispatch }) {
           onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
-      <div className='d-flex flex-column flex-sm-row mb-3'>
-        <div className='flex-grow-1'>
+      <div className='d-flex flex-column flex-sm-row mb-3 justify-content-between'>
+        <div className='mb-1 time-and-servings'>
           <label>Prep Time</label>
           <input
             type='number'
-            className='form-control w-75'
+            className='form-control'
             placeholder='Prep Time'
             name='prepTime'
             value={prepTime}
@@ -192,11 +198,11 @@ function RecipeForm({ activeRecipe, dispatch }) {
             onFocus={({ target }) => target.classList.remove('is-invalid')}
           />
         </div>
-        <div className='flex-grow-1'>
+        <div className='mb-1 time-and-servings'>
           <label>Cook Time</label>
           <input
             type='number'
-            className='form-control w-75'
+            className='form-control'
             placeholder='Cook Time'
             name='cookTime'
             value={cookTime}
@@ -206,19 +212,33 @@ function RecipeForm({ activeRecipe, dispatch }) {
             onFocus={({ target }) => target.classList.remove('is-invalid')}
           />
         </div>
-        <div className='flex-grow-1'>
+        <div className='time-and-servings'>
           <label>Servings</label>
-          <input
-            type='text'
-            className='form-control w-75'
-            placeholder='2 to 4'
-            name='servings'
-            value={servings}
-            onChange={({ target }) =>
-              handleInputChange(target.name, target.value)
-            }
-            onFocus={({ target }) => target.classList.remove('is-invalid')}
-          />
+          <div className='d-flex align-items-center'>
+            <input
+              type='number'
+              className='form-control'
+              placeholder='2'
+              name='servings0'
+              value={servings0}
+              onChange={({ target }) =>
+                handleInputChange(target.name, target.value)
+              }
+              onFocus={({ target }) => target.classList.remove('is-invalid')}
+            />
+            <span className='ml-3 mr-3'>to</span>
+            <input
+              type='number'
+              className='form-control'
+              placeholder='4'
+              name='servings1'
+              value={servings1}
+              onChange={({ target }) =>
+                handleInputChange(target.name, target.value)
+              }
+              onFocus={({ target }) => target.classList.remove('is-invalid')}
+            />
+          </div>
         </div>
       </div>
       <div className='form-group'>
@@ -276,6 +296,7 @@ function RecipeForm({ activeRecipe, dispatch }) {
           onChange={({ target }) =>
             handleInputChange(target.name, target.value)
           }
+          onFocus={({ target }) => target.classList.remove('is-invalid')}
         />
       </div>
       <div className='custom-control custom-switch d-flex justify-content-center align-items-center'>

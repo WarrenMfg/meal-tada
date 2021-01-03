@@ -7,8 +7,8 @@ export const adminEditorReducer = (state, action) => {
       // make type adjustments
       if (Array.isArray(recipe.ingredients))
         recipe.ingredients = ingredientsToString(recipe.ingredients);
-      if (Array.isArray(recipe.servings))
-        recipe.servings = recipe.servings.join(' to ');
+      if (Array.isArray(recipe.servings)) recipe.servings0 = recipe.servings[0];
+      recipe.servings1 = recipe.servings[1];
       if (Array.isArray(recipe.directions))
         recipe.directions = recipe.directions.join('\n\n');
       if (typeof recipe.time === 'object') {
@@ -43,7 +43,8 @@ export const adminEditorInitialState = {
   ingredients: '',
   prepTime: '',
   cookTime: '',
-  servings: '',
+  servings0: '',
+  servings1: '',
   summary: '',
   directions: '',
   instagram: '',
