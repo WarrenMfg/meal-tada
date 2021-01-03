@@ -46,7 +46,7 @@ export default (app, db) => {
           }
         );
       } else {
-        res.redirect('/');
+        res.sendStatus(401);
       }
     } catch (err) {
       res.status(500);

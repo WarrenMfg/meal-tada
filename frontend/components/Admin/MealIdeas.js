@@ -19,6 +19,7 @@ import './styles/MealIdeas.css';
 function MealIdeas({ state }) {
   const {
     admin: {
+      adminUser,
       adminMealIdeasResults,
       adminMealIdeasFilter,
       adminMealIdeasFilteredResults
@@ -33,8 +34,13 @@ function MealIdeas({ state }) {
   useEffect(() => {
     const jQ = new Function('return $')();
     modal.current = jQ('#modal');
-    dispatch(fetchAdminGetMealIdeas);
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(adminUser).length) {
+      dispatch(fetchAdminGetMealIdeas);
+    }
+  }, [adminUser]);
 
   useEffect(() => {
     if (modalMealIdea._id) {

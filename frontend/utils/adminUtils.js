@@ -3,7 +3,7 @@ export const getHeaders = () => {
     'Content-Type': 'application/json'
   };
 
-  const token = localStorage.getItem('admin');
+  const token = sessionStorage.getItem('admin');
   if (token) {
     headers['Authorization'] = token;
   }

@@ -6,48 +6,53 @@ import { setAdminUser } from '../actions/adminActions';
 import { isNotLoading } from '../actions/loadingActions';
 
 export default function useAuth(dispatch) {
-  const jwt = localStorage.getItem('admin');
+  const jwt = sessionStorage.getItem('admin');
   const history = useHistory();
 
   useEffect(() => {
     // if no admin jwt
     if (!jwt) {
       const credentials = prompt('Enter your credentials.');
-      fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          credentials
+      if (credentials) {
+        fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            credentials
+          })
         })
-      })
-        .then(parseAndHandleErrors)
-        .then(data => {
-          localStorage.setItem('admin', data.token);
-          const adminUser = jwtDecode(data.token.split(' ')[1]);
-          dispatch(setAdminUser(adminUser));
-          dispatch(isNotLoading());
-        })
-        .catch(() => {
-          localStorage.removeItem('admin');
-          history.replace('/');
-        });
+          .then(parseAndHandleErrors)
+          .then(data => {
+            sessionStorage.setItem('admin', data.token);
+            const adminUser = jwtDecode(data.token.split(' ')[1]);
+            dispatch(setAdminUser(adminUser));
+            dispatch(isNotLoading());
+          })
+          .catch(() => {
+            sessionStorage.removeItem('admin');
+            history.push('/');
+          });
+      } else {
+        history.push('/');
+      }
 
       // if admin jwt, check if expired
     } else {
       try {
         const adminUser = jwtDecode(jwt.split(' ')[1]);
         if (Math.ceil(Date.now() / 1000) >= adminUser.exp) {
-          localStorage.removeItem('admin');
-          history.replace('/');
+          sessionStorage.removeItem('admin');
+          history.push('/');
         } else {
+          // for refreshes
           dispatch(setAdminUser(adminUser));
           dispatch(isNotLoading());
         }
       } catch {
-        localStorage.removeItem('admin');
-        history.replace('/');
+        sessionStorage.removeItem('admin');
+        history.push('/');
       }
     }
   }, []);
