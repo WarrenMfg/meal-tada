@@ -1,1 +1,13 @@
-@import '../../styles/LoadingMaskingDiv.css';
+button.logout {
+  display: block;
+  margin: auto;
+}
+
+@media (min-width: 576px) {
+  button.logout {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(0, 5px);
+  }
+}

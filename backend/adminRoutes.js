@@ -11,7 +11,7 @@ const isAuthed = (req, res, next) => {
     if (req.user && isAdmin) {
       next();
     } else {
-      res.status(401).json({ message: 'Unauthorized.' });
+      res.status(401).json({ status: 401 });
     }
   } catch (err) {
     res.status(500);

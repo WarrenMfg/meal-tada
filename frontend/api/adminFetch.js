@@ -44,7 +44,9 @@ export const fetchAdminRecipeSearchResults = async (dispatch, query) => {
       toast('No search results.', { icon: '🧐' });
     }
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());
@@ -78,7 +80,9 @@ export const fetchUpsertRecipe = async (dispatch, recipe) => {
       </span>
     );
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
@@ -101,7 +105,9 @@ export const fetchSearchIngredientsResults = async (dispatch, query) => {
       toast('No ingredients results.', { icon: '🧐' });
     }
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());
@@ -127,7 +133,9 @@ export const fetchUpsertIngredient = async (dispatch, ingredient) => {
     dispatch(updateFormWithIngredient(data));
     toast.success('Ingredient updated!');
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
@@ -145,7 +153,9 @@ export const fetchAdminGetMealIdeas = async dispatch => {
 
     dispatch(setMealIdeasResults(data));
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoadingMealIdeas());
@@ -176,7 +186,9 @@ export const fetchAdminUpsertMealIdea = async (
     }
     toast.success('Meal idea updated!');
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoadingMealIdeas());
@@ -196,7 +208,9 @@ export const fetchAdminDeleteMealIdea = async (dispatch, _id) => {
     dispatch(setMealIdeasResults(data));
     toast.success('Meal idea deleted!');
   } catch (err) {
-    toast.error('Oops, something went wrong');
+    err.status === 401
+      ? window.location.reload()
+      : toast.error('Oops, something went wrong');
     console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoadingMealIdeas());
