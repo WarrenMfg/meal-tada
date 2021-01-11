@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import SocialShare from './SocialShare';
+import ImageScramble from './ImageScramble';
 import AsideSearch from './AsideSearch';
 import AsideTopFive from './AsideTopFive';
 import PropTypes from 'prop-types';
@@ -13,7 +14,12 @@ function Aside({ topFives, dispatch }) {
       <aside>
         <AsideSearch dispatch={dispatch} />
 
-        {pathname.startsWith('/recipe/') && <SocialShare />}
+        {pathname.startsWith('/recipe/') && (
+          <>
+            <SocialShare />
+            <ImageScramble />
+          </>
+        )}
 
         {topFives.map(topFive => (
           <AsideTopFive

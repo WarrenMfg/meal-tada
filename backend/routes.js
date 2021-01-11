@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { getGeneralAndIntialRecipes } from './utils';
+import { getGeneralAndIntialRecipes, imageScramble } from './utils';
 
 export default (app, db) => {
   app.get('/api/init', async (req, res) => {
@@ -205,6 +205,25 @@ export default (app, db) => {
     } catch (err) {
       res.status(400).json({ message: 'Bad request' });
       console.log(err.message, err.stack);
+    }
+  });
+
+  app.get('/api/image-scramble/:slug', async (req, res) => {
+    try {
+      const { slug } = req.params;
+
+      await imageScramble({
+        command: 'node',
+        args: ['imageScramble.js', slug],
+        options: {
+          cwd: __dirname
+        }
+      });
+
+      res.send({ uploaded: true });
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
     }
   });
 

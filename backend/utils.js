@@ -1,4 +1,7 @@
 /* eslint-disable no-useless-catch */
+/* eslint-disable no-console */
+
+import { spawn } from 'child_process';
 
 export const getGeneralAndIntialRecipes = async db => {
   try {
@@ -119,4 +122,31 @@ export const getTopFives = (db, topFives) => {
   } catch (err) {
     throw err;
   }
+};
+
+export const imageScramble = ({ command, args, options }) => {
+  return new Promise((resolve, reject) => {
+    // spawn child
+    const theProcess = spawn(command, args, options);
+
+    // echo to terminal
+    theProcess.stdout.on('data', data => {
+      console.log(data.toString());
+    });
+
+    // echo to terminal
+    theProcess.stderr.on('data', error => {
+      reject(error.toString());
+    });
+
+    // reject
+    theProcess.on('error', error => {
+      reject(error.toString());
+    });
+
+    // resolve
+    theProcess.on('close', code => {
+      code === 0 && resolve();
+    });
+  });
 };

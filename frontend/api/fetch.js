@@ -14,7 +14,7 @@ import {
   setCurrentRecipe,
   addMoreRecipes
 } from '../actions/recipeActions';
-import { setGeneral } from '../actions/generalActions';
+import { setGeneral, setImageScrambleURLs } from '../actions/generalActions';
 import {
   setCategories,
   setSearchCriteria,
@@ -39,7 +39,7 @@ export const fetchInit = async dispatch => {
     dispatch(setCategories(categories));
   } catch (err) {
     dispatch(setError('An error has occurred 😭'));
-    console.log(err.message, err.stack);
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotLoading());
   }
@@ -67,7 +67,7 @@ export const fetchCurrentRecipe = async (dispatch, pathname, isAlreadyInit) => {
       window.location.replace(err.route);
     } else {
       dispatch(setError('An error has occurred 😭'));
-      console.log(err.message, err.stack);
+      console.error(err.message, err.stack);
     }
   } finally {
     dispatch(isNotLoading());
@@ -87,7 +87,7 @@ export const fetchMoreRecipes = async (dispatch, lastRecipeCreatedAt) => {
     }
   } catch (err) {
     dispatch(setError('An error has occurred 😭'));
-    console.log(err.message, err.stack);
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotFetchingMoreRecipes());
   }
@@ -111,8 +111,43 @@ export const fetchSearchResults = async (dispatch, query, searchCriteria) => {
     }
   } catch (err) {
     dispatch(setError('An error has occurred 😭'));
-    console.log(err.message, err.stack);
+    console.error(err.message, err.stack);
   } finally {
     dispatch(isNotSearching());
+  }
+};
+
+export const fetchImageScramble = async (dispatch, slug) => {
+  const imageLoad = resolve => resolve(true);
+  const imageError = resolve => resolve(false);
+
+  try {
+    const url = 'https://meal-tada.s3.amazonaws.com/_image-scramble/';
+    const img = new Image();
+    img.src = `${url}0-${slug}.jpg`;
+
+    // test if load or error
+    const isFound = await new Promise(resolve => {
+      img.addEventListener('load', () => imageLoad(resolve));
+      img.addEventListener('error', () => imageError(resolve));
+    });
+    img.removeEventListener('load', imageLoad);
+    img.removeEventListener('error', imageError);
+
+    if (!isFound) {
+      // image did not load
+      const res = await fetch(`/api/image-scramble/${slug}`);
+      await parseAndHandleErrors(res);
+    }
+
+    // image either successfully loaded or uploaded to aws on the backend
+    dispatch(
+      setImageScrambleURLs(
+        new Array(9).fill(null).map((val, i) => `${url}${i}-${slug}.jpg`)
+      )
+    );
+  } catch (err) {
+    dispatch(setError('An error has occurred 😭'));
+    console.error(err.message, err.stack);
   }
 };

@@ -10,6 +10,16 @@ export const generalReducer = (state, action) => {
         topFives
       };
     }
+    case 'SET_IMAGE_SCRAMBLE_URLS':
+      return {
+        ...state,
+        imageScrambleURLs: action.payload
+      };
+    case 'CLEAR_IMAGE_SCRAMBLE_URLS':
+      return {
+        ...state,
+        imageScrambleURLs: []
+      };
     default:
       return state;
   }
@@ -19,5 +29,6 @@ export const generalInitialState = {
   introduction: '',
   about1: '',
   about2: '',
-  topFives: []
+  topFives: [],
+  imageScrambleURLs: []
 };
