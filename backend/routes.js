@@ -16,7 +16,8 @@ const requestQueue = new Queue();
 function handleImageScramble(res, slug, worker) {
   worker.postMessage(slug);
 
-  // when worker posts message to parent
+  // when worker posts message to parent.
+  // when 'message' is triggered in worker, this cb is removed then invoked
   worker.once('message', result => {
     if (result.uploaded) {
       res.send(result);
@@ -242,7 +243,7 @@ export default (app, db) => {
     }
   });
 
-  app.get('/api/image-scramble/:slug', async (req, res) => {
+  app.get('/api/image-scramble/:slug', (req, res) => {
     try {
       const { slug } = req.params;
 
