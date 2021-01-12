@@ -79,8 +79,8 @@ parentPort.on('message', async slug => {
       );
     }
 
-    parentPort.postMessage({ uploaded: true });
     await Promise.all(awsPromises);
+    parentPort.postMessage({ uploaded: true });
   } catch (err) {
     parentPort.postMessage(err.message);
   }
