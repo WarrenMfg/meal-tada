@@ -3,10 +3,10 @@
 import axios from 'axios';
 import sharp from 'sharp';
 import AWS from 'aws-sdk';
+import { parentPort } from 'worker_threads';
 
 // size (height and width of sub-image)
 const s = 300;
-
 const extractions = [
   // top row
   { left: 0, top: 0, width: s, height: s },
@@ -22,12 +22,13 @@ const extractions = [
   { left: s * 2, top: s * 2, width: s, height: s }
 ];
 
-(async () => {
+// when parent posts message to worker
+parentPort.on('message', async slug => {
   try {
     // HTTP
     const res = await axios({
       method: 'GET',
-      url: `https://meal-tada.s3.amazonaws.com/${process.argv[2]}/${process.argv[2]}.jpg`,
+      url: `https://meal-tada.s3.amazonaws.com/${slug}/${slug}.jpg`,
       responseType: 'stream',
       headers: { referer: 'http://api/' }
     });
@@ -57,7 +58,7 @@ const extractions = [
       // define upload params
       const uploadParams = {
         Bucket: 'meal-tada',
-        Key: `_image-scramble/${i}-${process.argv[2]}.jpg`,
+        Key: `_image-scramble/${i}-${slug}.jpg`,
         Body: sharpBuffers[i],
         CacheControl: 'public, max-age=604800, immutable',
         ContentType: 'image/jpeg' // jpg only--not webp
@@ -78,10 +79,9 @@ const extractions = [
       );
     }
 
+    parentPort.postMessage({ uploaded: true });
     await Promise.all(awsPromises);
-    process.exit(0);
   } catch (err) {
-    console.error(err);
-    process.exit(1);
+    parentPort.postMessage(err.message);
   }
-})();
+});

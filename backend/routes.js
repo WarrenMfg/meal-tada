@@ -1,6 +1,40 @@
 /* eslint-disable no-console */
 
-import { getGeneralAndIntialRecipes, imageScramble } from './utils';
+import { getGeneralAndIntialRecipes } from './utils';
+import { Worker } from 'worker_threads';
+import { resolve } from 'path';
+import Queue from './Queue';
+
+const workerQueue = new Queue();
+new Array(4)
+  .fill(null)
+  .forEach(() =>
+    workerQueue.enqueue(new Worker(resolve(__dirname, 'imageScramble.js')))
+  );
+const requestQueue = new Queue();
+
+function handleImageScramble(res, slug, worker) {
+  worker.postMessage(slug);
+
+  // when worker posts message to parent
+  worker.once('message', result => {
+    if (result.uploaded) {
+      res.send(result);
+    } else {
+      res.status(500).send(result);
+    }
+
+    // if requests are waiting, reuse the current worker
+    // to handle the queued request
+    if (requestQueue.size() > 0) {
+      requestQueue.dequeue()(worker);
+    }
+    // otherwise, add the worker to pool if no requests are queued
+    else {
+      workerQueue.enqueue(worker);
+    }
+  });
+}
 
 export default (app, db) => {
   app.get('/api/init', async (req, res) => {
@@ -211,16 +245,14 @@ export default (app, db) => {
   app.get('/api/image-scramble/:slug', async (req, res) => {
     try {
       const { slug } = req.params;
-      console.time();
-      await imageScramble({
-        command: 'node',
-        args: ['imageScramble.js', slug],
-        options: {
-          cwd: __dirname
-        }
-      });
-      console.timeEnd();
-      res.send({ uploaded: true });
+
+      if (workerQueue.size() > 0) {
+        handleImageScramble(res, slug, workerQueue.dequeue());
+      } else {
+        // queue requests when no worker is available
+        // the function is waiting for a worker to be assigned
+        requestQueue.enqueue(worker => handleImageScramble(res, slug, worker));
+      }
     } catch (err) {
       console.error(err);
       res.sendStatus(500);
