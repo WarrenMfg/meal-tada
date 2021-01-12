@@ -66,7 +66,7 @@ const extractions = [
       // upload image
       awsPromises.push(
         new Promise((resolve, reject) => {
-          s3.upload(uploadParams, function (err, data) {
+          s3.upload(uploadParams, (err, data) => {
             if (err) {
               reject(err);
             }

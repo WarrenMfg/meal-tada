@@ -211,7 +211,7 @@ export default (app, db) => {
   app.get('/api/image-scramble/:slug', async (req, res) => {
     try {
       const { slug } = req.params;
-
+      console.time();
       await imageScramble({
         command: 'node',
         args: ['imageScramble.js', slug],
@@ -219,7 +219,7 @@ export default (app, db) => {
           cwd: __dirname
         }
       });
-
+      console.timeEnd();
       res.send({ uploaded: true });
     } catch (err) {
       console.error(err);
@@ -255,26 +255,3 @@ export default (app, db) => {
    * end seed
    */
 };
-
-/*
-
-// search agg for prep and cook times
-['prep', 'cook'].forEach(key => {
-  if (timeAndServings[key].length) {
-    const nested = `time.${key}`;
-    agg.push({
-      $match: {
-        $and: [
-          {
-            [nested]: { $gte: timeAndServings[key][0] }
-          },
-          {
-            [nested]: { $lte: timeAndServings[key][1] }
-          }
-        ]
-      }
-    });
-  }
-});
-
-*/
