@@ -13,7 +13,7 @@ class Queue {
 
   dequeue() {
     if (this.tail > this.head) {
-      let value = this.storage[this.head];
+      const value = this.storage[this.head];
       delete this.storage[this.head];
       this.head++;
       return value;
