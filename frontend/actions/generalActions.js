@@ -11,3 +11,8 @@ export const setImageScrambleURLs = urls => ({
 export const clearImageScrambleURLs = () => ({
   type: 'CLEAR_IMAGE_SCRAMBLE_URLS'
 });
+
+export const updateImageScrambleURLs = newURLOrder => ({
+  type: 'UPDATE_IMAGE_SCRAMBLE_URLS',
+  payload: newURLOrder
+});

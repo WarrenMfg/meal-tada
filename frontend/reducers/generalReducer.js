@@ -20,6 +20,11 @@ export const generalReducer = (state, action) => {
         ...state,
         imageScrambleURLs: []
       };
+    case 'UPDATE_IMAGE_SCRAMBLE_URLS':
+      return {
+        ...state,
+        imageScrambleURLs: action.payload
+      };
     default:
       return state;
   }

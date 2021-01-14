@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { fetchImageScramble } from '../../api/fetch';
-import { clearImageScrambleURLs } from '../../actions/generalActions';
+import {
+  clearImageScrambleURLs,
+  updateImageScrambleURLs
+} from '../../actions/generalActions';
 import withGlobalStore from '../../store/withGlobalStore';
 
 import PropTypes from 'prop-types';
@@ -67,12 +70,7 @@ function ImageScramble({ state }) {
   useEffect(() => {
     if (containerRef.current && !imagesRef) {
       imagesRef = useRef([...containerRef.current.children]);
-      addImageEventListeners(imagesRef.current, {
-        count,
-        setCount,
-        canvasRef,
-        confettiRef
-      });
+      addImageEventListeners(imagesRef.current, count, setCount);
       setOffset([
         containerRef.current.clientWidth,
         containerRef.current.clientHeight
@@ -87,6 +85,33 @@ function ImageScramble({ state }) {
     }
   }, [containerRef.current, canvasRef.current]);
 
+  useEffect(() => {
+    if (count) {
+      imagesRef.current
+        .sort((a, b) => {
+          const leftA = parseInt(a.style.left.slice(0, -2), 10);
+          const leftB = parseInt(b.style.left.slice(0, -2), 10);
+          if (leftA < leftB) return -1;
+          else if (leftB > leftA) return 1;
+          else return 0;
+        })
+        .sort((a, b) => {
+          const topA = parseInt(a.style.top.slice(0, -2), 10);
+          const topB = parseInt(b.style.top.slice(0, -2), 10);
+          if (topA < topB) return -1;
+          else if (topB > topA) return 1;
+          else return 0;
+        });
+
+      // update imageScrambleURLs
+      dispatch(
+        updateImageScrambleURLs(
+          imagesRef.current.map(image => image.dataset.url)
+        )
+      );
+    }
+  }, [count]);
+
   // update DOM image elements
   useEffect(() => {
     if (offset.length) {
@@ -96,7 +121,13 @@ function ImageScramble({ state }) {
     }
   }, [offset]);
 
-  useEffect(() => {}, [imageScrambleURLs]);
+  useEffect(() => {
+    // if it's worth it to check if winner
+    if (imagesRef.current[0].dataset.i === '0') {
+      // check if winner
+      checkWinner(imagesRef.current, canvasRef.current, confettiRef.current);
+    }
+  }, [imageScrambleURLs]);
 
   return (
     <>
@@ -111,6 +142,7 @@ function ImageScramble({ state }) {
                   key={url}
                   draggable='true'
                   data-i={i}
+                  data-url={url} // can I just access key instead?
                   style={`background-image: url(${url})`}
                 ></div>
               ))}
@@ -201,7 +233,7 @@ const swapImages = (dragging, entering) => {
 };
 
 // check winner after every dragend
-const checkWinner = (images, canvasRef, confettiRef) => {
+const checkWinner = (images, canvas, confetti) => {
   let imageIndex;
   for (let i = 0; i < images.length; i++) {
     imageIndex = parseInt(images[i].dataset.i, 10);
@@ -216,54 +248,23 @@ const checkWinner = (images, canvasRef, confettiRef) => {
     image.classList.add('winner');
   });
   // move canvas forward
-  canvasRef.current.style.zIndex = 'initial';
+  canvas.style.zIndex = 'initial';
   // confetti
-  confettiRef.current({
+  confetti({
     particleCount: 100,
     gravity: 0.5,
     origin: { x: 0.5, y: 1 }
   });
 };
 
-// update DOM/imageScrambleURLs, increment counter, check winner
-const updateDOMIncrementCounterAndCheckWinner = (
-  images,
-  { count, setCount, canvasRef, confettiRef }
-) => {
-  images
-    .sort((a, b) => {
-      const leftA = parseInt(a.style.left.slice(0, -2), 10);
-      const leftB = parseInt(b.style.left.slice(0, -2), 10);
-      if (leftA < leftB) return -1;
-      else if (leftB > leftA) return 1;
-      else return 0;
-    })
-    .sort((a, b) => {
-      const topA = parseInt(a.style.top.slice(0, -2), 10);
-      const topB = parseInt(b.style.top.slice(0, -2), 10);
-      if (topA < topB) return -1;
-      else if (topB > topA) return 1;
-      else return 0;
-    });
-
-  // increment counter
-  setCount(count + 1);
-
-  // update imageScrambleURLs
-  // TODO
-
-  // check if winner
-  checkWinner(images, canvasRef, confettiRef);
-};
-
 // add image event listeners
-const addImageEventListeners = (imagesRef, ...restArgs) => {
+const addImageEventListeners = (images, count, setCount) => {
   let dragging;
   let firstTouch;
   let lastTouch;
 
   // add event listeners to each image
-  imagesRef.current.forEach(image => {
+  images.forEach(image => {
     /**
      * TOUCH
      */
@@ -312,23 +313,23 @@ const addImageEventListeners = (imagesRef, ...restArgs) => {
         Math.abs(lastTouch.clientY - firstTouch.clientY);
 
       // get index of image
-      const index = imagesRef.current.indexOf(image);
+      const index = images.indexOf(image);
 
       // move along x-axis
       if (isXLargest) {
         const isMovingRight = lastTouch.clientX - firstTouch.clientX > 0;
         if (isMovingRight && [0, 1, 3, 4, 6, 7].includes(index)) {
-          swapImages(dragging, imagesRef.current[index + 1]);
+          swapImages(dragging, images[index + 1]);
         } else if (!isMovingRight && [1, 2, 4, 5, 7, 8].includes(index)) {
-          swapImages(dragging, imagesRef.current[index - 1]);
+          swapImages(dragging, images[index - 1]);
         }
         // move along y-axis
       } else {
         const isMovingDown = lastTouch.clientY - firstTouch.clientY > 0;
         if (isMovingDown && [0, 1, 2, 3, 4, 5].includes(index)) {
-          swapImages(dragging, imagesRef.current[index + 3]);
+          swapImages(dragging, images[index + 3]);
         } else if (!isMovingDown && [3, 4, 5, 6, 7, 8].includes(index)) {
-          swapImages(dragging, imagesRef.current[index - 3]);
+          swapImages(dragging, images[index - 3]);
         }
       }
     });
@@ -367,8 +368,8 @@ const addImageEventListeners = (imagesRef, ...restArgs) => {
       dragging = null;
       // revert opacity
       image.classList.remove('dragging');
-      // update DOM, increment counter, check winner
-      updateDOMIncrementCounterAndCheckWinner(imagesRef.current, restArgs);
+      // update counter
+      setCount(count + 1);
     });
 
     /**
@@ -386,8 +387,8 @@ const addImageEventListeners = (imagesRef, ...restArgs) => {
       // so as to not cutoff any transitions.
       // check if lastTouch (if movement occurred)
       if (lastTouch) {
-        // update DOM, increment counter, check winner
-        updateDOMIncrementCounterAndCheckWinner(imagesRef.current, restArgs);
+        // update counter
+        setCount(count + 1);
         // reset variables
         firstTouch = null;
         lastTouch = null;
