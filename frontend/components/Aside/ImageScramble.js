@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import { fetchImageScramble } from '../../api/fetch';
 import {
@@ -23,12 +23,16 @@ function ImageScramble({ state }) {
   const [count, setCount] = useState(0);
   // x and y offset
   const [offset, setOffset] = useState([]);
+  // imagesRef
+  const [imagesRef, setImagesRef] = useState(null);
 
   // refs
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  let confettiRef; // useMemo or useCallback instead???
-  let imagesRef;
+  const confettiRef = useCallback(() => {
+    return confetti.create(canvasRef.current);
+  }, [canvasRef.current]);
+  // let imagesRef;
 
   // do-while loop to mitigate landing on random recipe that is same as currentRecipe
   let recipe = {};
@@ -43,6 +47,7 @@ function ImageScramble({ state }) {
 
   // lifecycle
   useEffect(() => {
+    console.log('mount');
     // on mount fetch image scramble
     dispatch(fetchImageScramble, recipe.slug);
 
@@ -57,10 +62,10 @@ function ImageScramble({ state }) {
         containerRef.current.clientHeight / 3
       ]);
     };
-    window.addEventListener('resize', updateCanvasOffsetAndImages);
+    // window.addEventListener('resize', updateCanvasOffsetAndImages); // move this to useEffect on every render?
     // cleanup
     return () => {
-      window.removeEventListener('resize', updateCanvasOffsetAndImages);
+      // window.removeEventListener('resize', updateCanvasOffsetAndImages); // move this to useEffect on every render?
       dispatch(clearImageScrambleURLs());
     };
   }, []);
@@ -68,26 +73,27 @@ function ImageScramble({ state }) {
   // update imagesRef and set offset
   // update confettiRef and canvasRef width/height
   useEffect(() => {
-    if (containerRef.current && !imagesRef) {
-      imagesRef = useRef([...containerRef.current.children]);
-      addImageEventListeners(imagesRef.current, count, setCount);
+    console.log(containerRef, canvasRef);
+    if (!imagesRef && containerRef.current) {
+      setImagesRef([...containerRef.current.children]);
       setOffset([
         containerRef.current.clientWidth,
         containerRef.current.clientHeight
       ]);
     }
 
-    if (canvasRef.current && containerRef.current && !confettiRef) {
-      confettiRef = useRef(confetti.create(canvasRef.current));
+    if (!confettiRef && canvasRef.current && containerRef.current) {
       // update height and width
-      canvasRef.current.width = containerRef.current.clientWidth;
+      canvasRef.current.width = containerRef.current.clientWidth; // should these happen on every render instead?
       canvasRef.current.height = containerRef.current.clientHeight;
     }
-  }, [containerRef.current, canvasRef.current]);
+  });
 
+  // update imageScrambleURLs
   useEffect(() => {
-    if (count) {
-      imagesRef.current
+    console.log(count, 'imagesRef:', imagesRef);
+    if (count && imagesRef) {
+      imagesRef
         .sort((a, b) => {
           const leftA = parseInt(a.style.left.slice(0, -2), 10);
           const leftB = parseInt(b.style.left.slice(0, -2), 10);
@@ -103,29 +109,33 @@ function ImageScramble({ state }) {
           else return 0;
         });
 
-      // update imageScrambleURLs
       dispatch(
-        updateImageScrambleURLs(
-          imagesRef.current.map(image => image.dataset.url)
-        )
+        updateImageScrambleURLs(imagesRef.map(image => image.dataset.url))
       );
     }
   }, [count]);
 
+  // add event listeners
+  useEffect(() => {
+    if (imagesRef) {
+      addImageEventListeners(imagesRef, count, setCount);
+    }
+  }, [imagesRef]);
+
   // update DOM image elements
   useEffect(() => {
-    if (offset.length) {
-      imagesRef.current.forEach((image, i) =>
-        updateImages(image, i, offset, false)
-      );
+    console.log('offet:', offset);
+    if (offset.length && imagesRef) {
+      imagesRef.forEach((image, i) => updateImages(image, i, offset, false));
     }
   }, [offset]);
 
   useEffect(() => {
+    console.log('imagesScrambleURLs:', imageScrambleURLs);
     // if it's worth it to check if winner
-    if (imagesRef.current[0].dataset.i === '0') {
+    if (imagesRef?.[0].dataset.i === '0') {
       // check if winner
-      checkWinner(imagesRef.current, canvasRef.current, confettiRef.current);
+      checkWinner(imagesRef, canvasRef.current, confettiRef);
     }
   }, [imageScrambleURLs]);
 
@@ -143,19 +153,21 @@ function ImageScramble({ state }) {
                   draggable='true'
                   data-i={i}
                   data-url={url} // can I just access key instead?
-                  style={`background-image: url(${url})`}
+                  style={{ backgroundImage: `url(${url})` }}
                 ></div>
               ))}
             </div>
             <canvas id='image-scramble-confetti' ref={canvasRef}></canvas>
           </div>
 
-          <p>
+          <p className='total-moves'>
             Total moves: <span id='counter'>{count}</span>
           </p>
         </>
       ) : (
-        <div style={`background-image: url(${recipe.cardAndHeroImage})`}></div>
+        <div
+          style={{ backgroundImage: `url(${recipe.cardAndHeroImage}.webp)` }}
+        ></div>
       )}
     </>
   );

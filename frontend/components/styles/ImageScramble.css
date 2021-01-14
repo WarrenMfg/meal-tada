@@ -1,5 +1,5 @@
 .image-scramble-wrapper {
-  /* position: relative; */
+  position: relative;
   margin: 0 auto;
 }
 
@@ -43,9 +43,8 @@ div[data-i].winner {
   }
 }
 
-p {
+p.total-moves {
   text-align: center;
-  color: whitesmoke;
 }
 
 #image-scramble-confetti {
@@ -66,7 +65,7 @@ p {
     width: 170px;
     height: 170px;
   }
-  p {
+  p.total-moves {
     font-size: 1.5em;
   }
   #shuffle {
