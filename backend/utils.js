@@ -96,7 +96,6 @@ export const getTopFives = (db, topFives) => {
         { $limit: 5 },
         {
           $project: {
-            _id: false,
             title: true,
             slug: true,
             cardAndHeroImage: true
