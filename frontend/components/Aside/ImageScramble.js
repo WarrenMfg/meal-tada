@@ -19,6 +19,7 @@ function ImageScramble({ state }) {
   } = state;
 
   // state
+  const [recipe, setRecipe] = useState({});
   // counter
   const [count, setCount] = useState(0);
   // x and y offset
@@ -35,24 +36,22 @@ function ImageScramble({ state }) {
   const countRef = useRef(count);
   const offsetRef = useRef(offset);
 
-  // do-while loop to mitigate landing on random recipe that is same as currentRecipe
-  let recipe = {};
-  do {
-    // get random number for topic
-    const randomTopic = Math.floor(Math.random() * topFives.length);
-    const randomRecipe = Math.floor(
-      Math.random() * topFives[randomTopic].recipes.length
-    );
-    recipe = topFives[randomTopic].recipes[randomRecipe];
-  } while (currentRecipe._id === recipe._id);
-
   // lifecycle
   useEffect(() => {
+    // do-while loop to mitigate landing on random recipe that is same as currentRecipe
+    let localRecipe;
+    do {
+      // get random number for topic
+      const randomTopic = Math.floor(Math.random() * topFives.length);
+      const randomRecipe = Math.floor(
+        Math.random() * topFives[randomTopic].recipes.length
+      );
+      localRecipe = topFives[randomTopic].recipes[randomRecipe];
+    } while (currentRecipe._id === localRecipe._id);
+    setRecipe(localRecipe);
+
     // on mount fetch image scramble
-    dispatch(
-      fetchImageScramble,
-      'deviled-eggs-with-bacon-jam' /* recipe.slug */
-    ); // revert this to recipe.slug
+    dispatch(fetchImageScramble, localRecipe.slug);
 
     // on resize
     const updateCanvasOffsetAndImages = () => {
@@ -231,9 +230,13 @@ function ImageScramble({ state }) {
           </div>
         </>
       ) : (
-        <div
-          style={{ backgroundImage: `url(${recipe.cardAndHeroImage}.webp)` }}
-        ></div>
+        <div className='image-scramble-wrapper image-scramble-wrapper-placeholder mt-4 mb-3'>
+          <div
+            id='image-scramble-container'
+            className='image-pieces-placeholder'
+            style={{ backgroundImage: `url(${recipe.cardAndHeroImage}.webp)` }}
+          ></div>
+        </div>
       )}
     </>
   );
