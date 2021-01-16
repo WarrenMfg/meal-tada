@@ -33,10 +33,6 @@ function ImageScramble({ state }) {
     return Confetti.create(canvasRef.current);
   }, [canvasRef.current]);
   const countRef = useRef(count);
-  const incrementCount = useCallback(() => {
-    setCount(++countRef.current);
-  }, [setCount]);
-  // let images;
 
   // do-while loop to mitigate landing on random recipe that is same as currentRecipe
   let recipe = {};
@@ -101,7 +97,7 @@ function ImageScramble({ state }) {
   // add event listeners
   useEffect(() => {
     if (images) {
-      addImageEventListeners(images, incrementCount);
+      addImageEventListeners(images, countRef, setCount);
     }
   }, [images]);
 
@@ -277,7 +273,7 @@ const checkWinner = (images, canvas, confetti) => {
 };
 
 // add image event listeners
-const addImageEventListeners = (images, incrementCount) => {
+const addImageEventListeners = (images, countRef, setCount) => {
   let dragging;
   let firstTouch;
   let lastTouch;
@@ -388,7 +384,7 @@ const addImageEventListeners = (images, incrementCount) => {
       // revert opacity
       image.classList.remove('dragging');
       // update counter
-      incrementCount();
+      setCount(++countRef.current);
     });
 
     /**
@@ -407,7 +403,7 @@ const addImageEventListeners = (images, incrementCount) => {
       // check if lastTouch (if movement occurred)
       if (lastTouch) {
         // update counter
-        incrementCount();
+        setCount(++countRef.current);
         // reset variables
         firstTouch = null;
         lastTouch = null;
