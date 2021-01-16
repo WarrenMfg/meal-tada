@@ -326,6 +326,10 @@ const updateImages = (image, i, offset, isShuffling) => {
       image.style.left = `${offset[0] * 2}px`;
       image.style.top = `${offset[1] * 2}px`;
       break;
+    default:
+      image.style.left = '0px';
+      image.style.top = '0px';
+      break;
   }
 };
 

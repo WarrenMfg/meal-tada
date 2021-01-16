@@ -140,12 +140,39 @@ export const fetchImageScramble = async (dispatch, slug) => {
       await parseAndHandleErrors(res);
     }
 
+    // preload images
+    const imageURLs = new Array(9)
+      .fill(null)
+      .map((val, i) => `${url}${i}-${slug}.jpg`);
+    const promises = [];
+    const images = []; // keep images to remove event listeners
+    imageURLs.forEach(url => {
+      promises.push(
+        new Promise(resolve => {
+          const img = new Image();
+          img.src = url;
+          img.addEventListener('load', () => imageLoad(resolve));
+          img.addEventListener('error', () => imageError(resolve));
+          images.push(img);
+        })
+      );
+    });
+    // handle preload results
+    const preloadResults = await Promise.all(promises);
+    preloadResults.forEach((preload, i) => {
+      if (!preload) {
+        imageURLs[i] = 'https://via.placeholder.com/300x300.png?text=Missing';
+      }
+    });
+
+    // remove images event listeners
+    images.forEach(img => {
+      img.removeEventListener('load', imageLoad);
+      img.removeEventListener('error', imageError);
+    });
+
     // image either successfully loaded or uploaded to aws on the backend
-    dispatch(
-      setImageScrambleURLs(
-        new Array(9).fill(null).map((val, i) => `${url}${i}-${slug}.jpg`)
-      )
-    );
+    dispatch(setImageScrambleURLs(imageURLs));
   } catch (err) {
     dispatch(setError('An error has occurred 😭'));
     console.error(err.message, err.stack);
