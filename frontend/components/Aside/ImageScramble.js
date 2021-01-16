@@ -61,7 +61,7 @@ function ImageScramble({ state }) {
     dispatch(fetchImageScramble, localRecipe.slug);
 
     // on resize
-    const updateCanvasOffsetAndImages = () => {
+    const updateCanvasAndOffset = () => {
       // update canvas
       canvasRef.current.width = containerRef.current.clientWidth;
       canvasRef.current.height = containerRef.current.clientHeight;
@@ -71,17 +71,17 @@ function ImageScramble({ state }) {
         containerRef.current.clientHeight / 3
       ]);
     };
-    window.addEventListener('resize', updateCanvasOffsetAndImages);
+    window.addEventListener('resize', updateCanvasAndOffset);
 
     // cleanup
     return () => {
-      window.removeEventListener('resize', updateCanvasOffsetAndImages);
+      window.removeEventListener('resize', updateCanvasAndOffset);
       dispatch(clearImageScrambleURLs());
     };
   }, []);
 
-  // update images, set offset, add Intersection Observer
-  // update confetti and canvasRef width/height
+  // update images and set offset
+  // update canvasRef width/height
   useEffect(() => {
     if (!images && containerRef.current) {
       setImages([...containerRef.current.children]);
@@ -91,7 +91,6 @@ function ImageScramble({ state }) {
       ]);
     }
 
-    // useLayoutEffect instead?
     if (
       canvasRef.current?.width !== containerRef.current?.clientWidth &&
       canvasRef.current?.height !== containerRef.current?.clientWidth
@@ -103,6 +102,7 @@ function ImageScramble({ state }) {
   });
 
   // add event listeners
+  // add Intersection Observer
   useEffect(() => {
     if (images) {
       addImageEventListeners(images, countRef, setCount);
@@ -517,12 +517,3 @@ const addImageEventListeners = (images, countRef, setCount) => {
     });
   });
 };
-
-// IntersectionObserver triggers this on scroll
-// setTimeout(() => attentionGetter(), 500);
-
-/*
-- image is for recipe other than current page
-- add instructions below
-- once solved, instructions change to summary, and image and summary link to recipe
-*/
