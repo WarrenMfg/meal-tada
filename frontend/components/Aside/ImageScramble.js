@@ -33,6 +33,7 @@ function ImageScramble({ state }) {
     return Confetti.create(canvasRef.current);
   }, [canvasRef.current]);
   const countRef = useRef(count);
+  const offsetRef = useRef(offset);
 
   // do-while loop to mitigate landing on random recipe that is same as currentRecipe
   let recipe = {};
@@ -65,6 +66,7 @@ function ImageScramble({ state }) {
       ]);
     };
     window.addEventListener('resize', updateCanvasOffsetAndImages);
+
     // cleanup
     return () => {
       window.removeEventListener('resize', updateCanvasOffsetAndImages);
@@ -72,7 +74,7 @@ function ImageScramble({ state }) {
     };
   }, []);
 
-  // update images and set offset
+  // update images, set offset, add Intersection Observer
   // update confetti and canvasRef width/height
   useEffect(() => {
     if (!images && containerRef.current) {
@@ -99,6 +101,69 @@ function ImageScramble({ state }) {
     if (images) {
       addImageEventListeners(images, countRef, setCount);
     }
+
+    if (images && containerRef.current) {
+      // define intersection callback (attention getter)
+      const handleIntersect = (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // triple shuffle then update DOM
+            const attentionGetter = () => {
+              shuffleImages()
+                .then(() => shuffleImages())
+                .then(() => shuffleImages())
+                .finally(() => {
+                  // not all images will have moved, thus triggering transitionend;
+                  // so remove .move on images that didn't move
+                  images.forEach(image => {
+                    image.classList.remove('move');
+                    image.draggable = true;
+                  });
+                  // dispatch
+                  dispatch(
+                    updateImageScrambleURLs(
+                      images.map(image => image.dataset.url)
+                    )
+                  );
+                });
+            };
+
+            // shuffle button handler
+            const shuffleImages = () => {
+              // return promise with setTimeout
+              return new Promise(resolve => {
+                // shuffle
+                for (let i = images.length - 1; i > 0; i--) {
+                  let j = Math.floor(Math.random() * (i + 1));
+                  [images[i], images[j]] = [images[j], images[i]];
+                }
+                // place in grid and animate
+                images.forEach((image, i) =>
+                  updateImages(image, i, offsetRef.current, true)
+                );
+                // resolve
+                setTimeout(() => {
+                  resolve();
+                }, 500);
+              });
+            };
+
+            attentionGetter();
+            observer.unobserve(containerRef.current);
+          }
+        });
+      };
+
+      // create observer
+      const observer = new IntersectionObserver(handleIntersect, {
+        root: null,
+        rootMargin: '0% 0% -33% 0%',
+        threshold: 0
+      });
+
+      // observe ref
+      observer.observe(containerRef.current);
+    }
   }, [images]);
 
   // update DOM image elements
@@ -106,6 +171,7 @@ function ImageScramble({ state }) {
     if (offset.length && images) {
       images.forEach((image, i) => updateImages(image, i, offset, false));
     }
+    offsetRef.current = offset;
   }, [offset]);
 
   // update imageScrambleURLs
@@ -142,30 +208,27 @@ function ImageScramble({ state }) {
     <>
       {imageScrambleURLs.length ? (
         <>
-          <div className='image-scramble-wrapper mb-3'>
+          <div className='image-scramble-wrapper mt-4 mb-3'>
             <div id='image-scramble-container' ref={containerRef}>
-              {/* This might have to be an array of DOM elements stored in state */}
-              {/* Or, scramble imageScrambleURLs */}
               {imageScrambleURLs.map((url, i) => (
                 <div
                   key={url}
-                  draggable='true'
+                  draggable='false'
                   data-i={
                     imageScrambleURLs[i][
                       imageScrambleURLs[i].lastIndexOf('/') + 1
                     ]
                   }
-                  data-url={url} // can I just access key instead?
+                  data-url={url}
                   style={{ backgroundImage: `url(${url})` }}
                 ></div>
               ))}
             </div>
             <canvas id='image-scramble-confetti' ref={canvasRef}></canvas>
+            <p className='total-moves'>
+              Total moves: <span id='counter'>{count}</span>
+            </p>
           </div>
-
-          <p className='total-moves'>
-            Total moves: <span id='counter'>{count}</span>
-          </p>
         </>
       ) : (
         <div
@@ -184,12 +247,8 @@ export default withGlobalStore(ImageScramble);
 
 // update image placement
 const updateImages = (image, i, offset, isShuffling) => {
-  // add back box-shadow
-  image.classList.remove('winner');
   // transition top and left css rules
   isShuffling && image.classList.add('move');
-  // make draggable
-  image.draggable = true;
 
   // update left and top properties
   switch (i) {
@@ -417,44 +476,6 @@ const addImageEventListeners = (images, countRef, setCount) => {
     });
   });
 };
-
-// triple shuffle then update DOM
-// const attentionGetter = () => {
-//   shuffleImages()
-//     .then(() => shuffleImages())
-//     .then(() => shuffleImages())
-//     .finally(() => {
-//       // not all images will have moved, thus triggering transitionend;
-//       // so remove .move on images that didn't move
-//       images.forEach(image => image.classList.remove('move'));
-//       // empty container
-//       container.innerHTML = '';
-//       // append
-//       container.append(...images);
-//     });
-// };
-
-// shuffle button handler
-// const shuffleImages = () => {
-//   // reset canvas
-//   canvas.style.zIndex = -1;
-//   // reset counter
-//   counter.innerHTML = count = 0;
-//   // return promise with setTimeout
-//   return new Promise(resolve => {
-//     // shuffle
-//     for (let i = images.length - 1; i > 0; i--) {
-//       let j = Math.floor(Math.random() * (i + 1));
-//       [images[i], images[j]] = [images[j], images[i]];
-//     }
-//     // place in grid and animate
-//     images.forEach((image, i) => updateImages(image, i, true));
-//     // resolve
-//     setTimeout(() => {
-//       resolve();
-//     }, 500);
-//   });
-// };
 
 // IntersectionObserver triggers this on scroll
 // setTimeout(() => attentionGetter(), 500);

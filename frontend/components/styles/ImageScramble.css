@@ -45,6 +45,7 @@ div[data-i].winner {
 
 p.total-moves {
   text-align: center;
+  margin: 0;
 }
 
 #image-scramble-confetti {
@@ -78,6 +79,9 @@ p.total-moves {
   div[data-i] {
     width: 70px;
     height: 70px;
+  }
+  p.total-moves {
+    font-size: 1em;
   }
 }
 
