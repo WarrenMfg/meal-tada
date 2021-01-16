@@ -10,8 +10,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  border: 1px solid #ccc;
   margin: 0 8px;
   color: inherit;
   opacity: 0.75;
