@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import confetti from 'canvas-confetti';
+import Confetti from 'canvas-confetti';
 import { fetchImageScramble } from '../../api/fetch';
 import {
   clearImageScrambleURLs,
@@ -23,16 +23,20 @@ function ImageScramble({ state }) {
   const [count, setCount] = useState(0);
   // x and y offset
   const [offset, setOffset] = useState([]);
-  // imagesRef
-  const [imagesRef, setImagesRef] = useState(null);
+  // images
+  const [images, setImages] = useState(null);
 
-  // refs
+  // refs/callbacks
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const confettiRef = useCallback(() => {
-    return confetti.create(canvasRef.current);
+  const confetti = useCallback(() => {
+    return Confetti.create(canvasRef.current);
   }, [canvasRef.current]);
-  // let imagesRef;
+  const countRef = useRef(count);
+  const incrementCount = useCallback(() => {
+    setCount(++countRef.current);
+  }, [setCount]);
+  // let images;
 
   // do-while loop to mitigate landing on random recipe that is same as currentRecipe
   let recipe = {};
@@ -47,9 +51,11 @@ function ImageScramble({ state }) {
 
   // lifecycle
   useEffect(() => {
-    console.log('mount');
     // on mount fetch image scramble
-    dispatch(fetchImageScramble, recipe.slug);
+    dispatch(
+      fetchImageScramble,
+      'deviled-eggs-with-bacon-jam' /* recipe.slug */
+    ); // revert this to recipe.slug
 
     // on resize
     const updateCanvasOffsetAndImages = () => {
@@ -62,80 +68,77 @@ function ImageScramble({ state }) {
         containerRef.current.clientHeight / 3
       ]);
     };
-    // window.addEventListener('resize', updateCanvasOffsetAndImages); // move this to useEffect on every render?
+    window.addEventListener('resize', updateCanvasOffsetAndImages);
     // cleanup
     return () => {
-      // window.removeEventListener('resize', updateCanvasOffsetAndImages); // move this to useEffect on every render?
+      window.removeEventListener('resize', updateCanvasOffsetAndImages);
       dispatch(clearImageScrambleURLs());
     };
   }, []);
 
-  // update imagesRef and set offset
-  // update confettiRef and canvasRef width/height
+  // update images and set offset
+  // update confetti and canvasRef width/height
   useEffect(() => {
-    console.log(containerRef, canvasRef);
-    if (!imagesRef && containerRef.current) {
-      setImagesRef([...containerRef.current.children]);
+    if (!images && containerRef.current) {
+      setImages([...containerRef.current.children]);
       setOffset([
-        containerRef.current.clientWidth,
-        containerRef.current.clientHeight
+        containerRef.current.clientWidth / 3,
+        containerRef.current.clientHeight / 3
       ]);
     }
 
-    if (!confettiRef && canvasRef.current && containerRef.current) {
+    // useLayoutEffect instead?
+    if (
+      canvasRef.current?.width !== containerRef.current?.clientWidth &&
+      canvasRef.current?.height !== containerRef.current?.clientWidth
+    ) {
       // update height and width
-      canvasRef.current.width = containerRef.current.clientWidth; // should these happen on every render instead?
+      canvasRef.current.width = containerRef.current.clientWidth;
       canvasRef.current.height = containerRef.current.clientHeight;
     }
   });
 
+  // add event listeners
+  useEffect(() => {
+    if (images) {
+      addImageEventListeners(images, incrementCount);
+    }
+  }, [images]);
+
+  // update DOM image elements
+  useEffect(() => {
+    if (offset.length && images) {
+      images.forEach((image, i) => updateImages(image, i, offset, false));
+    }
+  }, [offset]);
+
   // update imageScrambleURLs
   useEffect(() => {
-    console.log(count, 'imagesRef:', imagesRef);
-    if (count && imagesRef) {
-      imagesRef
+    if (count && images) {
+      images
         .sort((a, b) => {
           const leftA = parseInt(a.style.left.slice(0, -2), 10);
           const leftB = parseInt(b.style.left.slice(0, -2), 10);
           if (leftA < leftB) return -1;
-          else if (leftB > leftA) return 1;
+          else if (leftA > leftB) return 1;
           else return 0;
         })
         .sort((a, b) => {
           const topA = parseInt(a.style.top.slice(0, -2), 10);
           const topB = parseInt(b.style.top.slice(0, -2), 10);
           if (topA < topB) return -1;
-          else if (topB > topA) return 1;
+          else if (topA > topB) return 1;
           else return 0;
         });
-
-      dispatch(
-        updateImageScrambleURLs(imagesRef.map(image => image.dataset.url))
-      );
+      dispatch(updateImageScrambleURLs(images.map(image => image.dataset.url)));
     }
   }, [count]);
 
-  // add event listeners
   useEffect(() => {
-    if (imagesRef) {
-      addImageEventListeners(imagesRef, count, setCount);
-    }
-  }, [imagesRef]);
-
-  // update DOM image elements
-  useEffect(() => {
-    console.log('offet:', offset);
-    if (offset.length && imagesRef) {
-      imagesRef.forEach((image, i) => updateImages(image, i, offset, false));
-    }
-  }, [offset]);
-
-  useEffect(() => {
-    console.log('imagesScrambleURLs:', imageScrambleURLs);
     // if it's worth it to check if winner
-    if (imagesRef?.[0].dataset.i === '0') {
+    if (images?.[0]?.dataset.i === '0') {
       // check if winner
-      checkWinner(imagesRef, canvasRef.current, confettiRef);
+      checkWinner(images, canvasRef.current, confetti);
     }
   }, [imageScrambleURLs]);
 
@@ -151,7 +154,11 @@ function ImageScramble({ state }) {
                 <div
                   key={url}
                   draggable='true'
-                  data-i={i}
+                  data-i={
+                    imageScrambleURLs[i][
+                      imageScrambleURLs[i].lastIndexOf('/') + 1
+                    ]
+                  }
                   data-url={url} // can I just access key instead?
                   style={{ backgroundImage: `url(${url})` }}
                 ></div>
@@ -262,7 +269,7 @@ const checkWinner = (images, canvas, confetti) => {
   // move canvas forward
   canvas.style.zIndex = 'initial';
   // confetti
-  confetti({
+  confetti()({
     particleCount: 100,
     gravity: 0.5,
     origin: { x: 0.5, y: 1 }
@@ -270,7 +277,7 @@ const checkWinner = (images, canvas, confetti) => {
 };
 
 // add image event listeners
-const addImageEventListeners = (images, count, setCount) => {
+const addImageEventListeners = (images, incrementCount) => {
   let dragging;
   let firstTouch;
   let lastTouch;
@@ -381,7 +388,7 @@ const addImageEventListeners = (images, count, setCount) => {
       // revert opacity
       image.classList.remove('dragging');
       // update counter
-      setCount(count + 1);
+      incrementCount();
     });
 
     /**
@@ -400,7 +407,7 @@ const addImageEventListeners = (images, count, setCount) => {
       // check if lastTouch (if movement occurred)
       if (lastTouch) {
         // update counter
-        setCount(count + 1);
+        incrementCount();
         // reset variables
         firstTouch = null;
         lastTouch = null;

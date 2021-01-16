@@ -57,7 +57,7 @@ p.total-moves {
 }
 
 @media (min-width: 576px) {
-  #container {
+  #image-scramble-container {
     width: 510px;
     height: 510px;
   }
@@ -66,26 +66,28 @@ p.total-moves {
     height: 170px;
   }
   p.total-moves {
-    font-size: 1.5em;
-  }
-  #shuffle {
-    width: 510px;
-    font-size: 1.5em;
+    font-size: 1.25em;
   }
 }
 
 @media (min-width: 992px) {
-  #container {
-    width: 690px;
-    height: 690px;
-    box-shadow: inset 0 0 0 2px gray, 0 0 0 2px gray;
+  #image-scramble-container {
+    width: 210px;
+    height: 210px;
   }
   div[data-i] {
-    width: 230px;
-    height: 230px;
-    box-shadow: inset 0 0 0 2px gray;
+    width: 70px;
+    height: 70px;
   }
-  #shuffle {
-    width: 690px;
+}
+
+@media (min-width: 1200px) {
+  #image-scramble-container {
+    width: 255px;
+    height: 255px;
+  }
+  div[data-i] {
+    width: 85px;
+    height: 85px;
   }
 }
