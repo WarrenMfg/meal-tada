@@ -71,11 +71,48 @@ p.total-moves {
 
 #image-scramble-confetti {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: -1;
   /* width is set via JavaScript */
+}
+
+.image-scramble-title-card {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  background-color: rgba(255, 255, 255, 0.5);
+  animation: fade-in 1.5s linear;
+  z-index: 2;
+  cursor: default;
+}
+
+.image-scramble-title-card h5 {
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.image-scramble-title-card button {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
 }
 
 @media (min-width: 576px) {

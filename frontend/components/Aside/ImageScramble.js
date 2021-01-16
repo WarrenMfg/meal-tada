@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import Confetti from 'canvas-confetti';
 import { fetchImageScramble } from '../../api/fetch';
 import {
   clearImageScrambleURLs,
   updateImageScrambleURLs
 } from '../../actions/generalActions';
+import { setCurrentRecipe } from '../../actions/recipeActions';
 import withGlobalStore from '../../store/withGlobalStore';
 
 import PropTypes from 'prop-types';
@@ -18,6 +20,9 @@ function ImageScramble({ state }) {
     dispatch
   } = state;
 
+  // history
+  const history = useHistory();
+
   // state
   const [recipe, setRecipe] = useState({});
   // counter
@@ -26,6 +31,8 @@ function ImageScramble({ state }) {
   const [offset, setOffset] = useState([]);
   // images
   const [images, setImages] = useState(null);
+  // winner
+  const [winner, setWinner] = useState(false);
 
   // refs/callbacks
   const containerRef = useRef(null);
@@ -197,18 +204,44 @@ function ImageScramble({ state }) {
 
   useEffect(() => {
     // if it's worth it to check if winner
-    if (images?.[0]?.dataset.i === '0') {
+    if (images?.[0]?.dataset.i === '0' && canvasRef.current) {
       // check if winner
-      checkWinner(images, canvasRef.current, confetti);
+      checkWinner(images, canvasRef.current, confetti, setWinner);
     }
   }, [imageScrambleURLs]);
+
+  useEffect(() => {
+    if (winner) {
+      const div = document.createElement('div');
+      div.classList.add('image-scramble-title-card');
+      const h5 = document.createElement('h5');
+      h5.innerText = recipe.title;
+      const button = document.createElement('button');
+      button.classList.add('btn', 'btn-outline-primary');
+      button.innerText = 'Go to Recipe!';
+      div.append(h5, button);
+
+      containerRef.current.append(div);
+    }
+  }, [winner]);
+
+  const handleImageScrambleClick = e => {
+    if (e.target.classList.contains('btn-outline-primary')) {
+      history.push(`/recipe/${recipe.slug}`);
+      dispatch(setCurrentRecipe(null));
+    }
+  };
 
   return (
     <>
       {imageScrambleURLs.length ? (
         <>
           <div className='image-scramble-wrapper mt-4 mb-3'>
-            <div id='image-scramble-container' ref={containerRef}>
+            <div
+              id='image-scramble-container'
+              ref={containerRef}
+              onClick={handleImageScrambleClick}
+            >
               {imageScrambleURLs.map((url, i) => (
                 <div
                   key={url}
@@ -310,7 +343,7 @@ const swapImages = (dragging, entering) => {
 };
 
 // check winner after every dragend
-const checkWinner = (images, canvas, confetti) => {
+const checkWinner = (images, canvas, confetti, setWinner) => {
   let imageIndex;
   for (let i = 0; i < images.length; i++) {
     imageIndex = parseInt(images[i].dataset.i, 10);
@@ -329,9 +362,10 @@ const checkWinner = (images, canvas, confetti) => {
   // confetti
   confetti()({
     particleCount: 100,
-    gravity: 0.5,
     origin: { x: 0.5, y: 1 }
   });
+  // toggle winner
+  setWinner(true);
 };
 
 // add image event listeners
