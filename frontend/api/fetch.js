@@ -161,7 +161,7 @@ export const fetchImageScramble = async (dispatch, slug) => {
     const preloadResults = await Promise.all(promises);
     preloadResults.forEach((preload, i) => {
       if (!preload) {
-        imageURLs[i] = 'https://via.placeholder.com/300x300.png?text=Missing';
+        imageURLs[i] = 'https://via.placeholder.com/300x300.jpg?text=Missing';
       }
     });
 

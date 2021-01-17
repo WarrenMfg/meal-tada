@@ -1,6 +1,9 @@
+#image-scramble-header {
+  font-size: 1.5em;
+}
+
 .image-scramble-wrapper-placeholder {
   overflow: hidden;
-  border: 1px solid gray;
 }
 
 .image-pieces-placeholder {
@@ -31,7 +34,7 @@
   width: 210px;
   height: 210px;
   margin: 0 auto;
-  box-shadow: inset 0 0 0 1px gray, 0 0 0 1px gray;
+  box-shadow: inset 0 0 0 0.5px white, 0 0 0 0.5px white;
   cursor: move;
 }
 
@@ -39,7 +42,7 @@ div[data-i] {
   position: absolute;
   width: 70px;
   height: 70px;
-  box-shadow: inset 0 0 0 1px gray;
+  box-shadow: inset 0 0 0 0.5px white;
   background-repeat: no-repeat;
   background-size: contain;
 }

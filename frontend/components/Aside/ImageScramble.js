@@ -218,7 +218,7 @@ function ImageScramble({ state }) {
       h5.innerText = recipe.title;
       const button = document.createElement('button');
       button.classList.add('btn', 'btn-outline-primary');
-      button.innerText = 'Go to Recipe!';
+      button.innerText = 'Go to Recipe';
       div.append(h5, button);
 
       containerRef.current.append(div);
@@ -234,9 +234,12 @@ function ImageScramble({ state }) {
 
   return (
     <>
+      <h2 className='text-center' id='image-scramble-header'>
+        Piecemeal
+      </h2>
       {imageScrambleURLs.length ? (
         <>
-          <div className='image-scramble-wrapper mt-4 mb-3'>
+          <div className='image-scramble-wrapper mb-3'>
             <div
               id='image-scramble-container'
               ref={containerRef}
@@ -263,11 +266,11 @@ function ImageScramble({ state }) {
           </div>
         </>
       ) : (
-        <div className='image-scramble-wrapper image-scramble-wrapper-placeholder mt-4 mb-3'>
+        <div className='image-scramble-wrapper image-scramble-wrapper-placeholder mb-3'>
           <div
             id='image-scramble-container'
             className='image-pieces-placeholder'
-            style={{ backgroundImage: `url(${recipe.cardAndHeroImage}.webp)` }}
+            style={{ backgroundImage: `url(${recipe.cardAndHeroImage}.jpg)` }}
           ></div>
         </div>
       )}
@@ -334,9 +337,9 @@ const updateImages = (image, i, offset, isShuffling) => {
 };
 
 // swap images
-const swapImages = (dragging, entering) => {
+const swapImages = (dragging, entering, isTouch) => {
   // move image on top
-  entering.classList.add('move');
+  isTouch ? dragging.classList.add('move') : entering.classList.add('move');
   // swap
   const tempLeft = dragging.style.left;
   const tempTop = dragging.style.top;
@@ -375,6 +378,7 @@ const checkWinner = (images, canvas, confetti, setWinner) => {
 // add image event listeners
 const addImageEventListeners = (images, countRef, setCount) => {
   let dragging;
+  let hasMoved;
   let firstTouch;
   let lastTouch;
 
@@ -434,17 +438,17 @@ const addImageEventListeners = (images, countRef, setCount) => {
       if (isXLargest) {
         const isMovingRight = lastTouch.clientX - firstTouch.clientX > 0;
         if (isMovingRight && [0, 1, 3, 4, 6, 7].includes(index)) {
-          swapImages(dragging, images[index + 1]);
+          swapImages(dragging, images[index + 1], true);
         } else if (!isMovingRight && [1, 2, 4, 5, 7, 8].includes(index)) {
-          swapImages(dragging, images[index - 1]);
+          swapImages(dragging, images[index - 1], true);
         }
         // move along y-axis
       } else {
         const isMovingDown = lastTouch.clientY - firstTouch.clientY > 0;
         if (isMovingDown && [0, 1, 2, 3, 4, 5].includes(index)) {
-          swapImages(dragging, images[index + 3]);
+          swapImages(dragging, images[index + 3], true);
         } else if (!isMovingDown && [3, 4, 5, 6, 7, 8].includes(index)) {
-          swapImages(dragging, images[index - 3]);
+          swapImages(dragging, images[index - 3], true);
         }
       }
     });
@@ -470,7 +474,8 @@ const addImageEventListeners = (images, countRef, setCount) => {
       // if already in transition, return
       if (image.classList.contains('move')) return;
 
-      swapImages(dragging, image);
+      swapImages(dragging, image, false);
+      hasMoved = true;
     });
 
     // dragover
@@ -483,8 +488,12 @@ const addImageEventListeners = (images, countRef, setCount) => {
       dragging = null;
       // revert opacity
       image.classList.remove('dragging');
-      // update counter
-      setCount(++countRef.current);
+
+      if (hasMoved) {
+        // update counter
+        setCount(++countRef.current);
+        hasMoved = false;
+      }
     });
 
     /**
