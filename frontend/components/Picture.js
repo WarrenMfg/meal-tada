@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function Picture({ className, url, width, height, alt, title, loading }) {
   return (
     <picture>
-      <source srcSet={`${url}.webp`} />
+      <source srcSet={`${url}.webp`} type='image/webp' />
       <img
         className={className}
         src={`${url}.jpg`}
