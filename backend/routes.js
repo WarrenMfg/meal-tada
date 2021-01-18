@@ -11,7 +11,13 @@ const file =
     : resolve(__dirname, 'imageScramble.js');
 
 const workerQueue = new Queue();
-new Array(4).fill(null).forEach(() => workerQueue.enqueue(new Worker(file)));
+new Array(4)
+  .fill(null)
+  .forEach(() =>
+    workerQueue.enqueue(
+      new Worker(process.cwd() + '/distBackend/imageScramble.js')
+    )
+  );
 const requestQueue = new Queue();
 
 function handleImageScramble(res, slug, worker) {
