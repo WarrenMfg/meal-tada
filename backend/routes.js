@@ -7,7 +7,7 @@ import Queue from './Queue';
 
 const file =
   process.env.NODE_ENV === 'production'
-    ? './distBackend/imageScramble.js'
+    ? 'imageScramble.js'
     : resolve(__dirname, 'imageScramble.js');
 
 const workerQueue = new Queue();
