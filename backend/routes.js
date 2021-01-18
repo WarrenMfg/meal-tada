@@ -14,9 +14,7 @@ const workerQueue = new Queue();
 new Array(4)
   .fill(null)
   .forEach(() =>
-    workerQueue.enqueue(
-      new Worker(process.cwd() + '/distBackend/imageScramble.js')
-    )
+    workerQueue.enqueue(new Worker('./distBackend/imageScramble.js'))
   );
 const requestQueue = new Queue();
 
