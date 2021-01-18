@@ -261,7 +261,7 @@ export default (app, db) => {
       }
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      res.status(500).send(err);
     }
   });
 
