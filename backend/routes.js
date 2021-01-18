@@ -5,12 +5,13 @@ import { Worker } from 'worker_threads';
 import { resolve } from 'path';
 import Queue from './Queue';
 
+const file =
+  process.env.NODE_ENV === 'production'
+    ? './imageScramble.js'
+    : resolve(__dirname, 'imageScramble.js');
+
 const workerQueue = new Queue();
-new Array(4)
-  .fill(null)
-  .forEach(() =>
-    workerQueue.enqueue(new Worker(resolve(__dirname, 'imageScramble.js')))
-  );
+new Array(4).fill(null).forEach(() => workerQueue.enqueue(new Worker(file)));
 const requestQueue = new Queue();
 
 function handleImageScramble(res, slug, worker) {
