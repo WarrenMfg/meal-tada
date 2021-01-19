@@ -2,13 +2,7 @@
 
 import { getGeneralAndIntialRecipes } from './utils';
 import { Worker } from 'worker_threads';
-import { resolve } from 'path';
 import Queue from './Queue';
-
-const file =
-  process.env.NODE_ENV === 'production'
-    ? 'imageScramble.js'
-    : resolve(__dirname, 'imageScramble.js');
 
 const workerQueue = new Queue();
 new Array(4)
